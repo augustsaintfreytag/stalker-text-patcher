@@ -1,0 +1,21 @@
+-- Modules
+
+function on_game_start()
+	local normalize_desc = saint_utils.normalize_desc
+	local original_build_desc_header = ui_item.build_desc_header
+	local original_build_desc_footer = ui_item.build_desc_footer
+	
+	ui_item.build_desc_header = function(obj, sec, str)
+		local header = original_build_desc_header(obj, sec, str)
+		header = normalize_desc(header)
+	
+		return header
+	end
+	
+	ui_item.build_desc_footer = function(obj, sec, str)
+		local footer = original_build_desc_footer(obj, sec, str)
+		footer = normalize_desc(footer)
+	
+		return footer
+	end
+end
