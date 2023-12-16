@@ -1,0 +1,298 @@
+-- Modules
+
+local lulpeg = require "lulpeg"
+local re = lulpeg.re
+
+-- Logic
+
+function normalize_name(name)
+	name = capitalize_words(name)
+	name = normalize_desc_parentheses(name)
+
+	return name
+end
+
+function normalize_desc(desc)
+    desc = trim_desc_spacing(desc)
+    desc = normalize_desc_colors(desc)
+	desc = normalize_hyphen_lists(desc)
+    desc = rewrite_desc_headings(desc)
+    desc = capitalize_desc_bullet_point_lines(desc)
+    desc = rewrite_desc_spacing(desc)
+
+    return desc
+end
+
+function trim_desc_spacing(desc)
+    local string_lookaround_range = 8
+
+    -- Slice off beginning of description, remove any leading newlines and white space, reconcatenate
+    local desc_head, desc_tail = desc:sub(1, string_lookaround_range), desc:sub(string_lookaround_range + 1)
+    desc_head = re.gsub(desc_head, [[('\n'%s*)+]], "")
+    desc_head = string.gsub(desc_head, '^%s*(.-)%s*$', '%1')
+    desc = desc_head .. desc_tail
+
+    -- Slice off end of description, remove any trailing newlines and white space, reconcatenate
+    local desc_head, desc_tail = desc:sub(1, -string_lookaround_range), desc:sub(-string_lookaround_range + 1)
+    desc_tail = re.gsub(desc_tail, [[('\n'%s*)+]], "")
+    desc = desc_head .. desc_tail
+
+	return desc
+end
+
+local LINE_KIND = {
+    TEXT = "text",
+    BULLET_POINT = "bullet_point",
+    SECTION_HEADER = "section_header"
+}
+
+function rewrite_desc_spacing(desc)
+    local lines = split_string_into_collection(desc, "\\n")
+
+	local new_lines = {}
+    local last_line_kind = nil
+
+    for i = 1, #lines do
+        -- Unpack line as trimmed line
+
+        local line = lines[i]:gsub("^%s*(.-)%s*$", "%1")
+        local line_kind = get_line_kind(line)
+
+        -- print("Detected line '" .. line .. "' as kind '" .. (line_kind or "(none)") .. ", last kind " .. (last_line_kind or "(none)") .. ".")
+
+        if not line_kind then
+            goto continue
+        end
+
+        -- If line is text, always prepend paragraph break (omit if first element)
+        -- If line is a section header, always prepend paragraph break (omit if first element)
+        if (line_kind == LINE_KIND.TEXT) or (line_kind == LINE_KIND.SECTION_HEADER) then
+            if last_line_kind ~= nil then
+                table.insert(new_lines, "\\n \\n")
+            end
+
+            table.insert(new_lines, line)
+            goto continue
+        end
+        
+        if line_kind == LINE_KIND.BULLET_POINT then
+            if last_line_kind == LINE_KIND.TEXT then
+                table.insert(new_lines, "\\n \\n")
+            elseif last_line_kind ~= nil then
+                table.insert(new_lines, "\\n")
+            end
+
+            table.insert(new_lines, line)
+            goto continue
+        end
+
+        ::continue::
+
+        if line_kind then
+            last_line_kind = line_kind
+        end
+    end
+
+    return table.concat(new_lines, "")
+end
+
+function get_line_kind(line)
+    -- If line contains dot character '•', return bullet point
+    if line:find("•") then
+        return LINE_KIND.BULLET_POINT
+    end
+
+    -- If line contains only uppercase characters followed by a colon ':', return section header
+    if re.find(line, "[A-Z]^+3':'") then
+        return LINE_KIND.SECTION_HEADER
+    end
+
+    -- If line is not empty and contains more than just white space, return text
+    if line ~= "" and line:find("%S") then
+        return LINE_KIND.TEXT
+    end
+
+    -- Otherwise, return nil
+    return nil
+end
+
+function normalize_desc_colors(desc)
+    -- Replace section headers bullet points using `clr_1` or `clr_2` with `clr_0` (gray_3)
+    desc = re.gsub(desc, [[{'%c['[a-zA-Z0-9_, ]+']'}{%s*[A-Z]+}':']], "%c[ui_gray_3]%2:")
+
+    return desc
+end
+
+function normalize_hyphen_lists(desc)
+	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
+	-- Mainly applicable to descriptions of ammunition items.
+
+	return re.gsub(desc, [['] - ']], "]  • ")
+end
+
+function capitalize_desc_bullet_point_lines(desc)
+	local lines = split_string_into_collection(desc, "\\n")
+	local new_lines = {}
+
+    for i = 1, #lines do
+        local line = lines[i]
+        -- Find index of the last character in a match of color tag, dot, color tag.
+        -- LUA equivalent of regex: %c\[[a-z0-9_]*\] • %c\[[a-z0-9_]*\]\s*
+        local _, name_end_index = re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'•'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
+
+        if not name_end_index then
+            table.insert(new_lines, line)
+            goto continue
+        end
+
+        local line_prefix = line:sub(1, name_end_index)
+        local line_name = line:sub(name_end_index + 1)
+
+        -- Check if dot "•" has only one preceding space after color block ending in "]", replace with two.
+        line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'•'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]], " %1 • %2")
+
+		-- If line string contains a colon, split, capitalize all to the left, only first word on the right
+		if line_name:find(":") then
+			local line_name_parts = split_string_into_collection(line_name, ":")
+			local line_name_left = line_name_parts[1] or ""
+			local line_name_right = trim_string(line_name_parts[2] or "")
+
+            local line_had_space_after_colon = line_name_parts[2]:sub(1, 1) == " "
+
+			line_name_left = capitalize_words_by_length(line_name_left)
+            line_name_right = capitalize_words_by_length(line_name_right)
+
+			line_name = line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
+		else
+			line_name = capitalize_words_by_length(line_name)
+		end
+
+		table.insert(new_lines, line_prefix .. line_name)
+		::continue::
+    end
+
+	return table.concat(new_lines, "\\n")
+end
+
+function normalize_desc_parentheses(str)
+	-- Normalize parentheses (only use round parentheses)
+	str = str:gsub("[%[%{]", "(")
+	str = str:gsub("[%]%}]", ")")
+
+	-- Separate touching parentheses without whitespace
+	str = str:gsub("(%(.+?%))(%(.+?%))","$1 $2")
+
+	return str
+end
+
+function rewrite_desc_headings(desc)
+    -- Replace occurrences of a line containing "Used for crafting:" with "CRAFTING:"
+    local lines = split_string_into_collection(desc, "\\n")
+    local new_lines = {}
+
+    for i = 1, #lines do
+        local line = lines[i]
+
+        if line:find("Used for crafting") then
+            table.insert(new_lines, "%c[ui_gray_1]CRAFTING:%c[ui_gray_2]")
+        else
+            table.insert(new_lines, line)
+        end
+    end
+
+    return table.concat(new_lines, "\\n")
+end
+
+function capitalize_words_by_length(str)
+	local max_line_length_to_capitalize = 28
+
+    if string.len(str) < max_line_length_to_capitalize then
+        return capitalize_words(str)
+    else
+        return capitalize_first_word(str)
+    end
+end
+
+-- A function that takes in a string and makes the first letter of each word uppercase.
+function capitalize_words(str)
+	-- Split input string into array of words
+	local words = split_string_into_collection(str, " ")
+	local skip_words = set_from_collection({"as", "of", "on", "and", "for", "with", "without", "through", "its", "the", "to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg"})
+
+	-- Capitalize each word
+	local capitalized_words = {}
+
+	for i, word in ipairs(words) do
+		-- If the word is in the uncapitalized words table, then skip it
+		if i > 1 and skip_words[string.lower(word)] then
+			table.insert(capitalized_words, word)
+		else
+			if string.sub(word, 1, 1) == "(" then
+                -- Found a parenthetical, capitalize the word after the parenthetical
+				table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
+            elseif string.sub(word, 1, 2) == "%c" then
+                -- Found a color tag, capitalize the word after the color tag
+                local tag_end_index = string.find(word, "]")
+                local tag = string.sub(word, 1, tag_end_index)
+                local tag_word = string.sub(word, tag_end_index + 1)
+
+                table.insert(capitalized_words, tag .. capitalize_word(tag_word))
+			else
+				table.insert(capitalized_words, capitalize_word(word))
+			end
+		end
+	end
+
+	-- Finally, join the words back into a string
+	return table.concat(capitalized_words, " ")
+end
+
+function capitalize_word(str)
+	str = string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
+	str = string.gsub(str, "%-(%l)", function (s) return "-" .. string.upper(s) end)
+
+	return str
+end
+
+function capitalize_first_word(str)
+	-- if string is nil, empty, or has less than two characters, return
+	if not str or #str < 2 then
+		return str
+	end
+
+    return string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
+end
+
+function trim_string(str)
+    return str:gsub("^%s*(.-)%s*$", "%1")
+end
+
+-- Collection Utility Functions
+
+function split_string_into_collection(str, sep)
+    local lines = {}
+    local last_split_index = nil
+    
+    -- Find occurrence of `sep` in `str`, split `str` at that index, and store the split substrings in `lines`
+    for i = 1, #str do
+        if str:sub(i, i + #sep - 1) == sep then
+            lines[#lines + 1] = str:sub(last_split_index or 1, i - 1)
+            last_split_index = i + #sep
+        end
+    end
+
+    -- Store the last substring in `str` in `lines`
+    lines[#lines + 1] = str:sub(last_split_index or 1)
+
+    return lines
+end
+
+function set_from_collection(arr)
+	local tbl = {}
+
+	for i, v in ipairs(arr) do
+		tbl[v] = true
+	end
+
+	return tbl
+end
