@@ -22,7 +22,7 @@ end
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
 	desc = normalize_desc_colors(desc)
-	desc = normalize_hyphen_lists(desc)
+	desc = rewrite_hyphen_lists(desc)
 	desc = rewrite_desc_headings(desc)
 	desc = capitalize_desc_bullet_point_lines(desc)
 	desc = rewrite_desc_spacing(desc)
@@ -98,8 +98,8 @@ function rewrite_desc_spacing(desc)
 end
 
 function get_line_kind(line)
-	-- If line contains dot character '�', return bullet point
-	if line:find("�") then
+	-- If line contains dot character 'вЂў', return bullet point
+	if line:find("вЂў") then
 		return LINE_KIND.BULLET_POINT
 	end
 
@@ -124,11 +124,11 @@ function normalize_desc_colors(desc)
 	return desc
 end
 
-function normalize_hyphen_lists(desc)
+function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  � ")
+	return re.gsub(desc, [['] - ']], "]  вЂў ")
 end
 
 function capitalize_desc_bullet_point_lines(desc)
@@ -138,9 +138,9 @@ function capitalize_desc_bullet_point_lines(desc)
 	for i = 1, #lines do
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag.
-		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] � %c\[[a-z0-9_]*\]\s*
+		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] вЂў %c\[[a-z0-9_]*\]\s*
 		local _, name_end_index =
-			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'�'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
+			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'вЂў'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
 
 		if not name_end_index then
 			table.insert(new_lines, line)
@@ -150,9 +150,9 @@ function capitalize_desc_bullet_point_lines(desc)
 		local line_prefix = line:sub(1, name_end_index)
 		local line_name = line:sub(name_end_index + 1)
 
-		-- Check if dot "�" has only one preceding space after color block ending in "]", replace with two.
-		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'�'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
-			" %1 � %2")
+		-- Check if dot "вЂў" has only one preceding space after color block ending in "]", replace with two.
+		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'вЂў'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
+			" %1 вЂў %2")
 
 		-- If line string contains a colon, split, capitalize all to the left, only first word on the right
 		if line_name:find(":") then
