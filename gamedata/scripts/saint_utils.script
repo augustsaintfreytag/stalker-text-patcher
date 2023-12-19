@@ -45,7 +45,7 @@ function normalize_desc(desc)
 	return desc
 end
 
-function trim_desc_spacing(desc)
+local function trim_desc_spacing(desc)
 	local string_lookaround_range = 8
 
 	-- Slice off beginning of description, remove any leading newlines and white space, reconcatenate
@@ -62,7 +62,7 @@ function trim_desc_spacing(desc)
 	return desc
 end
 
-function rewrite_desc_spacing(desc)
+local function rewrite_desc_spacing(desc)
 	local lines = split_string_into_collection(desc, "\\n")
 
 	local new_lines = {}
@@ -112,7 +112,7 @@ function rewrite_desc_spacing(desc)
 	return table.concat(new_lines, "")
 end
 
-function get_line_kind(line)
+local function get_line_kind(line)
 	-- If line contains dot character '•', return bullet point
 	if line:find("•") then
 		return LINE_KIND.BULLET_POINT
@@ -132,21 +132,21 @@ function get_line_kind(line)
 	return nil
 end
 
-function normalize_desc_colors(desc)
+local function normalize_desc_colors(desc)
 	-- Replace section headers bullet points using `clr_1` or `clr_2` with `clr_0` (gray_3)
 	desc = re.gsub(desc, [[{'%c['[a-zA-Z0-9_, ]+']'}{%s*[A-Z]+}':']], "%c[ui_gray_3]%2:")
 
 	return desc
 end
 
-function rewrite_hyphen_lists(desc)
+local function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
 	return re.gsub(desc, [['] - ']], "]  • ")
 end
 
-function capitalize_desc_bullet_point_lines(desc)
+local function capitalize_desc_bullet_point_lines(desc)
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
 
@@ -192,7 +192,7 @@ function capitalize_desc_bullet_point_lines(desc)
 	return table.concat(new_lines, "\\n")
 end
 
-function normalize_desc_parentheses(str)
+local function normalize_desc_parentheses(str)
 	-- Normalize parentheses (only use round parentheses)
 	str = str:gsub("[%[%{]", "(")
 	str = str:gsub("[%]%}]", ")")
@@ -213,7 +213,7 @@ local desc_heading_replacements = {
 	["Replacement Parts"] = formatted_desc_heading(gc("ui_saint_description_section_replacement_parts")),
 }
 
-function rewrite_desc_headings(desc)
+local function rewrite_desc_headings(desc)
 	-- Replace occurrences of a line containing "Used for crafting:" with "CRAFTING:"
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
@@ -234,7 +234,7 @@ function rewrite_desc_headings(desc)
 	return table.concat(new_lines, "\\n")
 end
 
-function formatted_desc_heading(heading)
+local function formatted_desc_heading(heading)
 	-- Make input all uppercase and append a colon, wrap in color tags.
 	local formatted_heading = string.upper(heading) .. ":"
 	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
@@ -242,7 +242,7 @@ end
 
 -- Utility: Capitalization
 
-function capitalize_words_by_length(str)
+local function capitalize_words_by_length(str)
 	local max_line_length_to_capitalize = 28
 
 	if string.len(str) < max_line_length_to_capitalize then
@@ -252,7 +252,7 @@ function capitalize_words_by_length(str)
 	end
 end
 
-function capitalize_words(str)
+local function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
 	local skip_words = set_from_collection({"as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 											"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg"})
@@ -283,7 +283,7 @@ function capitalize_words(str)
 	return table.concat(capitalized_words, " ")
 end
 
-function capitalize_word(str)
+local function capitalize_word(str)
 	str = string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
 	str = string.gsub(str, "%-(%l)", function(s)
 		return "-" .. string.upper(s)
@@ -292,7 +292,7 @@ function capitalize_word(str)
 	return str
 end
 
-function capitalize_first_word(str)
+local function capitalize_first_word(str)
 	-- if string is nil, empty, or has less than two characters, return
 	if not str or #str < 2 then
 		return str
@@ -303,13 +303,13 @@ end
 
 -- Utility: Trimming
 
-function trim_string(str)
+local function trim_string(str)
 	return str:gsub("^%s*(.-)%s*$", "%1")
 end
 
 -- Utility: Collections
 
-function split_string_into_collection(str, sep)
+local function split_string_into_collection(str, sep)
 	local lines = {}
 	local last_split_index = nil
 
@@ -327,7 +327,7 @@ function split_string_into_collection(str, sep)
 	return lines
 end
 
-function set_from_collection(arr)
+local function set_from_collection(arr)
 	local tbl = {}
 
 	for i, v in ipairs(arr) do
