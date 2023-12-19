@@ -1,0 +1,17 @@
+<string_table>
+	<string id="ui_saint_description_section_ammo">
+		<text>Ammo</text>
+	</string>
+	<string id="ui_saint_description_section_used_for_crafting">
+		<text>Crafting</text>
+	</string>
+	<string id="ui_saint_description_section_unlocks_for_crafting">
+		<text>Recipes</text>
+	</string>
+	<string id="ui_saint_description_section_used_for_cooking">
+		<text>Cooking</text>
+	</string>
+	<string id="ui_saint_description_section_replacement_parts">
+		<text>Replacement Parts</text>
+	</string>
+</string_table>

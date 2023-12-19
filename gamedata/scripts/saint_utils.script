@@ -20,9 +20,9 @@ local COLOR = {
 }
 
 local PREFAB = {
-	DESC_BULLET_NEUTRAL = " " .. COLOR.BULLET_NEUTRAL .. " вЂў " .. COLOR.TEXT,
-	DESC_BULLET_BENEFICIAL = " " .. COLOR.BULLET_BENEFICIAL .. " вЂў " .. COLOR.TEXT,
-	DESC_BULLET_DETRIMENTAL = " " .. COLOR.BULLET_DETRIMENTAL .. " вЂў " .. COLOR.TEXT,
+	DESC_BULLET_NEUTRAL = " " .. COLOR.BULLET_NEUTRAL .. " • " .. COLOR.TEXT,
+	DESC_BULLET_BENEFICIAL = " " .. COLOR.BULLET_BENEFICIAL .. " • " .. COLOR.TEXT,
+	DESC_BULLET_DETRIMENTAL = " " .. COLOR.BULLET_DETRIMENTAL .. " • " .. COLOR.TEXT,
 }
 
 -- Logic
@@ -113,8 +113,8 @@ function rewrite_desc_spacing(desc)
 end
 
 function get_line_kind(line)
-	-- If line contains dot character 'Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С”', return bullet point
-	if line:find("Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С”") then
+	-- If line contains dot character '•', return bullet point
+	if line:find("•") then
 		return LINE_KIND.BULLET_POINT
 	end
 
@@ -143,7 +143,7 @@ function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С” ")
+	return re.gsub(desc, [['] - ']], "]  • ")
 end
 
 function capitalize_desc_bullet_point_lines(desc)
@@ -153,9 +153,9 @@ function capitalize_desc_bullet_point_lines(desc)
 	for i = 1, #lines do
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag.
-		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С” %c\[[a-z0-9_]*\]\s*
+		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] • %c\[[a-z0-9_]*\]\s*
 		local _, name_end_index =
-			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С”'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
+			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'•'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
 
 		if not name_end_index then
 			table.insert(new_lines, line)
@@ -165,9 +165,9 @@ function capitalize_desc_bullet_point_lines(desc)
 		local line_prefix = line:sub(1, name_end_index)
 		local line_name = line:sub(name_end_index + 1)
 
-		-- Check if dot "Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С”" has only one preceding space after color block ending in "]", replace with two.
-		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С”'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
-			" %1 Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р РЋРІР‚С” %2")
+		-- Check if dot "•" has only one preceding space after color block ending in "]", replace with two.
+		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'•'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
+			" %1 • %2")
 
 		-- If line string contains a colon, split, capitalize all to the left, only first word on the right
 		if line_name:find(":") then
@@ -203,6 +203,16 @@ function normalize_desc_parentheses(str)
 	return str
 end
 
+-- Section Heading Rewrite
+
+local desc_heading_replacements = {
+	["Ammo"] = formatted_desc_heading(gc("ui_saint_description_section_ammo")),
+	["Used for crafting"] = formatted_desc_heading(gc("ui_saint_description_section_used_for_crafting")),
+	["Unlocks for crafting"] = formatted_desc_heading(gc("ui_saint_description_section_unlocks_for_crafting")),
+	["Used for cooking"] = formatted_desc_heading(gc("ui_saint_description_section_used_for_cooking")),
+	["Replacement Parts"] = formatted_desc_heading(gc("ui_saint_description_section_replacement_parts")),
+}
+
 function rewrite_desc_headings(desc)
 	-- Replace occurrences of a line containing "Used for crafting:" with "CRAFTING:"
 	local lines = split_string_into_collection(desc, "\\n")
@@ -211,15 +221,26 @@ function rewrite_desc_headings(desc)
 	for i = 1, #lines do
 		local line = lines[i]
 
-		if line:find("Used for crafting") then
-			table.insert(new_lines, "%c[ui_gray_1]CRAFTING:%c[ui_gray_2]")
-		else
-			table.insert(new_lines, line)
+		for pattern, replacement in pairs(desc_heading_replacements) do
+			if line:find(pattern) then
+				line = replacement
+				break
+			end
 		end
+
+		table.insert(new_lines, line)
 	end
 
 	return table.concat(new_lines, "\\n")
 end
+
+function formatted_desc_heading(heading)
+	-- Make input all uppercase and append a colon, wrap in color tags.
+	local formatted_heading = string.upper(heading) .. ":"
+	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
+end
+
+-- Utility: Capitalization
 
 function capitalize_words_by_length(str)
 	local max_line_length_to_capitalize = 28
@@ -231,26 +252,23 @@ function capitalize_words_by_length(str)
 	end
 end
 
--- A function that takes in a string and makes the first letter of each word uppercase.
 function capitalize_words(str)
-	-- Split input string into array of words
 	local words = split_string_into_collection(str, " ")
 	local skip_words = set_from_collection({"as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 											"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg"})
 
-	-- Capitalize each word
 	local capitalized_words = {}
 
 	for i, word in ipairs(words) do
-		-- If the word is in the uncapitalized words table, then skip it
+		-- If the word is in the uncapitalized words table, then skip it.
 		if i > 1 and skip_words[string.lower(word)] then
 			table.insert(capitalized_words, word)
 		else
 			if string.sub(word, 1, 1) == "(" then
-				-- Found a parenthetical, capitalize the word after the parenthetical
+				-- Found a parenthetical, capitalize the word after the parenthetical.
 				table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
 			elseif string.sub(word, 1, 2) == "%c" then
-				-- Found a color tag, capitalize the word after the color tag
+				-- Found a color tag, capitalize the word after the color tag.
 				local tag_end_index = string.find(word, "]")
 				local tag = string.sub(word, 1, tag_end_index)
 				local tag_word = string.sub(word, tag_end_index + 1)
@@ -262,7 +280,6 @@ function capitalize_words(str)
 		end
 	end
 
-	-- Finally, join the words back into a string
 	return table.concat(capitalized_words, " ")
 end
 
@@ -284,11 +301,13 @@ function capitalize_first_word(str)
 	return string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
 end
 
+-- Utility: Trimming
+
 function trim_string(str)
 	return str:gsub("^%s*(.-)%s*$", "%1")
 end
 
--- Collection Utility Functions
+-- Utility: Collections
 
 function split_string_into_collection(str, sep)
 	local lines = {}

@@ -1,0 +1,17 @@
+<string_table>
+    <string id="ui_saint_description_section_ammo">
+        <text>Боеприпасы</text>
+    </string>
+    <string id="ui_saint_description_section_used_for_crafting">
+        <text>Ремесло</text>
+    </string>
+    <string id="ui_saint_description_section_unlocks_for_crafting">
+        <text>Рецепты</text>
+    </string>
+    <string id="ui_saint_description_section_used_for_cooking">
+        <text>Готовка</text>
+    </string>
+    <string id="ui_saint_description_section_replacement_parts">
+        <text>Запасные части</text>
+    </string>
+</string_table>
