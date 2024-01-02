@@ -22,7 +22,11 @@ local CONFIG = {
 
 	-- Apply color tags to parentheticals in description texts 
 	-- (applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text).
-	COLOR_DESC_PARENTHETICALS = false
+	COLOR_DESC_PARENTHETICALS = false,
+
+	-- Apply color tags to bullet points with colons in description texts
+	-- (applies `COLOR.TEXT_EMPHASIS` to text after colon, distinguishing left- and right-hand side).
+	COLOR_DESC_COLON_BULLET_POINTS = true
 }
 
 -- Library
@@ -55,7 +59,7 @@ end
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
 	desc = rewrite_hyphen_lists(desc)
-	desc = rewrite_desc_headings(desc)
+	desc = rewrite_desc_heading_substitutes(desc)
 	desc = rewrite_desc_bullet_point_lines(desc)
 	desc = rewrite_desc_line_spacing(desc)
 
@@ -67,13 +71,13 @@ function trim_desc_spacing(desc)
 
 	-- Slice off beginning of description, remove any leading newlines and white space, reconcatenate
 	local desc_head, desc_tail = desc:sub(1, string_lookaround_range), desc:sub(string_lookaround_range + 1)
-	desc_head = re.gsub(desc_head, [[('\n'%s*)+]], "")
-	desc_head = string.gsub(desc_head, '^%s*(.-)%s*$', '%1')
+	desc_head = re.gsub(desc_head, [[{'\n'%s*}+]], "")
+	desc_head = string.gsub(desc_head, '^%s*{.-}%s*$', '%1')
 	desc = desc_head .. desc_tail
 
 	-- Slice off end of description, remove any trailing newlines and white space, reconcatenate
 	local desc_head, desc_tail = desc:sub(1, -string_lookaround_range), desc:sub(-string_lookaround_range + 1)
-	desc_tail = re.gsub(desc_tail, [[('\n'%s*)+]], "")
+	desc_tail = re.gsub(desc_tail, [[{'\n'%s*}+]], "")
 	desc = desc_head .. desc_tail
 
 	return desc
@@ -127,26 +131,6 @@ function rewrite_desc_line_spacing(desc)
 	return table.concat(new_lines, "")
 end
 
-function get_line_kind(line)
-	-- If line contains dot character '•', return bullet point
-	if line:find("•") then
-		return LINE_KIND.BULLET_POINT
-	end
-
-	-- If line contains only uppercase characters followed by a colon ':', return section header
-	if re.find(line, "[A-Z]^+3':'") then
-		return LINE_KIND.SECTION_HEADER
-	end
-
-	-- If line is not empty and contains more than just white space, return text
-	if line ~= "" and line:find("%S") then
-		return LINE_KIND.TEXT
-	end
-
-	-- Otherwise, return nil
-	return nil
-end
-
 function normalize_desc_colors(desc)
 	-- Replace section headers bullet points using `clr_1` or `clr_2` with `clr_0` (gray_3)
 	desc = re.gsub(desc, [[{'%c['[a-zA-Z0-9_, ]+']'}{%s*[A-Z]+}':']], "%c[ui_gray_3]%2:")
@@ -159,54 +143,6 @@ function rewrite_hyphen_lists(desc)
 	-- Mainly applicable to descriptions of ammunition items.
 
 	return re.gsub(desc, [['] - ']], "]  • ")
-end
-
-function capitalize_desc_bullet_point_lines(desc)
-	local lines = split_string_into_collection(desc, "\\n")
-	local new_lines = {}
-
-	for i = 1, #lines do
-		local line = lines[i]
-		-- Find index of the last character in a match of color tag, dot, color tag.
-		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] • %c\[[a-z0-9_]*\]\s*
-		local _, name_end_index =
-			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'•'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
-
-		if not name_end_index then
-			table.insert(new_lines, line)
-			goto continue
-		end
-
-		-- Bullet point line found, destructure into components.
-
-		local line_prefix = line:sub(1, name_end_index)
-		local line_name = line:sub(name_end_index + 1)
-
-		-- Check if dot "•" has only one preceding space after color block ending in "]", replace with two.
-		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'•'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
-			" %1 • %2")
-
-		-- If line string contains a colon, split, capitalize all to the left, only first word on the right
-		if line_name:find(":") then
-			local line_name_parts = split_string_into_collection(line_name, ":")
-			local line_name_left = line_name_parts[1] or ""
-			local line_name_right = trim_string(line_name_parts[2] or "")
-
-			local line_had_space_after_colon = line_name_parts[2]:sub(1, 1) == " "
-
-			line_name_left = capitalize_words(line_name_left)
-			line_name_right = capitalize_words_by_length(line_name_right)
-
-			line_name = line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
-		else
-			line_name = capitalize_words_by_length(line_name)
-		end
-
-		table.insert(new_lines, line_prefix .. line_name)
-		::continue::
-	end
-
-	return table.concat(new_lines, "\\n")
 end
 
 function rewrite_desc_bullet_point_lines(desc)
@@ -226,7 +162,7 @@ function rewrite_desc_bullet_point_lines(desc)
 
 		-- Bullet point line found, destructure into components.
 
-		local line_prefix = line:sub(1, leader_end_index)
+		-- local line_prefix = line:sub(1, leader_end_index)
 		local line_content = line:sub(leader_end_index + 1)
 
 		-- Define rewritten line with bullet point with appropriate color tags and spacing.
@@ -250,7 +186,11 @@ function rewrite_desc_bullet_point_lines(desc)
 			line_name_left = capitalize_words(line_name_left)
 			line_name_right = capitalize_words_by_length(line_name_right)
 
-			line_new = line_new .. COLOR.TEXT_EMPHASIS .. line_name_left .. ":" .. COLOR.TEXT .. (line_had_space_after_colon and " " or "") .. line_name_right
+			if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
+				line_new = line_new .. COLOR.TEXT .. line_name_left .. ":" .. COLOR.TEXT_EMPHASIS .. (line_had_space_after_colon and " " or "") .. line_name_right
+			else
+				line_new = line_new .. COLOR.TEXT .. line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
+			end
 		else
 			line_new = line_new .. COLOR.TEXT .. capitalize_words_by_length(line_content)
 		end
@@ -305,7 +245,7 @@ local DESC_HEADING_REPLACEMENTS = {
 	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_WORKSHOP_LIST] = formatted_desc_heading(gc("st_ui_workshop_kit_list"))
 }
 
-function rewrite_desc_headings(desc)
+function rewrite_desc_heading_substitutes(desc)
 	-- Replace occurrences of a line containing "Used for crafting:" with "CRAFTING:"
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
@@ -324,6 +264,28 @@ function rewrite_desc_headings(desc)
 	end
 
 	return table.concat(new_lines, "\\n")
+end
+
+-- Line Analysis
+
+function get_line_kind(line)
+	-- If line contains dot character '•', return bullet point
+	if line:find("•") then
+		return LINE_KIND.BULLET_POINT
+	end
+
+	-- If line contains only uppercase characters followed by a colon ':', return section header
+	if re.find(line, "[A-Z]^+3':'") then
+		return LINE_KIND.SECTION_HEADER
+	end
+
+	-- If line is not empty and contains more than just white space, return text
+	if line ~= "" and line:find("%S") then
+		return LINE_KIND.TEXT
+	end
+
+	-- Otherwise, return nil
+	return nil
 end
 
 -- Utility: Capitalization
