@@ -11,7 +11,4 @@
 	<string id="ui_saint_description_section_used_for_cooking">
 		<text>Cooking</text>
 	</string>
-	<string id="ui_saint_description_section_replacement_parts">
-		<text>Replacement Parts</text>
-	</string>
 </string_table>
