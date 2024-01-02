@@ -189,7 +189,58 @@ function capitalize_desc_bullet_point_lines(desc)
 	return table.concat(new_lines, "\\n")
 end
 
-local function normalize_desc_parentheses(str)
+function rewrite_desc_bullet_point_lines(desc)
+	local lines = split_string_into_collection(desc, "\\n")
+	local new_lines = {}
+
+	for i = 1, #lines do
+		local line = lines[i]
+		-- Find index of the last character in a match of color tag, dot, color tag, and whitespace.
+		local _, leader_end_index =
+			re.find(line, [['•'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*]])
+		
+		if not leader_end_index then
+			table.insert(new_lines, line)
+			goto continue
+		end
+
+		-- Bullet point line found, destructure into components.
+
+		local line_prefix = line:sub(1, leader_end_index)
+		local line_content = line:sub(leader_end_index + 1)
+
+		-- Define rewritten line with bullet point with appropriate color tags and spacing.
+
+		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " • "
+
+		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
+
+		-- line_content = re.gsub(line_content, [['('{.+}')']], COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
+
+		if line_content:find(":") then
+			-- Line contains a colon. Split, capitalize all to the left, capitalize by length on the right.
+			local line_name_parts = split_string_into_collection(line_content, ":")
+			local line_name_left = line_name_parts[1] or ""
+			local line_name_right = trim_string(line_name_parts[2] or "")
+
+			local line_had_space_after_colon = line_name_parts[2]:sub(1, 1) == " "
+
+			line_name_left = capitalize_words(line_name_left)
+			line_name_right = capitalize_words_by_length(line_name_right)
+
+			line_new = line_new .. COLOR.TEXT_EMPHASIS .. line_name_left .. ":" .. COLOR.TEXT .. (line_had_space_after_colon and " " or "") .. line_name_right
+		else
+			line_new = line_new .. COLOR.TEXT .. capitalize_words_by_length(line_content)
+		end
+
+		table.insert(new_lines, line_new)
+		::continue::
+	end
+
+	return table.concat(new_lines, "\\n")
+end
+
+function normalize_desc_parentheses(str)
 	-- Normalize parentheses (only use round parentheses)
 	str = str:gsub("[%[%{]", "(")
 	str = str:gsub("[%]%}]", ")")
