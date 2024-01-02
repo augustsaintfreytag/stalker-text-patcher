@@ -20,12 +20,6 @@ local COLOR = {
 	BULLET_DETRIMENTAL = "%c[d_red]"
 }
 
-local PREFAB = {
-	DESC_BULLET_NEUTRAL = " " .. COLOR.BULLET_NEUTRAL .. " РІР‚Сћ " .. COLOR.TEXT,
-	DESC_BULLET_BENEFICIAL = " " .. COLOR.BULLET_BENEFICIAL .. " РІР‚Сћ " .. COLOR.TEXT,
-	DESC_BULLET_DETRIMENTAL = " " .. COLOR.BULLET_DETRIMENTAL .. " РІР‚Сћ " .. COLOR.TEXT,
-}
-
 -- Logic
 
 function normalize_name(name)
