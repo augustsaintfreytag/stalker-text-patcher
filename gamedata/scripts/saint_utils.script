@@ -104,7 +104,7 @@ function rewrite_desc_line_spacing(desc)
 		-- If line is a section header, always prepend paragraph break (omit if first element)
 		if (line_kind == LINE_KIND.TEXT) or (line_kind == LINE_KIND.SECTION_HEADER) then
 			if last_line_kind ~= nil then
-				table.insert(new_lines, "\\n \\n")
+				table.insert(new_lines, " \\n \\n")
 			end
 
 			table.insert(new_lines, line)
@@ -113,9 +113,9 @@ function rewrite_desc_line_spacing(desc)
 
 		if line_kind == LINE_KIND.BULLET_POINT then
 			if last_line_kind == LINE_KIND.TEXT then
-				table.insert(new_lines, "\\n \\n")
-			elseif last_line_kind ~= nil then
-				table.insert(new_lines, "\\n")
+				table.insert(new_lines, " \\n \\n")
+			else
+				table.insert(new_lines, " \\n")
 			end
 
 			table.insert(new_lines, line)
@@ -136,7 +136,7 @@ function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  РІР‚Сћ ")
+	return re.gsub(desc, [['] - ']], "]  Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє ")
 end
 
 function rewrite_desc_bullet_point_lines(desc)
@@ -147,7 +147,7 @@ function rewrite_desc_bullet_point_lines(desc)
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag, and whitespace.
 		local _, leader_end_index =
-			re.find(line, [['РІР‚Сћ'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*]])
+			re.find(line, [['Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*]])
 		
 		if not leader_end_index then
 			table.insert(new_lines, line)
@@ -161,7 +161,7 @@ function rewrite_desc_bullet_point_lines(desc)
 
 		-- Define rewritten line with bullet point with appropriate color tags and spacing.
 
-		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " РІР‚Сћ "
+		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє "
 
 		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
 
@@ -286,8 +286,8 @@ end
 -- Line Analysis
 
 function get_line_kind(line)
-	-- If line contains dot character 'РІР‚Сћ', return bullet point
-	if line:find("РІР‚Сћ") then
+	-- If line contains dot character 'Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє', return bullet point
+	if line:find("Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє") then
 		return LINE_KIND.BULLET_POINT
 	end
 
