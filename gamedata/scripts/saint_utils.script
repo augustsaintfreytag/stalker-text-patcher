@@ -46,7 +46,7 @@ function normalize_desc(desc)
 	return desc
 end
 
-local function trim_desc_spacing(desc)
+function trim_desc_spacing(desc)
 	local string_lookaround_range = 8
 
 	-- Slice off beginning of description, remove any leading newlines and white space, reconcatenate
@@ -63,7 +63,7 @@ local function trim_desc_spacing(desc)
 	return desc
 end
 
-local function rewrite_desc_spacing(desc)
+function rewrite_desc_line_spacing(desc)
 	local lines = split_string_into_collection(desc, "\\n")
 
 	local new_lines = {}
@@ -113,9 +113,9 @@ local function rewrite_desc_spacing(desc)
 	return table.concat(new_lines, "")
 end
 
-local function get_line_kind(line)
-	-- If line contains dot character 'РІР‚Сћ', return bullet point
-	if line:find("РІР‚Сћ") then
+function get_line_kind(line)
+	-- If line contains dot character '•', return bullet point
+	if line:find("•") then
 		return LINE_KIND.BULLET_POINT
 	end
 
@@ -133,42 +133,44 @@ local function get_line_kind(line)
 	return nil
 end
 
-local function normalize_desc_colors(desc)
+function normalize_desc_colors(desc)
 	-- Replace section headers bullet points using `clr_1` or `clr_2` with `clr_0` (gray_3)
 	desc = re.gsub(desc, [[{'%c['[a-zA-Z0-9_, ]+']'}{%s*[A-Z]+}':']], "%c[ui_gray_3]%2:")
 
 	return desc
 end
 
-local function rewrite_hyphen_lists(desc)
+function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  РІР‚Сћ ")
+	return re.gsub(desc, [['] - ']], "]  • ")
 end
 
-local function capitalize_desc_bullet_point_lines(desc)
+function capitalize_desc_bullet_point_lines(desc)
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
 
 	for i = 1, #lines do
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag.
-		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] РІР‚Сћ %c\[[a-z0-9_]*\]\s*
+		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] • %c\[[a-z0-9_]*\]\s*
 		local _, name_end_index =
-			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'РІР‚Сћ'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
+			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'•'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
 
 		if not name_end_index then
 			table.insert(new_lines, line)
 			goto continue
 		end
 
+		-- Bullet point line found, destructure into components.
+
 		local line_prefix = line:sub(1, name_end_index)
 		local line_name = line:sub(name_end_index + 1)
 
-		-- Check if dot "РІР‚Сћ" has only one preceding space after color block ending in "]", replace with two.
-		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'РІР‚Сћ'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
-			" %1 РІР‚Сћ %2")
+		-- Check if dot "•" has only one preceding space after color block ending in "]", replace with two.
+		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'•'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
+			" %1 • %2")
 
 		-- If line string contains a colon, split, capitalize all to the left, only first word on the right
 		if line_name:find(":") then
@@ -214,7 +216,7 @@ local desc_heading_replacements = {
 	["Replacement Parts"] = formatted_desc_heading(gc("ui_saint_description_section_replacement_parts")),
 }
 
-local function rewrite_desc_headings(desc)
+function rewrite_desc_headings(desc)
 	-- Replace occurrences of a line containing "Used for crafting:" with "CRAFTING:"
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
@@ -243,7 +245,7 @@ end
 
 -- Utility: Capitalization
 
-local function capitalize_words_by_length(str)
+function capitalize_words_by_length(str)
 	local max_line_length_to_capitalize = 28
 
 	if string.len(str) < max_line_length_to_capitalize then
@@ -253,7 +255,7 @@ local function capitalize_words_by_length(str)
 	end
 end
 
-local function capitalize_words(str)
+function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
 	local skip_words = set_from_collection({"as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 											"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg"})
@@ -284,7 +286,7 @@ local function capitalize_words(str)
 	return table.concat(capitalized_words, " ")
 end
 
-local function capitalize_word(str)
+function capitalize_word(str)
 	str = string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
 	str = string.gsub(str, "%-(%l)", function(s)
 		return "-" .. string.upper(s)
@@ -293,7 +295,7 @@ local function capitalize_word(str)
 	return str
 end
 
-local function capitalize_first_word(str)
+function capitalize_first_word(str)
 	-- if string is nil, empty, or has less than two characters, return
 	if not str or #str < 2 then
 		return str
@@ -304,13 +306,13 @@ end
 
 -- Utility: Trimming
 
-local function trim_string(str)
+function trim_string(str)
 	return str:gsub("^%s*(.-)%s*$", "%1")
 end
 
 -- Utility: Collections
 
-local function split_string_into_collection(str, sep)
+function split_string_into_collection(str, sep)
 	local lines = {}
 	local last_split_index = nil
 
@@ -328,7 +330,7 @@ local function split_string_into_collection(str, sep)
 	return lines
 end
 
-local function set_from_collection(arr)
+function set_from_collection(arr)
 	local tbl = {}
 
 	for i, v in ipairs(arr) do
