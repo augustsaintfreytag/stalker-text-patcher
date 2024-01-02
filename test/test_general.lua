@@ -1,6 +1,6 @@
 package.path = "../?.lua;../?.script;" .. package.path
 
-lulpeg = require "bin/lulpeg"
+lulpeg = require "bin/lua/lulpeg"
 re = lulpeg.re
 
 local saint_utils = require "gamedata/scripts/saint_utils"
