@@ -409,6 +409,16 @@ function set_from_collection(arr)
 	return tbl
 end
 
+-- Logging
+
+function log_to_file(message)
+	local log_file = io.open("log_saint_utils.txt", "a")
+    log_file:write(message.."\n")
+	log_file:close(log_file)
+end
+
+log_divider = "\n------------------\n"
+
 -- Export
 
 if not game then
