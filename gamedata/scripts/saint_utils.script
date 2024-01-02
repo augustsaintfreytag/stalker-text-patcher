@@ -31,11 +31,10 @@ end
 
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
-	desc = normalize_desc_colors(desc)
 	desc = rewrite_hyphen_lists(desc)
 	desc = rewrite_desc_headings(desc)
-	desc = capitalize_desc_bullet_point_lines(desc)
-	desc = rewrite_desc_spacing(desc)
+	desc = rewrite_desc_bullet_point_lines(desc)
+	desc = rewrite_desc_line_spacing(desc)
 
 	return desc
 end
