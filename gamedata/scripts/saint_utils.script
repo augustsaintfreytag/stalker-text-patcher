@@ -208,12 +208,34 @@ end
 
 -- Section Heading Rewrite
 
-local desc_heading_replacements = {
-	["Ammo"] = formatted_desc_heading(gc("ui_saint_description_section_ammo")),
-	["Used for crafting"] = formatted_desc_heading(gc("ui_saint_description_section_used_for_crafting")),
-	["Unlocks for crafting"] = formatted_desc_heading(gc("ui_saint_description_section_unlocks_for_crafting")),
-	["Used for cooking"] = formatted_desc_heading(gc("ui_saint_description_section_used_for_cooking")),
-	["Replacement Parts"] = formatted_desc_heading(gc("ui_saint_description_section_replacement_parts")),
+-- TODO: Consider stripping out color tags and dot from localized strings (may be working as-is).
+
+function formatted_desc_heading(heading)
+	-- Make input all uppercase and append a colon, wrap in color tags.
+	local formatted_heading = string.upper(heading) .. ":"
+	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
+end
+
+local DESC_HEADING_SEARCH_PATTERN = {
+	AMMO = gc("ui_mcm_SortingPlus_110ammo"),
+	USED_FOR_CRAFTING = gc("st_craft_used_for"),
+	UNLOCKS_FOR_CRAFTING = gc("st_craft_unlocks"),
+	USED_FOR_COOKING = gc("st_cook_used_for"),
+	REPLACEMENT_PARTS = gc("st_ui_awr_parts_list"),
+	COMPATIBLE_REPAIR_KITS = gc("st_ui_repair_kit_list"),
+	COMPATIBLE_WORKSHOP_LIST = gc("st_ui_workshop_kit_list"),
+	COMPONENTS = gc("st_ui_disassemly_list"),
+	UPGRADES = gc("st_ui_upgrade_list")
+}
+
+local DESC_HEADING_REPLACEMENTS = {
+	[DESC_HEADING_SEARCH_PATTERN.AMMO] = formatted_desc_heading(gc("ui_saint_description_section_ammo")),
+	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_CRAFTING] = formatted_desc_heading(gc("ui_saint_description_section_used_for_crafting")),
+	[DESC_HEADING_SEARCH_PATTERN.UNLOCKS_FOR_CRAFTING] = formatted_desc_heading(gc("ui_saint_description_section_unlocks_for_crafting")),
+	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_COOKING] = formatted_desc_heading(gc("ui_saint_description_section_used_for_cooking")),
+	[DESC_HEADING_SEARCH_PATTERN.REPLACEMENT_PARTS] = formatted_desc_heading(gc("st_ui_awr_parts_list")),
+	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_REPAIR_KITS] = formatted_desc_heading(gc("st_ui_repair_kit_list")),
+	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_WORKSHOP_LIST] = formatted_desc_heading(gc("st_ui_workshop_kit_list"))
 }
 
 function rewrite_desc_headings(desc)
@@ -224,7 +246,7 @@ function rewrite_desc_headings(desc)
 	for i = 1, #lines do
 		local line = lines[i]
 
-		for pattern, replacement in pairs(desc_heading_replacements) do
+		for pattern, replacement in pairs(DESC_HEADING_REPLACEMENTS) do
 			if line:find(pattern) then
 				line = replacement
 				break
@@ -235,12 +257,6 @@ function rewrite_desc_headings(desc)
 	end
 
 	return table.concat(new_lines, "\\n")
-end
-
-local function formatted_desc_heading(heading)
-	-- Make input all uppercase and append a colon, wrap in color tags.
-	local formatted_heading = string.upper(heading) .. ":"
-	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
 end
 
 -- Utility: Capitalization
