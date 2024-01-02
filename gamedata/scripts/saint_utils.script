@@ -315,7 +315,7 @@ end
 -- Utility: Capitalization
 
 function capitalize_words_by_length(str)
-	local max_line_length_to_capitalize = 28
+	local max_line_length_to_capitalize = 36
 
 	if string.len(str) < max_line_length_to_capitalize then
 		return capitalize_words(str)
