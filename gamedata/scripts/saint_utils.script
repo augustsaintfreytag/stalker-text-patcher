@@ -13,6 +13,7 @@ local LINE_KIND = {
 local COLOR = {
 	TEXT = "%c[ui_gray_2]",
 	TEXT_EMPHASIS = "%c[ui_gray_3]",
+	TEXT_PARENTHETICAL = "%c[ui_gray_1]",
 	SECTION = "%c[ui_gray_2]",
 	BULLET_NEUTRAL = "%c[d_cyan]",
 	BULLET_BENEFICIAL = "%c[d_green]",
@@ -20,9 +21,9 @@ local COLOR = {
 }
 
 local PREFAB = {
-	DESC_BULLET_NEUTRAL = " " .. COLOR.BULLET_NEUTRAL .. " • " .. COLOR.TEXT,
-	DESC_BULLET_BENEFICIAL = " " .. COLOR.BULLET_BENEFICIAL .. " • " .. COLOR.TEXT,
-	DESC_BULLET_DETRIMENTAL = " " .. COLOR.BULLET_DETRIMENTAL .. " • " .. COLOR.TEXT,
+	DESC_BULLET_NEUTRAL = " " .. COLOR.BULLET_NEUTRAL .. " РІР‚Сћ " .. COLOR.TEXT,
+	DESC_BULLET_BENEFICIAL = " " .. COLOR.BULLET_BENEFICIAL .. " РІР‚Сћ " .. COLOR.TEXT,
+	DESC_BULLET_DETRIMENTAL = " " .. COLOR.BULLET_DETRIMENTAL .. " РІР‚Сћ " .. COLOR.TEXT,
 }
 
 -- Logic
@@ -113,8 +114,8 @@ local function rewrite_desc_spacing(desc)
 end
 
 local function get_line_kind(line)
-	-- If line contains dot character '•', return bullet point
-	if line:find("•") then
+	-- If line contains dot character 'РІР‚Сћ', return bullet point
+	if line:find("РІР‚Сћ") then
 		return LINE_KIND.BULLET_POINT
 	end
 
@@ -143,7 +144,7 @@ local function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  • ")
+	return re.gsub(desc, [['] - ']], "]  РІР‚Сћ ")
 end
 
 local function capitalize_desc_bullet_point_lines(desc)
@@ -153,9 +154,9 @@ local function capitalize_desc_bullet_point_lines(desc)
 	for i = 1, #lines do
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag.
-		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] • %c\[[a-z0-9_]*\]\s*
+		-- LUA equivalent of regex: %c\[[a-z0-9_]*\] РІР‚Сћ %c\[[a-z0-9_]*\]\s*
 		local _, name_end_index =
-			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'•'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
+			re.find(line, [[{'%c['[a-zA-Z0-9_, ]+']'}*{%s*'РІР‚Сћ'%s*}{'%c['[a-zA-Z0-9_, ]+']'}*%s*]])
 
 		if not name_end_index then
 			table.insert(new_lines, line)
@@ -165,9 +166,9 @@ local function capitalize_desc_bullet_point_lines(desc)
 		local line_prefix = line:sub(1, name_end_index)
 		local line_name = line:sub(name_end_index + 1)
 
-		-- Check if dot "•" has only one preceding space after color block ending in "]", replace with two.
-		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'•'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
-			" %1 • %2")
+		-- Check if dot "РІР‚Сћ" has only one preceding space after color block ending in "]", replace with two.
+		line_prefix = re.gsub(line_prefix, [[%s*{'%c['[a-zA-Z0-9_, ]+']'}*%s*'РІР‚Сћ'%s*{'%c['[a-zA-Z0-9_, ]+']'}*{%s*}]],
+			" %1 РІР‚Сћ %2")
 
 		-- If line string contains a colon, split, capitalize all to the left, only first word on the right
 		if line_name:find(":") then
