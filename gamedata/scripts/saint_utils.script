@@ -180,7 +180,7 @@ function capitalize_desc_bullet_point_lines(desc)
 
 			local line_had_space_after_colon = line_name_parts[2]:sub(1, 1) == " "
 
-			line_name_left = capitalize_words_by_length(line_name_left)
+			line_name_left = capitalize_words(line_name_left)
 			line_name_right = capitalize_words_by_length(line_name_right)
 
 			line_name = line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
