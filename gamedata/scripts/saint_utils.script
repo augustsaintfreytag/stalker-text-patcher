@@ -69,8 +69,6 @@ function rewrite_desc_line_spacing(desc)
 		local line = lines[i]:gsub("^%s*(.-)%s*$", "%1")
 		local line_kind = get_line_kind(line)
 
-		-- print("Detected line '" .. line .. "' as kind '" .. (line_kind or "(none)") .. ", last kind " .. (last_line_kind or "(none)") .. ".")
-
 		if not line_kind then
 			goto continue
 		end
