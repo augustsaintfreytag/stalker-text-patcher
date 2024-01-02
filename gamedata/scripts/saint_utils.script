@@ -1,6 +1,17 @@
-local gc = game.translate_string
-local lulpeg = require "lulpeg"
-local re = lulpeg.re
+local gc
+
+-- Preloading
+-- Mock game environment (`game`, `gc`) to allow running tests.
+
+if game then
+	gc = game.translate_string
+	lulpeg = require "lulpeg"
+	re = lulpeg.re
+else 
+	gc = function(str)
+		return str
+	end
+end
 
 -- Library
 
