@@ -408,3 +408,12 @@ function set_from_collection(arr)
 
 	return tbl
 end
+
+-- Export
+
+if not game then
+	return {
+		normalize_name = normalize_name,
+		normalize_desc = normalize_desc
+	}
+end
