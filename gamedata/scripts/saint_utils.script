@@ -13,6 +13,18 @@ else
 	end
 end
 
+-- Configuration
+
+local CONFIG = {
+	-- The maximum number of characters in a snippet to assume it as a heading-like text 
+	-- to be capitalized. Primarily applies to text in bullet points.
+	CAPITALIZATION_HEURISTIC_MAX_CHARS = 36,
+
+	-- Apply color tags to parentheticals in description texts 
+	-- (applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text).
+	COLOR_DESC_PARENTHETICALS = false
+}
+
 -- Library
 
 local LINE_KIND = {
@@ -223,7 +235,9 @@ function rewrite_desc_bullet_point_lines(desc)
 
 		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
 
-		-- line_content = re.gsub(line_content, [['('{.+}')']], COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
+		if CONFIG.COLOR_DESC_PARENTHETICALS then
+			line_content = re.gsub(line_content, [['('{.+}')']], COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
+		end
 
 		if line_content:find(":") then
 			-- Line contains a colon. Split, capitalize all to the left, capitalize by length on the right.
@@ -315,7 +329,7 @@ end
 -- Utility: Capitalization
 
 function capitalize_words_by_length(str)
-	local max_line_length_to_capitalize = 36
+	local max_line_length_to_capitalize = CONFIG.CAPITALIZATION_HEURISTIC_MAX_CHARS
 
 	if string.len(str) < max_line_length_to_capitalize then
 		return capitalize_words(str)
