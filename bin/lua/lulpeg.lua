@@ -2917,7 +2917,7 @@ return require"init"
 --                       has been          / released
 --                  ~ ~ ~ ~ ~ ~ ~ ~       ~ ~ ~ ~ ~ ~ ~ ~
 --                under  the  Romantic   WTF Public License.
---               ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~`,´ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+--               ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~`,` ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 --               I hereby grant you an irrevocable license to
 --                ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 --                  do what the gentle caress you want to
@@ -2945,7 +2945,7 @@ return require"init"
 -- 
 -- -----------------------------------------------------------------------------
 -- 
--- LuLPeg, Copyright (C) 2013 Pierre-Yves Gérardy.
+-- LuLPeg, Copyright (C) 2013 Pierre-Yves Gerardy.
 -- 
 -- The `re` module and lpeg.*.*.test.lua,
 -- Copyright (C) 2013 Lua.org, PUC-Rio.
@@ -2973,4 +2973,3 @@ return require"init"
 -- TORT OR OTHERWISE, ARISING FROM,
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 -- THE SOFTWARE.
-
