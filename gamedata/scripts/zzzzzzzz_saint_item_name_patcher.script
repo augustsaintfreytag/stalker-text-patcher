@@ -1,13 +1,11 @@
 -- Modules
 
-function on_game_start()
-	local normalize_name = saint_utils.normalize_name
-	local original_item_name = ui_item.item_name
+local normalize_name = saint_utils.normalize_name
+local original_item_name = ui_item.item_name
 
-	ui_item.item_name = function(obj, sec, str)
-		local name = original_item_name(obj, sec, str)
-		name = normalize_name(name)
+ui_item.item_name = function(obj, sec, str)
+	local name = original_item_name(obj, sec, str)
+	name = normalize_name(name)
 
-		return name
-	end
+	return name
 end
