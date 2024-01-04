@@ -7,7 +7,7 @@ if game then
 	gc = game.translate_string
 	lulpeg = require "lulpeg"
 	re = lulpeg.re
-else 
+else
 	gc = function(str)
 		return str
 	end
@@ -16,11 +16,11 @@ end
 -- Configuration
 
 local CONFIG = {
-	-- The maximum number of characters in a snippet to assume it as a heading-like text 
+	-- The maximum number of characters in a snippet to assume it as a heading-like text
 	-- to be capitalized. Primarily applies to text in bullet points.
 	CAPITALIZATION_HEURISTIC_MAX_CHARS = 36,
 
-	-- Apply color tags to parentheticals in description texts 
+	-- Apply color tags to parentheticals in description texts
 	-- (applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text).
 	COLOR_DESC_PARENTHETICALS = false,
 
@@ -138,7 +138,7 @@ function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  "..DOT.." ")
+	return re.gsub(desc, [['] - ']], "]  " .. DOT .. " ")
 end
 
 function rewrite_desc_bullet_point_lines(desc)
@@ -149,8 +149,8 @@ function rewrite_desc_bullet_point_lines(desc)
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag, and whitespace.
 		local _, leader_end_index =
-			re.find(line, "'"..DOT.."'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*")
-		
+			re.find(line, "'" .. DOT .. "'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*")
+
 		if not leader_end_index then
 			table.insert(new_lines, line)
 			goto continue
@@ -163,7 +163,7 @@ function rewrite_desc_bullet_point_lines(desc)
 
 		-- Define rewritten line with bullet point with appropriate color tags and spacing.
 
-		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " "..DOT.." "
+		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " " .. DOT .. " "
 
 		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
 
@@ -183,9 +183,13 @@ function rewrite_desc_bullet_point_lines(desc)
 			line_name_right = capitalize_words_by_length(line_name_right)
 
 			if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
-				line_new = line_new .. COLOR.TEXT .. line_name_left .. ":" .. COLOR.TEXT_EMPHASIS .. (line_had_space_after_colon and " " or "") .. line_name_right
+				line_new = line_new ..
+				COLOR.TEXT ..
+				line_name_left ..
+				":" .. COLOR.TEXT_EMPHASIS .. (line_had_space_after_colon and " " or "") .. line_name_right
 			else
-				line_new = line_new .. COLOR.TEXT .. line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
+				line_new = line_new ..
+				COLOR.TEXT .. line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
 			end
 		else
 			line_new = line_new .. COLOR.TEXT .. capitalize_words_by_length(line_content)
@@ -233,9 +237,12 @@ local DESC_HEADING_SEARCH_PATTERN = {
 
 local DESC_HEADING_REPLACEMENTS = {
 	[DESC_HEADING_SEARCH_PATTERN.AMMO] = formatted_desc_heading(gc("ui_saint_description_section_ammo")),
-	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_CRAFTING] = formatted_desc_heading(gc("ui_saint_description_section_used_for_crafting")),
-	[DESC_HEADING_SEARCH_PATTERN.UNLOCKS_FOR_CRAFTING] = formatted_desc_heading(gc("ui_saint_description_section_unlocks_for_crafting")),
-	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_COOKING] = formatted_desc_heading(gc("ui_saint_description_section_used_for_cooking")),
+	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_CRAFTING] = formatted_desc_heading(gc(
+	"ui_saint_description_section_used_for_crafting")),
+	[DESC_HEADING_SEARCH_PATTERN.UNLOCKS_FOR_CRAFTING] = formatted_desc_heading(gc(
+	"ui_saint_description_section_unlocks_for_crafting")),
+	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_COOKING] = formatted_desc_heading(gc(
+	"ui_saint_description_section_used_for_cooking")),
 	[DESC_HEADING_SEARCH_PATTERN.REPLACEMENT_PARTS] = formatted_desc_heading(gc("st_ui_awr_parts_list")),
 	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_REPAIR_KITS] = formatted_desc_heading(gc("st_ui_repair_kit_list")),
 	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_WORKSHOP_LIST] = formatted_desc_heading(gc("st_ui_workshop_kit_list"))
@@ -321,8 +328,8 @@ end
 
 function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
-	local skip_words = set_from_collection({"as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
-											"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg"})
+	local skip_words = set_from_collection({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
+		"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg" })
 
 	local capitalized_words = {}
 
@@ -408,7 +415,7 @@ end
 
 function log_to_file(message)
 	local log_file = io.open("log_saint_utils.txt", "a")
-    log_file:write(message.."\n")
+	log_file:write(message .. "\n")
 	log_file:close(log_file)
 end
 
