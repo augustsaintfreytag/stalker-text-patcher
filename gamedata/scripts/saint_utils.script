@@ -41,7 +41,7 @@ local COLOR = {
 	TEXT = "%c[ui_gray_2]",
 	TEXT_EMPHASIS = "%c[ui_gray_3]",
 	TEXT_PARENTHETICAL = "%c[ui_gray_1]",
-	SECTION = "%c[ui_gray_2]",
+	SECTION = "%c[ui_gray_3]",
 	BULLET_NEUTRAL = "%c[d_cyan]",
 	BULLET_BENEFICIAL = "%c[d_green]",
 	BULLET_DETRIMENTAL = "%c[d_red]"
@@ -136,7 +136,7 @@ function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  • ")
+	return re.gsub(desc, [['] - ']], "]  РІР‚Сћ ")
 end
 
 function rewrite_desc_bullet_point_lines(desc)
@@ -147,7 +147,7 @@ function rewrite_desc_bullet_point_lines(desc)
 		local line = lines[i]
 		-- Find index of the last character in a match of color tag, dot, color tag, and whitespace.
 		local _, leader_end_index =
-			re.find(line, [['•'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*]])
+			re.find(line, [['РІР‚Сћ'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*]])
 		
 		if not leader_end_index then
 			table.insert(new_lines, line)
@@ -161,7 +161,7 @@ function rewrite_desc_bullet_point_lines(desc)
 
 		-- Define rewritten line with bullet point with appropriate color tags and spacing.
 
-		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " • "
+		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " РІР‚Сћ "
 
 		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
 
@@ -286,8 +286,8 @@ end
 -- Line Analysis
 
 function get_line_kind(line)
-	-- If line contains dot character '•', return bullet point
-	if line:find("•") then
+	-- If line contains dot character 'РІР‚Сћ', return bullet point
+	if line:find("РІР‚Сћ") then
 		return LINE_KIND.BULLET_POINT
 	end
 
