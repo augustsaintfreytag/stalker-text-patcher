@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "РІР‚Сћ"
+local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -329,7 +329,7 @@ end
 function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
 	local skip_words = set_from_collection({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
-		"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg" })
+		"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg", "ma/h" })
 
 	local capitalized_words = {}
 
