@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "•"
+local DOT = "РІР‚Сћ"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -138,7 +138,7 @@ function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, [['] - ']], "]  " .. DOT .. " ")
+	return re.gsub(desc, "'] - '", "]  " .. DOT .. " ")
 end
 
 function rewrite_desc_bullet_point_lines(desc)
@@ -168,7 +168,7 @@ function rewrite_desc_bullet_point_lines(desc)
 		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
 
 		if CONFIG.COLOR_DESC_PARENTHETICALS then
-			line_content = re.gsub(line_content, [['('{.+}')']], COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
+			line_content = re.gsub(line_content, "'('{.+}')'", COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
 		end
 
 		if line_content:find(":") then
