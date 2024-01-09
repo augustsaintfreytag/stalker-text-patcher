@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
+local DOT = "Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљР’В Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р РЋРІвЂћСћР В Р’В Р В Р вЂ№Р В Р Р‹Р Р†Р вЂљРЎвЂќ"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -61,12 +61,53 @@ end
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
 	desc = rewrite_hyphen_lists(desc)
+	desc = rewrite_stacked_bullet_points(desc)
 	desc = rewrite_desc_heading_substitutes(desc)
 	desc = rewrite_desc_heading_colors(desc)
 	desc = rewrite_desc_bullet_point_lines(desc)
 	desc = rewrite_desc_line_spacing(desc)
 
 	return desc
+end
+
+function rewrite_stacked_bullet_points(desc)
+	-- Split description into lines, check each `LINE_KIND` for being a bullet point.
+	-- If two bullet points per line are found, insert new line before dot and preceding color tag.
+
+	local lines = split_string_into_collection(desc, "\\n")
+	local new_lines = {}
+
+	for i = 1, #lines do
+		local line = lines[i]
+
+		-- If line does not contain two dot characters, skip line.
+		local _, number_of_dots = string.gsub(line, DOT, DOT)
+
+		if number_of_dots ~= 2 then
+			table.insert(new_lines, line)
+			goto continue
+		end
+		
+		-- local color_tag_start_index, color_tag_end_index = re.find(line, "('%c['[a-zA-Z0-9_, ]+']')")
+
+		-- Find start index after first occurrence of dot for matching.
+		local first_dot_start_index = line:find(DOT)
+
+		-- Find index of color tag, dot, color tag after initial dot to find unwanted concatenated segment.
+		local second_dot_start_index, _ = re.find(line, "'%c['[a-zA-Z0-9_, ]+']'%s*'" .. DOT .. "'%s*'%c['[a-zA-Z0-9_, ]+']'", first_dot_start_index)
+
+		-- Insert new line at second dot index, add to table.
+		local left_line = line:sub(1, second_dot_start_index - 1)
+		table.insert(new_lines, left_line)
+
+		-- Insert remainder of line after second dot index, add to table.
+		local right_line = line:sub(second_dot_start_index)
+		table.insert(new_lines, right_line)
+
+		::continue::
+	end
+
+	return table.concat(new_lines, " \\n")
 end
 
 function trim_desc_spacing(desc)

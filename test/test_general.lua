@@ -11,6 +11,9 @@ local saint_utils = require "gamedata/scripts/saint_utils"
 -- Demo
 
 local INPUTS = {
+	PDA = [[
+		%c[d_cyan] • %c[ui_gray_2]Power:%c[ui_gray_3]%c[ui_gray_3] %c[255,56,166,209]100%\n%c[d_cyan] • %c[ui_gray_2]Base Cost:%c[ui_gray_3]%c[ui_gray_3] 4000 RU\n \nA pocket-sized electronic device meant to encompass the basic and most vital functions of a computer. The PDA is essential for daily information sharing. It comes with pre-installed GPS module to provide geolocation and time information to the user.\n \n%c[ui_gray_2]%C[UI_GRAY_2] %C[UI_GRAY_3]PROPERTIES%C[UI_GRAY_2]:%c[ui_gray_2]\n \n%c[d_cyan] • %c[ui_gray_2]Technological Item\n%c[d_cyan] • %c[ui_gray_2]Low Electric Power Consumption%c[255,93,0,116]  • %c[255,140,140,140] Power Consumption:%c[ui_gray_3] %c[255,170,170,170]23 MAh/Sec
+	]],
 	BEER = [[
 		Ukrainian beer. Another popular beverage in the Zone besides vodka.\n \n%c[ui_gray_3]PROPERTIES:\n%c[d_blue] • %c[ui_gray_2] drink\n%c[d_blue] • %c[ui_gray_2] imported\n%c[d_red] •%c[ui_gray_2] light alcohol\n%c[d_blue]•%c[ui_gray_2] clean nutrition source\n%c[d_blue]  •  %c[ui_gray_2] high quality\n
 	]],
@@ -23,7 +26,7 @@ local INPUTS = {
 }
 
 do
-	local input = INPUTS.RIFLE
+	local input = INPUTS.PDA
 
 	local output = saint_utils.normalize_desc(input)
 	-- Replace occurrences of escaped newlines with regular newlines for printing.
