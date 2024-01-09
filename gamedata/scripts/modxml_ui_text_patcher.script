@@ -1,0 +1,48 @@
+-- Modules
+
+local config = modxml_ui_text_patcher_config
+local capitalize_words = saint_utils.capitalize_words
+local capitalize_words_by_length = saint_utils.capitalize_words_by_length
+
+-- Logging
+
+local function log(...)
+	printf(...)
+end
+
+-- Entry Point
+
+function on_xml_read()
+	RegisterScriptCallback("on_xml_read", function(xml_scope_name, xml_obj)
+		if not string.find(xml_scope_name, "ui_st_") then
+			return
+		end
+
+		for query in config.ui_string_element_capitalization_queries do
+			for_each_text_element_in_query(xml_obj, query, function(text, id)
+				log("DXML UI string patcher processing element id '%s', writing capitalized text.", id)
+				return capitalize_words(text)
+			end)
+		end
+
+		for query in config.ui_menu_string_element_decapitalization_queries do
+			for_each_text_element_in_query(xml_obj, query, function(text, id)
+				log("DXML UI string patcher processing element id '%s', writing lowercase menu text.", id)
+				return string.lower(text)
+			end)
+		end
+	end)
+end
+
+function for_each_text_element_in_query(xml_obj, query, callback)
+	local string_elements = xml_obj:query(query)
+
+	-- Go through all `<string>` elements and decapitalize their text.
+	for _, string_element in ipairs(string_elements) do
+		local id = (xml_obj:getElementAttr(string_element) or {})["id"]
+		local text = xml_obj:getText(string_element) or ""
+
+		local returned_text = callback(text, id)
+		xml_obj:setText(string_element, returned_text)
+	end
+end

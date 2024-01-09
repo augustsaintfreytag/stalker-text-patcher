@@ -1,0 +1,11 @@
+-- Query strings to be matched for any processed localization string file (`ui_st_*.xml`).
+-- Matched record text will be capitalized (not using length match heuristics).
+ui_string_element_capitalization_queries = {
+	"string[id^=ui_inv_]"
+}
+
+-- Query strings to be matched for any processed localization string file (`ui_st_*.xml`).
+-- Matched record text will be made lowercase for use in context menus.
+ui_menu_string_element_decapitalization_queries = {
+	"string[id^=st_rax_]"
+}
