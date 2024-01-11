@@ -1,9 +1,3 @@
--- Modules
-
-local config = modxml_ui_text_patcher_config
-local capitalize_words = saint_utils.capitalize_words
-local capitalize_words_by_length = saint_utils.capitalize_words_by_length
-
 -- Logging
 
 local function log(...)
@@ -13,36 +7,64 @@ end
 -- Entry Point
 
 function on_xml_read()
+	log("Loading Saint's DXML UI text patcher.")
+
 	RegisterScriptCallback("on_xml_read", function(xml_scope_name, xml_obj)
-		if not string.find(xml_scope_name, "ui_st_") then
+		-- Modules
+
+		local config = config_ui_text_patcher
+		local capitalize_words = saint_utils.capitalize_words
+		local capitalize_words_by_length = saint_utils.capitalize_words_by_length
+		local file_name = file_name_from_scope_name(xml_scope_name)
+		
+		if not string.find(xml_scope_name, "st_") then
+			-- log("DXML UI string patcher skipping file '%s'.", xml_scope_name)
 			return
 		end
 
-		for query in config.ui_string_element_capitalization_queries do
-			for_each_text_element_in_query(xml_obj, query, function(text, id)
-				log("DXML UI string patcher processing element id '%s', writing capitalized text.", id)
+		-- log("DXML UI string patcher processing file '%s'.", xml_scope_name)
+
+		for _, query in ipairs(config.ui_string_element_capitalization_queries) do
+			for_each_text_element_in_query(xml_obj, query, function(id, text)
+				log("DXML UI text patcher processing file '%s', element id '%s', writing capitalized text.", file_name, id)
 				return capitalize_words(text)
 			end)
 		end
 
-		for query in config.ui_menu_string_element_decapitalization_queries do
-			for_each_text_element_in_query(xml_obj, query, function(text, id)
-				log("DXML UI string patcher processing element id '%s', writing lowercase menu text.", id)
+		for _, query in ipairs(config.ui_menu_string_element_decapitalization_queries) do
+			for_each_text_element_in_query(xml_obj, query, function(id, text)
+				log("DXML UI text patcher processing file '%s', element id '%s', writing lowercase menu text.", file_name, id)
 				return string.lower(text)
 			end)
 		end
 	end)
 end
 
+-- Utility
+
+function file_name_from_scope_name(scope_name)
+	-- Return sanitized module name without file extension from raw file name.
+	-- Example input: "ui\ui_mm_main.xml", output: "ui_mm_main"
+	return string.gsub(scope_name, "ui\\", ""):gsub(".xml", "")
+end
+
 function for_each_text_element_in_query(xml_obj, query, callback)
 	local string_elements = xml_obj:query(query)
 
-	-- Go through all `<string>` elements and decapitalize their text.
+	if #string_elements == 0 then
+		return
+	end
+
+	log("DXML UI text patcher found %s elements matching query '%s'.", #string_elements, query)
+
 	for _, string_element in ipairs(string_elements) do
 		local id = (xml_obj:getElementAttr(string_element) or {})["id"]
 		local text = xml_obj:getText(string_element) or ""
 
-		local returned_text = callback(text, id)
-		xml_obj:setText(string_element, returned_text)
+		local returned_text = callback(id, text)
+		
+		if returned_text then
+			xml_obj:setText(string_element, returned_text)
+		end
 	end
 end

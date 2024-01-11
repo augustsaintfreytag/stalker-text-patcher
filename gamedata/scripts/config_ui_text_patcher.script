@@ -1,0 +1,22 @@
+-- Query strings to be matched for any processed localization string file (`ui_st_*.xml`).
+-- Matched record text will be capitalized (not using length match heuristics).
+ui_string_element_capitalization_queries = {
+	"string[id^=ui_inv_]"
+}
+
+-- Query strings to be matched for any processed localization string file (`ui_st_*.xml`).
+-- Matched record text will be made lowercase for use in context menus.
+ui_menu_string_element_decapitalization_queries = {
+	"string[id^=st_rax_]"
+}
+
+-- XML file names and ids to be matched for full text substitution.
+-- Matched record text will be substituted whole for the given value.
+-- Does not respect engine-level localization (en/ru), strings are used as-is.
+ui_string_element_substitution_queries = {
+	["st_used_for_craft"] = {
+		["st_craft_used_for"] = "%c[ui_gray_3]CRAFTING:%c[ui_gray_2]",
+		["st_craft_unlocks"] = "%c[ui_gray_3]CRAFTING:%c[ui_gray_2]",
+		["st_cook_used_for"] = "%c[ui_gray_3]COOKING:%c[ui_gray_2]"
+	}
+}
