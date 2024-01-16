@@ -19,7 +19,6 @@ function on_xml_read()
 		-- Prevalidation
 
 		if blacklist[file_name] or not string.find(xml_scope_name, "st_") then
-			-- log("DXML UI string patcher skipping file '%s'.", xml_scope_name)
 			return
 		end
 
@@ -27,31 +26,37 @@ function on_xml_read()
 
 		log("DXML UI string patcher processing file '%s' (scope '%s').", file_name, xml_scope_name)
 
-		process_capitalization_elements(file_name, xml_obj, config.ui_string_element_capitalization_queries)
-		process_menu_elements(file_name, xml_obj, config.ui_menu_string_element_queries)
+		process_capitalization_elements(file_name, xml_obj, config.ui_string_element_capitalization_patterns)
+		process_menu_elements(file_name, xml_obj, config.ui_menu_string_element_patterns)
 		process_substitution_elements(file_name, config.ui_string_element_substitution_values, xml_obj)
 	end)
 end
 
-function process_capitalization_elements(file_name, xml_obj, queries)
-	for _, query in ipairs(queries) do
-		for_each_text_element_in_query(file_name, xml_obj, query, function(id, text)
-			log("DXML UI text patcher processing file '%s', element id '%s', writing capitalized text.", file_name,
-				id)
-			return saint_utils.capitalize_words(text)
-		end)
-	end
+-- Process: Capitalized Elements
+
+function process_capitalization_elements(file_name, xml_obj, patterns)
+	for_each_text_element_in_object(file_name, xml_obj, function(id, _)
+		return patterns_contain_id(patterns, id)
+	end, function(id, text_element, text)
+		log("DXML UI text patcher processing file '%s', element id '%s', writing capitalized text.", file_name, id)
+		local formatted_text = saint_utils.capitalize_words(text)
+		xml_obj:setText(text_element, formatted_text)
+	end)
 end
 
-function process_menu_elements(file_name, xml_obj, queries)
-	for _, query in ipairs(queries) do
-		for_each_text_element_in_query(file_name, xml_obj, query, function(id, text)
-			log("DXML UI text patcher processing file '%s', element id '%s', writing lowercase menu text.", file_name,
-				id)
-			return string.lower(text)
-		end)
-	end
+-- Process: Menu Elements
+
+function process_menu_elements(file_name, xml_obj, patterns)
+	for_each_text_element_in_object(file_name, xml_obj, function(id, _)
+		return patterns_contain_id(patterns, id)
+	end, function(id, text_element, text)
+		log("DXML UI text patcher processing file '%s', element id '%s', writing menu text.", file_name, id)
+		local formatted_text = string.lower(text)
+		xml_obj:setText(text_element, formatted_text)
+	end)
 end
+
+-- Process: Substitution Elements
 
 function process_substitution_elements(file_name, substitution_values, xml_obj)
 	local substitution_table = substitution_values[file_name]
@@ -73,6 +78,54 @@ function process_substitution_elements(file_name, substitution_values, xml_obj)
 	end
 end
 
+-- Iteration & Extraction
+
+-- Iterates through all `<string>` elements in the given XML object.
+-- Extracts the element's `id` attribute, calls the given `predicate` block to
+-- determine elements to be processed. Calls the given `callback` block for all
+-- remaining text elements.
+function for_each_text_element_in_object(file_name, xml_obj, predicate, callback)
+	local string_elements = xml_obj:query("string")
+
+	if not string_elements or #string_elements == 0 then
+		log("DXML UI text patcher did not find any string elements in file '%s'.", file_name)
+		return
+	end
+
+	local filtered_text_elements = table.filter(string_elements, function(string_element)
+		local id = (xml_obj:getElementAttr(string_element) or {})["id"]
+		return predicate(id, string_element)
+	end)
+
+	if #filtered_text_elements == 0 then
+		return
+	end
+
+	log("DXML UI text patcher found %s string elements (filtered from %s) in file '%s'.", #filtered_text_elements,
+		#string_elements, file_name)
+
+	for _, string_element in ipairs(filtered_text_elements) do
+		with_text_element_from_string_element(xml_obj, string_element, function(text_element, text)
+			callback(id, text_element, text)
+		end)
+	end
+end
+
+-- Extracts the child text element and contained text value and calls the given callback
+-- with {element, text} if found. The callback is not invoked when no text element is found.
+function with_text_element_from_string_element(xml_obj, string_element, callback)
+	local id = (xml_obj:getElementAttr(string_element) or {})["id"]
+	local text_element = xml_obj:query("string[id=" .. id .. "] > text")[1]
+
+	if not text_element then
+		return nil
+	end
+
+	local text = xml_obj:getText(text_element)
+
+	return callback(text_element, text)
+end
+
 -- General Utility
 
 -- Return extracted XML module name without path or file extension from scope name.
@@ -86,50 +139,38 @@ function file_name_from_scope_name(scope_name)
 	return file_name
 end
 
+-- Predicate function to check if any of the given patterns match the given id.
+function patterns_contain_id(patterns, id)
+	for _, pattern in ipairs(patterns) do
+		if string.find(id, pattern) then
+			return true
+		end
+	end
+
+	return false
+end
+
 -- Create an access-optimized Set-like blacklist table to exclude files from processing.
-function map_blacklist_from_table(blacklist_table)
+function map_blacklist_from_table(table_value)
 	local blacklist = {}
 
-	for _, value in ipairs(blacklist_table) do
+	for _, value in ipairs(table_value) do
 		blacklist[value] = true
 	end
 
 	return blacklist
 end
 
--- Iteration & Extraction
+-- Type Extensions
 
--- Iterates over all text elements, matching the given query, and calls the given callback.
-function for_each_text_element_in_query(file_name, xml_obj, query, callback)
-	local string_elements = xml_obj:query(query)
+table.filter = function(table_value, predicate)
+	local out = {}
 
-	if not string_elements or #string_elements == 0 then
-		log("DXML UI text patcher did not find any elements for query '%s' in file '%s'.", query, file_name)
-		return
+	for _, v in ipairs(table_value) do
+		if predicate(v) then
+			table.insert(out, v)
+		end
 	end
 
-	log("DXML UI text patcher found %s elements matching query '%s' in file '%s'.", #string_elements, query, file_name)
-
-	for _, string_element in ipairs(string_elements) do
-		with_text_element_from_string_element(xml_obj, string_element, function(text_element, text)
-			local returned_text = callback(id, text)
-			xml_obj:setText(text_element, returned_text)
-		end)
-	end
-end
-
--- Extracts the child text element and contained text value and calls the given callback
--- with {element, text} if found. The callback is not invoked when no text element is found.
-function with_text_element_from_string_element(xml_obj, string_element, callback)
-	local id = (xml_obj:getElementAttr(string_element) or {})["id"]
-	local text_element = xml_obj:query("string[id=" .. id .. "] > text")[1]
-	-- local text_element = string_element:query("text")[1]
-
-	if not text_element then
-		return nil
-	end
-
-	local text = xml_obj:getText(text_element)
-
-	return callback(text_element, text)
+	return out
 end
