@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
+local DOT = "Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљР’В Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р РЋРІвЂћСћР В Р’В Р В Р вЂ№Р В Р Р‹Р Р†Р вЂљРЎвЂќ"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -46,7 +46,8 @@ local COLOR = {
 	SECTION = "%c[ui_gray_3]",
 	BULLET_NEUTRAL = "%c[d_cyan]",
 	BULLET_BENEFICIAL = "%c[d_green]",
-	BULLET_DETRIMENTAL = "%c[d_red]"
+	BULLET_DETRIMENTAL = "%c[d_red]",
+	BULLET_TUTORIAL = "%c[d_orange]"
 }
 
 -- Logic
@@ -324,7 +325,7 @@ function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
 	local skip_words = map_table_values({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 		"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
-		"msv / sec", "Р В РІР‚в„ўР вЂ™Р’Вµg of adren.", "Р В РІР‚в„ўР вЂ™Р’Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
+		"msv / sec", "Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р Р†РІР‚С›РЎС›Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’Вµg of adren.", "Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р Р†РІР‚С›РЎС›Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
 		"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec" })
 
 	local capitalized_words = {}
