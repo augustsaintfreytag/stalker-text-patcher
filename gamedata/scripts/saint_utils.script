@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљР’В Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р РЋРІвЂћСћР В Р’В Р В Р вЂ№Р В Р Р‹Р Р†Р вЂљРЎвЂќ"
+local DOT = "Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљР’В Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р РЋРІвЂћСћР В Р’В Р В Р вЂ№Р В Р вЂ Р Р†Р вЂљРЎвЂєР РЋРЎвЂєР В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљРІвЂћвЂ“Р В Р’В Р вЂ™Р’В Р В Р’В Р В РІР‚в„–Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р Р†Р вЂљРЎСљ"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -94,7 +94,8 @@ function rewrite_stacked_bullet_points(desc)
 		local first_dot_start_index = line:find(DOT)
 
 		-- Find index of color tag, dot, color tag after initial dot to find unwanted concatenated segment.
-		local second_dot_start_index, _ = re.find(line, "'%c['[a-zA-Z0-9_, ]+']'%s*'" .. DOT .. "'%s*'%c['[a-zA-Z0-9_, ]+']'", first_dot_start_index)
+		local second_dot_start_index, _ = re.find(line,
+			"'%c['[a-zA-Z0-9_, ]+']'%s*'" .. DOT .. "'%s*'%c['[a-zA-Z0-9_, ]+']'", first_dot_start_index)
 
 		-- Insert new line at second dot index, add to table.
 		local left_line = line:sub(1, second_dot_start_index - 1)
