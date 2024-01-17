@@ -1,24 +1,32 @@
--- Hard blacklist for invalid localization files.
-ui_file_blacklist = {
-	"st_items_fieldcraft"
-}
-
--- Query strings to be matched for any processed localization string file (`ui_st_*.xml`).
+-- Query strings to be matched by localization file name.
 -- Matched record text will be capitalized (not using length match heuristics).
 ui_string_element_capitalization_patterns = {
-	"ui_inv_"
+	["ui_st_inventory"] = {
+		"ui_inv_"
+	}
 }
 
--- Query strings to be matched for any processed localization string file (`ui_st_*.xml`).
+-- Query strings to be matched by localization file name.
 -- Matched record text will be made lowercase for use in context menus.
 ui_menu_string_element_patterns = {
-	"st_rax_"
+	["ui_st_sortingplus"] = {
+		"st_rax_"
+	}
 }
 
 -- XML file names and ids to be matched for full text substitution.
 -- Matched record text will be substituted whole for the given value.
--- Does not respect engine-level localization (en/ru), strings are used as-is.
+-- Does not use engine-level localization (en/ru), strings are used as-is.
 ui_string_element_substitution_values = {
+	["ui_st_inventory"] = {
+		["ui_ammo_count"] = "Capacity",
+		["ui_inv_outfit_additional_weight"] = "Carry Weight",
+		["st_itm_desc_state_avail_workshop"] = "available (via mechanic)",
+		["ui_inv_weight"] = "Total Encumbrance",
+		["ui_inv_you_already_have"] = "Already in Inventory",
+		["ui_inv_survive_surge"] = "Emission Survival Chance",
+		["ui_inv_cant_buy_item"] = "Purchase Unavailable"
+	},
 	["st_used_for_craft"] = {
 		["st_craft_used_for"] = "%c[ui_gray_3]CRAFTING:%c[ui_gray_2]",
 		["st_craft_unlocks"] = "%c[ui_gray_3]CRAFTING:%c[ui_gray_2]",
