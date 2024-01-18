@@ -3,6 +3,9 @@
 ui_string_element_capitalization_patterns = {
 	["ui_st_inventory"] = {
 		"ui_inv_"
+	},
+	["ui_st_momopate_wstats"] = {
+		"ui_inv_"
 	}
 }
 
