@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "•"
+local DOT = "вЂў"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -355,7 +355,7 @@ function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
 	local skip_words = map_table_values({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 		"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
-		"msv / sec", "µg of adren.", "µg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
+		"msv / sec", "Вµg of adren.", "Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
 		"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg" })
 
 	local capitalized_words = {}
@@ -364,7 +364,9 @@ function capitalize_words(str)
 		-- If the word is in the uncapitalized words table, then skip it.
 		if index > 1 and skip_words[string.lower(word)] then
 			table.insert(capitalized_words, word)
-		else
+			goto continue
+		end
+
 			if string.sub(word, 1, 1) == "(" then
 				-- Found a parenthetical, capitalize the word after the parenthetical.
 				table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
@@ -378,7 +380,8 @@ function capitalize_words(str)
 			else
 				table.insert(capitalized_words, capitalize_word(word))
 			end
-		end
+
+		::continue::
 	end
 
 	return table.concat(capitalized_words, " ")
