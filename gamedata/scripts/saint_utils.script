@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "вЂў"
+local DOT = "РІР‚Сћ"
 
 local LINE_KIND = {
 	TEXT = "text",
