@@ -19,9 +19,9 @@ local CONFIG = SAINT_UTILS_CONFIG
 
 -- Library
 
-local CAPITALIZATION_WORD_MAP = map_table_values(CONFIG.CAPITALIZATION_SKIP_WORDS)
+local CAPITALIZATION_WORD_MAP
 
-local DOT = "•"
+local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -380,6 +380,10 @@ function capitalize_words_by_length(str)
 end
 
 function capitalize_words(str)
+	if not CAPITALIZATION_WORD_MAP then
+		CAPITALIZATION_WORD_MAP = map_table_values(CONFIG.CAPITALIZATION_SKIP_WORDS)
+	end
+
 	local words = split_string_into_collection(str, " ")
 	local capitalized_words = {}
 
