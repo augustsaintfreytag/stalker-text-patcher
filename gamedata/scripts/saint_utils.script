@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљР’В Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р РЋРІвЂћСћР В Р’В Р В Р вЂ№Р В Р Р‹Р Р†Р вЂљРЎвЂќ"
+local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -46,7 +46,8 @@ local COLOR = {
 	SECTION = "%c[ui_gray_3]",
 	BULLET_NEUTRAL = "%c[d_cyan]",
 	BULLET_BENEFICIAL = "%c[d_green]",
-	BULLET_DETRIMENTAL = "%c[d_red]"
+	BULLET_DETRIMENTAL = "%c[d_red]",
+	BULLET_TUTORIAL = "%c[d_orange]"
 }
 
 -- Logic
@@ -61,9 +62,8 @@ end
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
 	desc = rewrite_hyphen_lists(desc)
-	desc = rewrite_stacked_bullet_points(desc)
-	desc = rewrite_desc_heading_substitutes(desc)
 	desc = rewrite_desc_heading_colors(desc)
+	desc = rewrite_stacked_bullet_points(desc)
 	desc = rewrite_desc_bullet_point_lines(desc)
 	desc = rewrite_desc_line_spacing(desc)
 
@@ -87,14 +87,15 @@ function rewrite_stacked_bullet_points(desc)
 			table.insert(new_lines, line)
 			goto continue
 		end
-		
+
 		-- local color_tag_start_index, color_tag_end_index = re.find(line, "('%c['[a-zA-Z0-9_, ]+']')")
 
 		-- Find start index after first occurrence of dot for matching.
 		local first_dot_start_index = line:find(DOT)
 
 		-- Find index of color tag, dot, color tag after initial dot to find unwanted concatenated segment.
-		local second_dot_start_index, _ = re.find(line, "'%c['[a-zA-Z0-9_, ]+']'%s*'" .. DOT .. "'%s*'%c['[a-zA-Z0-9_, ]+']'", first_dot_start_index)
+		local second_dot_start_index, _ = re.find(line,
+			"'%c['[a-zA-Z0-9_, ]+']'%s*'" .. DOT .. "'%s*'%c['[a-zA-Z0-9_, ]+']'", first_dot_start_index)
 
 		-- Insert new line at second dot index, add to table.
 		local left_line = line:sub(1, second_dot_start_index - 1)
@@ -179,7 +180,36 @@ function rewrite_hyphen_lists(desc)
 	-- Replace sections defined with a hyphen after color tags with bullet points (dot).
 	-- Mainly applicable to descriptions of ammunition items.
 
-	return re.gsub(desc, "'] - '", "]  " .. DOT .. " ")
+	local lines = split_string_into_collection(desc, "\\n")
+	local new_lines = {}
+
+	for _, line in ipairs(lines) do
+		local new_line = line
+
+		if not string.find(line, "-") then
+			table.insert(new_lines, new_line)
+			goto continue
+		end
+
+		local sanitized_line = trim_string(strip_color_tags(new_line))
+
+		if string.sub(sanitized_line, 1, 1) ~= "-" then
+			table.insert(new_lines, new_line)
+			goto continue
+		end
+
+		-- new_line = re.gsub(new_line, "']'%s*'-'%s*", "] " .. DOT .. " " .. COLOR.TEXT)
+		new_line = COLOR.BULLET_TUTORIAL .. " " .. DOT .. " " .. COLOR.TEXT .. string.sub(sanitized_line, 2)
+		table.insert(new_lines, new_line)
+
+		::continue::
+	end
+
+	return table.concat(new_lines, " \\n")
+end
+
+function strip_color_tags(str)
+	return re.gsub(str, "'%c['[a-zA-Z0-9_, ]+']'", "")
 end
 
 function rewrite_desc_bullet_point_lines(desc)
@@ -225,12 +255,12 @@ function rewrite_desc_bullet_point_lines(desc)
 
 			if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
 				line_new = line_new ..
-				COLOR.TEXT ..
-				line_name_left ..
-				":" .. COLOR.TEXT_EMPHASIS .. (line_had_space_after_colon and " " or "") .. line_name_right
+					COLOR.TEXT ..
+					line_name_left ..
+					":" .. COLOR.TEXT_EMPHASIS .. (line_had_space_after_colon and " " or "") .. line_name_right
 			else
 				line_new = line_new ..
-				COLOR.TEXT .. line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
+					COLOR.TEXT .. line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
 			end
 		else
 			line_new = line_new .. COLOR.TEXT .. capitalize_words_by_length(line_content)
@@ -262,52 +292,6 @@ function formatted_desc_heading(heading)
 	-- Make input all uppercase and append a colon, wrap in color tags.
 	local formatted_heading = string.upper(heading) .. ":"
 	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
-end
-
-local DESC_HEADING_SEARCH_PATTERN = {
-	AMMO = gc("ui_mcm_SortingPlus_110ammo"),
-	USED_FOR_CRAFTING = gc("st_craft_used_for"),
-	UNLOCKS_FOR_CRAFTING = gc("st_craft_unlocks"),
-	USED_FOR_COOKING = gc("st_cook_used_for"),
-	REPLACEMENT_PARTS = gc("st_ui_awr_parts_list"),
-	COMPATIBLE_REPAIR_KITS = gc("st_ui_repair_kit_list"),
-	COMPATIBLE_WORKSHOP_LIST = gc("st_ui_workshop_kit_list"),
-	COMPONENTS = gc("st_ui_disassemly_list"),
-	UPGRADES = gc("st_ui_upgrade_list")
-}
-
-local DESC_HEADING_REPLACEMENTS = {
-	[DESC_HEADING_SEARCH_PATTERN.AMMO] = formatted_desc_heading(gc("ui_saint_description_section_ammo")),
-	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_CRAFTING] = formatted_desc_heading(gc(
-	"ui_saint_description_section_used_for_crafting")),
-	[DESC_HEADING_SEARCH_PATTERN.UNLOCKS_FOR_CRAFTING] = formatted_desc_heading(gc(
-	"ui_saint_description_section_unlocks_for_crafting")),
-	[DESC_HEADING_SEARCH_PATTERN.USED_FOR_COOKING] = formatted_desc_heading(gc(
-	"ui_saint_description_section_used_for_cooking")),
-	[DESC_HEADING_SEARCH_PATTERN.REPLACEMENT_PARTS] = formatted_desc_heading(gc("st_ui_awr_parts_list")),
-	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_REPAIR_KITS] = formatted_desc_heading(gc("st_ui_repair_kit_list")),
-	[DESC_HEADING_SEARCH_PATTERN.COMPATIBLE_WORKSHOP_LIST] = formatted_desc_heading(gc("st_ui_workshop_kit_list"))
-}
-
-function rewrite_desc_heading_substitutes(desc)
-	-- Replace occurrences of a line containing "Used for crafting:" with "CRAFTING:"
-	local lines = split_string_into_collection(desc, "\\n")
-	local new_lines = {}
-
-	for i = 1, #lines do
-		local line = lines[i]
-
-		for pattern, replacement in pairs(DESC_HEADING_REPLACEMENTS) do
-			if line:find(pattern) then
-				line = replacement
-				break
-			end
-		end
-
-		table.insert(new_lines, line)
-	end
-
-	return table.concat(new_lines, " \\n")
 end
 
 function rewrite_desc_heading_colors(desc)
@@ -342,7 +326,7 @@ function get_line_kind(line)
 	end
 
 	-- If line contains only uppercase characters followed by a colon ':', return section header
-	if re.find(line, "[A-Z]^+3':'") then
+	if re.find(line, "[A-Z ]^+3':'") then
 		return LINE_KIND.SECTION_HEADER
 	end
 
@@ -369,16 +353,20 @@ end
 
 function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
-	local skip_words = set_from_collection({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
-		"to", "in", "by", "mm", "cm", "msv", "ml", "mg", "mcg", "ma/h" })
+	local skip_words = map_table_values({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
+		"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
+		"msv / sec", "Р вЂ™Р’Вµg of adren.", "Р вЂ™Р’Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
+		"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg" })
 
 	local capitalized_words = {}
 
-	for i, word in ipairs(words) do
+	for index, word in ipairs(words) do
 		-- If the word is in the uncapitalized words table, then skip it.
-		if i > 1 and skip_words[string.lower(word)] then
+		if index > 1 and skip_words[string.lower(word)] then
 			table.insert(capitalized_words, word)
-		else
+			goto continue
+		end
+
 			if string.sub(word, 1, 1) == "(" then
 				-- Found a parenthetical, capitalize the word after the parenthetical.
 				table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
@@ -392,7 +380,8 @@ function capitalize_words(str)
 			else
 				table.insert(capitalized_words, capitalize_word(word))
 			end
-		end
+
+		::continue::
 	end
 
 	return table.concat(capitalized_words, " ")
@@ -442,17 +431,37 @@ function split_string_into_collection(str, sep)
 	return lines
 end
 
-function set_from_collection(arr)
-	local tbl = {}
+function map_table_values(collection)
+	local map = {}
 
-	for i, v in ipairs(arr) do
-		tbl[v] = true
+	for _, value in ipairs(collection) do
+		map[value] = true
 	end
 
-	return tbl
+	return map
+end
+
+function map_table_keys(collection)
+	local map = {}
+
+	for key, _ in pairs(collection) do
+		map[key] = true
+	end
+
+	return map
 end
 
 -- Logging
+
+function ellipsized_string(str, max_length)
+	max_length = max_length or 32
+
+	if string.len(str) > max_length then
+		return string.sub(str, 1, max_length - 3) .. "..."
+	else
+		return str
+	end
+end
 
 function log_to_file(message)
 	local log_file = io.open("log_saint_utils.txt", "a")
@@ -467,6 +476,8 @@ log_divider = "\n------------------\n"
 if not game then
 	return {
 		normalize_name = normalize_name,
-		normalize_desc = normalize_desc
+		normalize_desc = normalize_desc,
+		capitalize_words = capitalize_words,
+		capitalize_words_by_length = capitalize_words_by_length
 	}
 end

@@ -1,0 +1,189 @@
+-- Logging
+
+local function log(...)
+	printf(...)
+end
+
+-- Entry Point
+
+function on_xml_read()
+	log("Loading Saint's DXML UI text patcher.")
+
+	RegisterScriptCallback("on_xml_read", function(xml_scope_name, xml_obj)
+		-- Modules
+
+		local config = config_ui_text_patcher
+		local file_name = file_name_from_scope_name(xml_scope_name)
+
+		-- Prevalidation
+
+		local file_is_localization_file = string.find(xml_scope_name, "st_")
+
+		if not file_is_localization_file then
+			return
+		end
+
+		local capitalization_pattern_table = config.ui_string_element_capitalization_patterns[file_name]
+		local menu_pattern_table = config.ui_menu_string_element_patterns[file_name]
+		local substitution_table = config.ui_string_element_substitution_values[file_name]
+
+		if capitalization_pattern_table then
+			log("DXML UI text patcher running capitalization patterns for file '%s'.", file_name)
+			process_capitalization_elements(file_name, xml_obj, capitalization_pattern_table)
+		end
+
+		if menu_pattern_table then
+			log("DXML UI text patcher running menu patterns for file '%s'.", file_name)
+			process_menu_elements(file_name, xml_obj, menu_pattern_table)
+		end
+
+		if substitution_table then
+			log("DXML UI text patcher running substitution patterns for file '%s'.", file_name)
+			process_substitution_elements(file_name, substitution_table, xml_obj)
+		end
+	end)
+end
+
+-- Process: Capitalized Elements
+
+function process_capitalization_elements(file_name, xml_obj, patterns)
+	for_each_text_element_in_object(file_name, xml_obj, function(id, _)
+		return patterns_contain_id(patterns, id)
+	end, function(id, text_element, text)
+		-- If text contains newline, string may be description text, will be skipped.
+		if text:find("\n") then
+			return
+		end
+
+		local formatted_text = saint_utils.capitalize_words(text)
+
+		log(
+			"DXML UI text patcher capitalizing element id '%s' (input: '%s', output: '%s') in file '%s'.",
+			id,
+			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
+		xml_obj:setText(text_element, formatted_text)
+	end)
+end
+
+-- Process: Menu Elements
+
+function process_menu_elements(file_name, xml_obj, patterns)
+	for_each_text_element_in_object(file_name, xml_obj, function(id, _)
+		return patterns_contain_id(patterns, id)
+	end, function(id, text_element, text)
+		local formatted_text = string.lower(text)
+		log("DXML UI text patcher formatting element id '%s' menu text (input: '%s', output: '%s') in file '%s'.", id,
+			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
+		xml_obj:setText(text_element, formatted_text)
+	end)
+end
+
+-- Process: Substitution Elements
+
+function process_substitution_elements(file_name, substitution_table, xml_obj)
+	for match_id, substitution_text in pairs(substitution_table) do
+		local string_element = xml_obj:query("string[id=" .. match_id .. "]")[1]
+
+		if not string_element then
+			goto continue
+		end
+
+		with_text_element_from_string_element(xml_obj, string_element, function(id, text_element, text)
+			log(
+				"DXML UI text patcher setting element id '%s' to substitution text (input: '%s', output: '%s') in file '%s'.",
+				id,
+				saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(substitution_text),
+				file_name)
+			xml_obj:setText(text_element, substitution_text)
+		end)
+
+		::continue::
+	end
+end
+
+-- Iteration & Extraction
+
+-- Iterates through all `<string>` elements in the given XML object.
+-- Extracts the element's `id` attribute, calls the given `predicate` block to
+-- determine elements to be processed. Calls the given `callback` block for all
+-- remaining text elements.
+function for_each_text_element_in_object(file_name, xml_obj, predicate, callback)
+	local string_elements = xml_obj:query("string")
+
+	if not string_elements or #string_elements == 0 then
+		log("DXML UI text patcher did not find any string elements in file '%s'.", file_name)
+		return
+	end
+
+	local filtered_string_elements = table.filter(string_elements, function(string_element)
+		local id = (xml_obj:getElementAttr(string_element) or {})["id"]
+		return predicate(id, string_element)
+	end)
+
+	if #filtered_string_elements == 0 then
+		return
+	end
+
+	log("DXML UI text patcher found %s string elements (filtered from %s) in file '%s'.", #filtered_string_elements,
+		#string_elements, file_name)
+
+	for _, string_element in ipairs(filtered_string_elements) do
+		with_text_element_from_string_element(xml_obj, string_element, function(id, text_element, text)
+			callback(id, text_element, text)
+		end)
+	end
+end
+
+-- Extracts the child text element and contained text value and calls the given callback
+-- with {element, text} if found. The callback is not invoked when no text element is found.
+function with_text_element_from_string_element(xml_obj, string_element, callback)
+	local id = (xml_obj:getElementAttr(string_element) or {})["id"]
+	local text_element = xml_obj:query("string[id=" .. id .. "] > text")[1]
+
+	if not text_element then
+		log("DXML UI text patcher could not find predetermined text/string element pair with id '%s'.", id)
+		return nil
+	end
+
+	local text = xml_obj:getText(text_element)
+
+	return callback(id, text_element, text)
+end
+
+-- General Utility
+
+-- Return extracted XML module name without path or file extension from scope name.
+-- Example input: "ui\ui_mm_main.xml", output: "ui_mm_main"
+function file_name_from_scope_name(scope_name)
+	local index_of_last_path_separator = string.find(scope_name, "\\[^\\]*$")
+	local file_name_with_extension = string.sub(scope_name, index_of_last_path_separator + 1)
+	local index_of_extension_separator = string.find(file_name_with_extension, "%.[^%.]*$")
+	local file_name = string.sub(file_name_with_extension, 1, index_of_extension_separator - 1)
+
+	return file_name
+end
+
+-- Predicate function to check if any of the given patterns match the given id.
+function patterns_contain_id(patterns, id)
+	for _, pattern in ipairs(patterns) do
+		if string.find(id, pattern) then
+			return true
+		end
+	end
+
+	return false
+end
+
+-- Type Extensions
+
+table.filter = function(table_value, predicate)
+	local out = {}
+
+	for _, v in ipairs(table_value) do
+		if predicate(v) then
+			table.insert(out, v)
+		end
+	end
+
+	return out
+end
