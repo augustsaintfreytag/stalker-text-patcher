@@ -4,28 +4,28 @@ local function log(...)
 	printf(...)
 end
 
+-- Config
+
+local CONFIG = modxml_ui_text_patcher_config
+
 -- Entry Point
 
 function on_xml_read()
 	log("Loading Saint's DXML UI text patcher.")
 
 	RegisterScriptCallback("on_xml_read", function(xml_scope_name, xml_obj)
-		-- Modules
-
-		local config = modxml_ui_text_patcher_config
-		local file_name = file_name_from_scope_name(xml_scope_name)
-
 		-- Prevalidation
 
-		local file_is_localization_file = string.find(xml_scope_name, "st_")
+		local file_name = file_name_from_scope_name(xml_scope_name)
+		local file_is_localization_file = xml_scope_name:find("st_")
 
 		if not file_is_localization_file then
 			return
 		end
 
-		local capitalization_pattern_table = config.ui_string_element_capitalization_patterns[file_name]
-		local menu_pattern_table = config.ui_menu_string_element_patterns[file_name]
-		local substitution_table = config.ui_string_element_substitution_values[file_name]
+		local capitalization_pattern_table = CONFIG.UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS[file_name]
+		local menu_pattern_table = CONFIG.UI_MENU_STRING_ELEMENT_PATTERNS[file_name]
+		local substitution_table = CONFIG.UI_STRING_ELEMENT_SUBSTITUTION_VALUES[file_name]
 
 		if capitalization_pattern_table then
 			log("DXML UI text patcher running capitalization patterns for file '%s'.", file_name)

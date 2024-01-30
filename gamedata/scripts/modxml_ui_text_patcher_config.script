@@ -1,6 +1,6 @@
 -- Query strings to be matched by localization file name.
 -- Matched record text will be capitalized (not using length match heuristics).
-ui_string_element_capitalization_patterns = {
+UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 	["ui_st_inventory"] = {
 		"ui_inv_"
 	},
@@ -11,7 +11,7 @@ ui_string_element_capitalization_patterns = {
 
 -- Query strings to be matched by localization file name.
 -- Matched record text will be made lowercase for use in context menus.
-ui_menu_string_element_patterns = {
+UI_MENU_STRING_ELEMENT_PATTERNS = {
 	["ui_st_sortingplus"] = {
 		"st_rax_"
 	}
@@ -20,7 +20,7 @@ ui_menu_string_element_patterns = {
 -- XML file names and ids to be matched for full text substitution.
 -- Matched record text will be substituted whole for the given value.
 -- Does not use engine-level localization (en/ru), strings are used as-is.
-ui_string_element_substitution_values = {
+UI_STRING_ELEMENT_SUBSTITUTION_VALUES = {
 	["ui_st_inventory"] = {
 		["ui_ammo_count"] = "Capacity",
 		["ui_inv_outfit_additional_weight"] = "Carry Weight",
@@ -29,12 +29,12 @@ ui_string_element_substitution_values = {
 		["ui_inv_you_already_have"] = "Already in Inventory",
 		["ui_inv_survive_surge"] = "Emission Survival Chance",
 		["ui_inv_cant_buy_item"] = "Purchase Unavailable",
-		["ui_ammo_types"] = "CALIBRE:",
-		["st_ui_awr_parts_list"] = "PARTS:"
+		["ui_ammo_types"] = "CALIBRE",
+		["st_ui_awr_parts_list"] = "PARTS"
 	},
 	["st_used_for_craft"] = {
-		["st_craft_used_for"] = "CRAFTING:",
-		["st_craft_unlocks"] = "CRAFTING:",
-		["st_cook_used_for"] = "COOKING:"
+		["st_craft_used_for"] = "CRAFTING",
+		["st_craft_unlocks"] = "CRAFTING",
+		["st_cook_used_for"] = "COOKING"
 	}
 }
