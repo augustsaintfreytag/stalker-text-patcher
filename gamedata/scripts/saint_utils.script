@@ -13,29 +13,15 @@ else
 	end
 end
 
--- Configuration
+-- Config
 
-local CONFIG = {
-	-- The maximum number of characters in a snippet to assume it as a heading-like text
-	-- to be capitalized. Primarily applies to text in bullet points.
-	CAPITALIZATION_HEURISTIC_MAX_CHARS = 36,
-
-	-- When capitalizing the text of a bullet point line, capitalize outside parenthesis
-	-- first and inside parenthesis separately.
-	CAPITALIZATION_SPLIT_FOR_PARENTHETICALS = true,
-
-	-- Apply color tags to parentheticals in description texts
-	-- (applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text).
-	COLOR_DESC_PARENTHETICALS = false,
-
-	-- Apply color tags to bullet points with colons in description texts
-	-- (applies `COLOR.TEXT_EMPHASIS` to text after colon, distinguishing left- and right-hand side).
-	COLOR_DESC_COLON_BULLET_POINTS = true
-}
+local CONFIG = SAINT_UTILS_CONFIG
 
 -- Library
 
-local DOT = "Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљР’В Р В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р РЋРІвЂћСћР В Р’В Р В Р вЂ№Р В Р вЂ Р Р†Р вЂљРЎвЂєР РЋРЎвЂєР В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р вЂ™Р’В Р В Р’В Р Р†Р вЂљРІвЂћвЂ“Р В Р’В Р вЂ™Р’В Р В Р’В Р В РІР‚в„–Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р Р‹Р Р†Р вЂљРЎСљ"
+local CAPITALIZATION_WORD_MAP = map_table_values(CONFIG.CAPITALIZATION_SKIP_WORDS)
+
+local DOT = "•"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -384,8 +370,9 @@ end
 
 function capitalize_words_by_length(str)
 	local max_line_length_to_capitalize = CONFIG.CAPITALIZATION_HEURISTIC_MAX_CHARS
+	local sanitized_str_length = strip_color_tags(str):len()
 
-	if string.len(str) < max_line_length_to_capitalize then
+	if sanitized_str_length < max_line_length_to_capitalize then
 		return capitalize_words(str)
 	else
 		return capitalize_first_word(str)
@@ -394,33 +381,28 @@ end
 
 function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
-	local skip_words = map_table_values({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
-		"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
-		"msv / sec", "Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р вЂ Р Р†Р вЂљРЎвЂєР РЋРЎвЂєР В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р Р†РІР‚С›РЎС›Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’Вµg of adren.", "Р В Р’В Р вЂ™Р’В Р В РІР‚в„ўР вЂ™Р’В Р В Р’В Р В РІР‚В Р В Р’В Р Р†Р вЂљРЎв„ўР В Р вЂ Р Р†Р вЂљРЎвЂєР РЋРЎвЂєР В Р’В Р вЂ™Р’В Р В Р вЂ Р В РІР‚С™Р Р†РІР‚С›РЎС›Р В Р’В Р Р†Р вЂљРІвЂћСћР В РІР‚в„ўР вЂ™Р’Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
-		"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg" })
-
 	local capitalized_words = {}
 
 	for index, word in ipairs(words) do
 		-- If the word is in the uncapitalized words table, then skip it.
-		if index > 1 and skip_words[string.lower(word)] then
+		if index > 1 and CAPITALIZATION_WORD_MAP[string.lower(word)] then
 			table.insert(capitalized_words, word)
 			goto continue
 		end
 
-			if string.sub(word, 1, 1) == "(" then
-				-- Found a parenthetical, capitalize the word after the parenthetical.
-				table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
-			elseif string.sub(word, 1, 2) == "%c" then
-				-- Found a color tag, capitalize the word after the color tag.
-				local tag_end_index = string.find(word, "]")
-				local tag = string.sub(word, 1, tag_end_index)
-				local tag_word = string.sub(word, tag_end_index + 1)
+		if string.sub(word, 1, 1) == "(" then
+			-- Found a parenthetical, capitalize the word after the parenthetical.
+			table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
+		elseif string.sub(word, 1, 2) == "%c" then
+			-- Found a color tag, capitalize the word after the color tag.
+			local tag_end_index = string.find(word, "]")
+			local tag = string.sub(word, 1, tag_end_index)
+			local tag_word = string.sub(word, tag_end_index + 1)
 
-				table.insert(capitalized_words, tag .. capitalize_word(tag_word))
-			else
-				table.insert(capitalized_words, capitalize_word(word))
-			end
+			table.insert(capitalized_words, tag .. capitalize_word(tag_word))
+		else
+			table.insert(capitalized_words, capitalize_word(word))
+		end
 
 		::continue::
 	end
