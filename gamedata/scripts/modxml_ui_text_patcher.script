@@ -12,7 +12,7 @@ function on_xml_read()
 	RegisterScriptCallback("on_xml_read", function(xml_scope_name, xml_obj)
 		-- Modules
 
-		local config = config_ui_text_patcher
+		local config = modxml_ui_text_patcher_config
 		local file_name = file_name_from_scope_name(xml_scope_name)
 
 		-- Prevalidation
