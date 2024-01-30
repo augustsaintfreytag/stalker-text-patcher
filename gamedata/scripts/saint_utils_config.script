@@ -1,17 +1,17 @@
--- Apply color tags to parentheticals in description texts
--- (applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text).
+-- Apply color tags to parentheticals in description texts.
+-- Applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text.
 COLOR_DESC_PARENTHETICALS = false
 
--- Apply color tags to bullet points with colons in description texts
--- (applies `COLOR.TEXT_EMPHASIS` to text after colon, distinguishing left- and right-hand side).
+-- Apply color tags to bullet points with colons in description texts.
+-- Applies `COLOR.TEXT_EMPHASIS` to text after colon, distinguishing left- and right-hand side.
 COLOR_DESC_COLON_BULLET_POINTS = true
 
--- The maximum number of characters in a snippet to assume it as a heading-like text
--- to be capitalized. Primarily applies to text in bullet points.
+-- The maximum number of characters in a snippet to assume it as a heading-like text to be capitalized.
+-- Primarily applies to text in bullet points.
 CAPITALIZATION_HEURISTIC_MAX_CHARS = 36
 
--- When capitalizing the text of a bullet point line, capitalize outside parenthesis
--- first and inside parenthesis separately.
+-- When capitalizing the text of a bullet point line, capitalize outside parenthesis first
+-- and inside parenthesis separately.
 CAPITALIZATION_SPLIT_FOR_PARENTHETICALS = true
 
 -- Words to be skipped during text capitalization.
@@ -20,3 +20,28 @@ CAPITALIZATION_SKIP_WORDS = { "as", "of", "on", "and", "for", "with", "without",
 	"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
 	"msv / sec", "µg of adren.", "µg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
 	"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg" }
+
+-- Toggle the use of a terminating colon for section headings in description text.
+-- By default, the game formats section headers as "PROPERTIES:" with a colon.
+-- When rewriting descriptions, the header may be reformatted (case, color tags, ...) and
+-- a colon can be re-appended. Setting this to `false` will not necessarily remove all colons.
+USE_COLON_FOR_SECTION_HEADERS = false
+
+-- The maximum number of characters to detect a section header in description text.
+-- Line contents must have uppercase letters (or whitespace) with at least three characters in length
+-- and the total length of the line (excluding color tags) must not exceed this value.
+SECTION_HEADER_HEURISTIC_MAX_CHARS = 28
+
+-- Export
+
+if not game then
+	return {
+		COLOR_DESC_PARENTHETICALS = COLOR_DESC_PARENTHETICALS,
+		COLOR_DESC_COLON_BULLET_POINTS = COLOR_DESC_COLON_BULLET_POINTS,
+		CAPITALIZATION_HEURISTIC_MAX_CHARS = CAPITALIZATION_HEURISTIC_MAX_CHARS,
+		CAPITALIZATION_SPLIT_FOR_PARENTHETICALS = CAPITALIZATION_SPLIT_FOR_PARENTHETICALS,
+		CAPITALIZATION_SKIP_WORDS = CAPITALIZATION_SKIP_WORDS,
+		USE_COLON_FOR_SECTION_HEADERS = USE_COLON_FOR_SECTION_HEADERS,
+		SECTION_HEADER_HEURISTIC_MAX_CHARS = SECTION_HEADER_HEURISTIC_MAX_CHARS
+	}
+end

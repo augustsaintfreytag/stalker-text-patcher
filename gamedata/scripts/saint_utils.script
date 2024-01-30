@@ -11,6 +11,8 @@ else
 	gc = function(str)
 		return str
 	end
+
+	SAINT_UTILS_CONFIG = require "gamedata/scripts/saint_utils_config"
 end
 
 -- Config
@@ -21,7 +23,7 @@ local CONFIG = SAINT_UTILS_CONFIG
 
 local CAPITALIZATION_WORD_MAP
 
-local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
+local DOT = "•"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -52,7 +54,7 @@ end
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
 	desc = rewrite_hyphen_lists(desc)
-	desc = rewrite_desc_heading_colors(desc)
+	desc = rewrite_desc_heading(desc)
 	desc = rewrite_stacked_bullet_points(desc)
 	desc = rewrite_desc_bullet_point_lines(desc)
 	desc = rewrite_desc_line_spacing(desc)
@@ -188,7 +190,6 @@ function rewrite_hyphen_lists(desc)
 			goto continue
 		end
 
-		-- new_line = re.gsub(new_line, "']'%s*'-'%s*", "] " .. DOT .. " " .. COLOR.TEXT)
 		new_line = COLOR.BULLET_TUTORIAL .. " " .. DOT .. " " .. COLOR.TEXT .. string.sub(sanitized_line, 2)
 		table.insert(new_lines, new_line)
 
@@ -313,15 +314,7 @@ end
 
 -- Section Heading Rewrite
 
--- TODO: Consider stripping out color tags and dot from localized strings (may be working as-is).
-
-function formatted_desc_heading(heading)
-	-- Make input all uppercase and append a colon, wrap in color tags.
-	local formatted_heading = string.upper(heading) .. ":"
-	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
-end
-
-function rewrite_desc_heading_colors(desc)
+function rewrite_desc_heading(desc)
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
 
@@ -344,25 +337,42 @@ function rewrite_desc_heading_colors(desc)
 	return table.concat(new_lines, " \\n")
 end
 
+function formatted_desc_heading(heading)
+	-- Make input all uppercase and append a colon, wrap in color tags.
+	local formatted_heading = string.upper(heading)
+
+	if CONFIG.USE_COLON_FOR_SECTION_HEADERS then
+		formatted_heading = formatted_heading .. ":"
+	end
+
+	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
+end
+
 -- Line Analysis
 
 function get_line_kind(line)
-	-- If line contains dot character, return bullet point
-	if line:find(DOT) then
+	local sanitized_line = strip_color_tags(line)
+
+	-- If line contains dot character, detect line as bullet point.
+	if sanitized_line:find(DOT) then
 		return LINE_KIND.BULLET_POINT
 	end
 
-	-- If line contains only uppercase characters followed by a colon ':', return section header
-	if re.find(line, "[A-Z ]^+3':'") then
-		return LINE_KIND.SECTION_HEADER
+	-- If line satisfies length constraints and contains uppercase-only characters
+	-- optionally followed by a colon ':', detect line as section header.
+	if sanitized_line:len() < CONFIG.SECTION_HEADER_HEURISTIC_MAX_CHARS then
+		local section_header_start_index, _ = re.find(sanitized_line, "[A-Z ]^+3':'*")
+		if section_header_start_index and section_header_start_index == 1 then
+			return LINE_KIND.SECTION_HEADER
+		end
 	end
 
-	-- If line is not empty and contains more than just white space, return text
-	if line ~= "" and line:find("%S") then
+	-- If line is not empty and contains more than just white space, detect line as text.
+	if sanitized_line ~= "" and sanitized_line:find("%S") then
 		return LINE_KIND.TEXT
 	end
 
-	-- Otherwise, return nil
+	-- Line is indeterminate, may be whitespace or empty.
 	return nil
 end
 
