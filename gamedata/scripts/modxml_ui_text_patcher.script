@@ -51,8 +51,9 @@ function process_capitalization_elements(file_name, xml_obj, patterns)
 		return patterns_contain_id(patterns, id)
 	end, function(id, text_element, text)
 		local formatted_text = saint_utils.capitalize_words(text)
+
 		log(
-			"DXML UI text patcher processing element id '%s' for capitalized text (input: '%s', output: '%s') in file '%s'.",
+			"DXML UI text patcher capitalizing element id '%s' (input: '%s', output: '%s') in file '%s'.",
 			id,
 			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
@@ -66,7 +67,7 @@ function process_menu_elements(file_name, xml_obj, patterns)
 		return patterns_contain_id(patterns, id)
 	end, function(id, text_element, text)
 		local formatted_text = string.lower(text)
-		log("DXML UI text patcher processing element id '%s' for menu text (input: '%s', output: '%s') in file '%s'.", id,
+		log("DXML UI text patcher formatting element id '%s' menu text (input: '%s', output: '%s') in file '%s'.", id,
 			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
 	end)
@@ -84,7 +85,7 @@ function process_substitution_elements(file_name, substitution_table, xml_obj)
 
 		with_text_element_from_string_element(xml_obj, string_element, function(id, text_element, text)
 			log(
-				"DXML UI text patcher processing element id '%s' for substitution text (input: '%s', output: '%s') in file '%s'.",
+				"DXML UI text patcher setting element id '%s' to substitution text (input: '%s', output: '%s') in file '%s'.",
 				id,
 				saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(substitution_text),
 				file_name)
