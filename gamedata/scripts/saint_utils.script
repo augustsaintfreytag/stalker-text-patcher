@@ -31,7 +31,7 @@ local CONFIG = {
 
 -- Library
 
-local DOT = "РІР‚Сћ"
+local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -326,7 +326,7 @@ function get_line_kind(line)
 	end
 
 	-- If line contains only uppercase characters followed by a colon ':', return section header
-	if re.find(line, "[A-Z]^+3':'") then
+	if re.find(line, "[A-Z ]^+3':'") then
 		return LINE_KIND.SECTION_HEADER
 	end
 
@@ -355,7 +355,7 @@ function capitalize_words(str)
 	local words = split_string_into_collection(str, " ")
 	local skip_words = map_table_values({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 		"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
-		"msv / sec", "Вµg of adren.", "Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
+		"msv / sec", "Р вЂ™Р’Вµg of adren.", "Р вЂ™Р’Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
 		"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg" })
 
 	local capitalized_words = {}
