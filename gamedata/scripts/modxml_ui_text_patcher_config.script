@@ -28,11 +28,13 @@ ui_string_element_substitution_values = {
 		["ui_inv_weight"] = "Total Encumbrance",
 		["ui_inv_you_already_have"] = "Already in Inventory",
 		["ui_inv_survive_surge"] = "Emission Survival Chance",
-		["ui_inv_cant_buy_item"] = "Purchase Unavailable"
+		["ui_inv_cant_buy_item"] = "Purchase Unavailable",
+		["ui_ammo_types"] = "CALIBRE:",
+		["st_ui_awr_parts_list"] = "PARTS:"
 	},
 	["st_used_for_craft"] = {
-		["st_craft_used_for"] = "%c[ui_gray_3]CRAFTING:%c[ui_gray_2]",
-		["st_craft_unlocks"] = "%c[ui_gray_3]CRAFTING:%c[ui_gray_2]",
-		["st_cook_used_for"] = "%c[ui_gray_3]COOKING:%c[ui_gray_2]"
+		["st_craft_used_for"] = "CRAFTING:",
+		["st_craft_unlocks"] = "CRAFTING:",
+		["st_cook_used_for"] = "COOKING:"
 	}
 }
