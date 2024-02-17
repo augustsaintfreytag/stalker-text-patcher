@@ -23,9 +23,10 @@ function on_xml_read()
 			return
 		end
 
-		local capitalization_pattern_table = CONFIG.UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS[file_name]
-		local menu_pattern_table = CONFIG.UI_MENU_STRING_ELEMENT_PATTERNS[file_name]
-		local substitution_table = CONFIG.UI_STRING_ELEMENT_SUBSTITUTION_VALUES[file_name]
+		local capitalization_pattern_table = match_table_for_value(CONFIG.UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS,
+			file_name)
+		local menu_pattern_table = match_table_for_value(CONFIG.UI_MENU_STRING_ELEMENT_PATTERNS, file_name)
+		local substitution_table = match_table_for_value(CONFIG.UI_STRING_ELEMENT_SUBSTITUTION_VALUES, file_name)
 
 		if capitalization_pattern_table then
 			log("DXML UI text patcher running capitalization patterns for file '%s'.", file_name)
@@ -151,6 +152,18 @@ function with_text_element_from_string_element(xml_obj, string_element, callback
 end
 
 -- General Utility
+
+-- Iterates through a table of child value tables indexed by match patterns.
+-- Tests the patterns of all keys against the given value and returns the first matching child table if found.
+function match_table_for_value(parent_table, value)
+	for pattern, child_table in pairs(parent_table) do
+		if string.find(value, pattern) then
+			return child_table
+		end
+	end
+
+	return nil
+end
 
 -- Return extracted XML module name without path or file extension from scope name.
 -- Example input: "ui\ui_mm_main.xml", output: "ui_mm_main"
