@@ -22,11 +22,14 @@ local INPUTS = {
 	]],
 	RIFLE = [[
 		%c[255,93,0,116]STATUS:\n%c[d_cyan] • %c[ui_gray_2]Functional Gas System\n%c[d_cyan] • %c[ui_gray_2]Functional Trigger Mechanism\n%c[d_cyan] • %c[ui_gray_2]Functional Bolt Carrier\n%c[d_cyan] • %c[ui_gray_2]Functional barrel%c[255,170,170,170] (100% DMG and AP)\n%c[d_cyan] • %c[ui_gray_2]Functional Bolt\n%c[d_cyan] • %c[ui_gray_3]Loaded Magazine:%c[ui_gray_2]%c[ui_gray_2] %c[255,170,170,170]Standard 5.45x39 AK-74M Magazine\n%c[d_cyan] • %c[ui_gray_3]Condition:%c[ui_gray_2]%c[ui_gray_2] %c[255,51,255,102]100%\n%c[d_cyan] • %c[ui_gray_3]Base Cost:%c[ui_gray_2]%c[ui_gray_2] 38950 RU\n \nBased on previous AK rifles in internal design and layout, the AEK-971 is also equipped with a recoil-balancing mechanism, resulting in more controllable automatic fire. Small batches of this rifle were manufactured for the Russian MVD.\n \n%c[0,255,255,255]PROPERTIES:\n%c[d_cyan] • %c[ui_gray_3]Origin:%c[ui_gray_2]%c[ui_gray_2] %c[ui_gray_1]Soviet Union\n%c[d_cyan] • %c[ui_gray_3]Manufacturer:%c[ui_gray_2]%c[ui_gray_2] %c[ui_gray_1]Degtyarev Plant\n%c[d_cyan] • %c[ui_gray_3]Production Year:%c[ui_gray_2]%c[ui_gray_2] %c[ui_gray_1]1980
+	]],
+	NVG = [[
+		A standard head-mounted flashlight in fully working order. Useful for stalkers who find themselves out and about after dark, but may attract trouble if used unwisely. This head lamp comes with a standard-issue 1PN93-1 Russian Military Forces night-vision device. Offers generation 2+ image intensification, especially useful for operations at night or in low-light conditions.\n \n%c[d_orange]- Long press the "On" button to turn your NVG on\n- Short presses on the "On" button will adjust the NVG brightness\n \n%c[ui_gray_3]PROPERTIES:\n%c[d_blue] • %c[ui_gray_2] technological item\n%c[d_purple] • %c[ui_gray_2] nightvision: %c[ui_gray_1]1PN93-1.\n%c[d_blue] • %c[ui_gray_2] moderate electric power consumption\n
 	]]
 }
 
 do
-	local input = INPUTS.PDA
+	local input = INPUTS.NVG
 
 	local output = saint_utils.normalize_desc(input)
 	-- Replace occurrences of escaped newlines with regular newlines for printing.

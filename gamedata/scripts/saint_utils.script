@@ -11,27 +11,19 @@ else
 	gc = function(str)
 		return str
 	end
+
+	SAINT_UTILS_CONFIG = require "gamedata/scripts/saint_utils_config"
 end
 
--- Configuration
+-- Config
 
-local CONFIG = {
-	-- The maximum number of characters in a snippet to assume it as a heading-like text
-	-- to be capitalized. Primarily applies to text in bullet points.
-	CAPITALIZATION_HEURISTIC_MAX_CHARS = 36,
-
-	-- Apply color tags to parentheticals in description texts
-	-- (applies `COLOR.TEXT_PARENTHETICAL`, slightly darker than regular text).
-	COLOR_DESC_PARENTHETICALS = false,
-
-	-- Apply color tags to bullet points with colons in description texts
-	-- (applies `COLOR.TEXT_EMPHASIS` to text after colon, distinguishing left- and right-hand side).
-	COLOR_DESC_COLON_BULLET_POINTS = true
-}
+local CONFIG = SAINT_UTILS_CONFIG
 
 -- Library
 
-local DOT = "Р В Р вЂ Р В РІР‚С™Р РЋРЎвЂє"
+local CAPITALIZATION_WORD_MAP
+
+local DOT = "•"
 
 local LINE_KIND = {
 	TEXT = "text",
@@ -62,7 +54,7 @@ end
 function normalize_desc(desc)
 	desc = trim_desc_spacing(desc)
 	desc = rewrite_hyphen_lists(desc)
-	desc = rewrite_desc_heading_colors(desc)
+	desc = rewrite_desc_heading(desc)
 	desc = rewrite_stacked_bullet_points(desc)
 	desc = rewrite_desc_bullet_point_lines(desc)
 	desc = rewrite_desc_line_spacing(desc)
@@ -198,7 +190,6 @@ function rewrite_hyphen_lists(desc)
 			goto continue
 		end
 
-		-- new_line = re.gsub(new_line, "']'%s*'-'%s*", "] " .. DOT .. " " .. COLOR.TEXT)
 		new_line = COLOR.BULLET_TUTORIAL .. " " .. DOT .. " " .. COLOR.TEXT .. string.sub(sanitized_line, 2)
 		table.insert(new_lines, new_line)
 
@@ -229,48 +220,85 @@ function rewrite_desc_bullet_point_lines(desc)
 
 		-- Bullet point line found, destructure into components.
 
-		-- local line_prefix = line:sub(1, leader_end_index)
+		local line_prefix = line:sub(1, leader_end_index)
 		local line_content = line:sub(leader_end_index + 1)
 
-		-- Define rewritten line with bullet point with appropriate color tags and spacing.
-
-		local line_new = " " .. COLOR.BULLET_NEUTRAL .. " " .. DOT .. " "
-
-		-- Find parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
+		-- Check for parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
 
 		if CONFIG.COLOR_DESC_PARENTHETICALS then
-			line_content = re.gsub(line_content, "'('{.+}')'", COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
+			line_content = color_line_parentheticals(line_content)
 		end
+
+		-- Check for parenthetical for coloring and split capitalization.
+
+		if CONFIG.CAPITALIZATION_SPLIT_FOR_PARENTHETICALS then
+			line_content = capitalize_line_parenthetical(line_content)
+		end
+
+		-- Check for colon in line, capitalize left side, capitalize right side by length.
 
 		if line_content:find(":") then
-			-- Line contains a colon. Split, capitalize all to the left, capitalize by length on the right.
-			local line_name_parts = split_string_into_collection(line_content, ":")
-			local line_name_left = line_name_parts[1] or ""
-			local line_name_right = trim_string(line_name_parts[2] or "")
-
-			local line_had_space_after_colon = line_name_parts[2]:sub(1, 1) == " "
-
-			line_name_left = capitalize_words(line_name_left)
-			line_name_right = capitalize_words_by_length(line_name_right)
-
-			if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
-				line_new = line_new ..
-					COLOR.TEXT ..
-					line_name_left ..
-					":" .. COLOR.TEXT_EMPHASIS .. (line_had_space_after_colon and " " or "") .. line_name_right
-			else
-				line_new = line_new ..
-					COLOR.TEXT .. line_name_left .. ":" .. (line_had_space_after_colon and " " or "") .. line_name_right
-			end
+			line_content = format_line_colons(line_content)
 		else
-			line_new = line_new .. COLOR.TEXT .. capitalize_words_by_length(line_content)
+			line_content = format_line_component(line_content)
 		end
 
-		table.insert(new_lines, line_new)
+		-- Define rewritten line with bullet point with appropriate color tags and spacing.
+		line_content = line_leader() .. line_content
+		table.insert(new_lines, line_content)
+
 		::continue::
 	end
 
 	return table.concat(new_lines, " \\n")
+end
+
+function line_leader()
+	return " " .. COLOR.BULLET_NEUTRAL .. " " .. DOT .. " "
+end
+
+function format_line_colons(line)
+	local line_colon_index, _ = line:find(":")
+
+	if not line_colon_index then
+		return line
+	end
+
+	local line_name_left = line:sub(1, line_colon_index - 1)
+	local line_name_right = line:sub(line_colon_index + 1)
+
+	line_name_left = capitalize_words(line_name_left)
+	line_name_right = capitalize_words_by_length(line_name_right)
+
+	if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
+		return COLOR.TEXT ..
+			line_name_left ..
+			":" .. COLOR.TEXT_EMPHASIS .. line_name_right
+	end
+
+	return COLOR.TEXT .. line_name_left .. ":" .. line_name_right
+end
+
+function format_line_component(line)
+	return COLOR.TEXT .. capitalize_words_by_length(line)
+end
+
+function color_line_parentheticals(line)
+	return re.gsub(line, "'('{.+}')'", COLOR.TEXT_PARENTHETICAL .. "(%1)" .. COLOR.TEXT)
+end
+
+function capitalize_line_parenthetical(line)
+	local parentheses_start_index, _ = line:find("%(")
+
+	if not parentheses_start_index then
+		return line
+	end
+
+	-- Found parenthetical, split string up to first parenthesis.
+	local line_content_left = line:sub(1, parentheses_start_index - 1)
+	local line_content_right = line:sub(parentheses_start_index)
+
+	return capitalize_words_by_length(line_content_left) .. line_content_right
 end
 
 function normalize_desc_parentheses(str)
@@ -286,15 +314,7 @@ end
 
 -- Section Heading Rewrite
 
--- TODO: Consider stripping out color tags and dot from localized strings (may be working as-is).
-
-function formatted_desc_heading(heading)
-	-- Make input all uppercase and append a colon, wrap in color tags.
-	local formatted_heading = string.upper(heading) .. ":"
-	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
-end
-
-function rewrite_desc_heading_colors(desc)
+function rewrite_desc_heading(desc)
 	local lines = split_string_into_collection(desc, "\\n")
 	local new_lines = {}
 
@@ -317,25 +337,42 @@ function rewrite_desc_heading_colors(desc)
 	return table.concat(new_lines, " \\n")
 end
 
+function formatted_desc_heading(heading)
+	-- Make input all uppercase and append a colon, wrap in color tags.
+	local formatted_heading = string.upper(heading)
+
+	if CONFIG.USE_COLON_FOR_SECTION_HEADERS then
+		formatted_heading = formatted_heading .. ":"
+	end
+
+	return COLOR.SECTION .. formatted_heading .. COLOR.TEXT
+end
+
 -- Line Analysis
 
 function get_line_kind(line)
-	-- If line contains dot character, return bullet point
-	if line:find(DOT) then
+	local sanitized_line = strip_color_tags(line)
+
+	-- If line contains dot character, detect line as bullet point.
+	if sanitized_line:find(DOT) then
 		return LINE_KIND.BULLET_POINT
 	end
 
-	-- If line contains only uppercase characters followed by a colon ':', return section header
-	if re.find(line, "[A-Z ]^+3':'") then
-		return LINE_KIND.SECTION_HEADER
+	-- If line satisfies length constraints and contains uppercase-only characters
+	-- optionally followed by a colon ':', detect line as section header.
+	if sanitized_line:len() < CONFIG.SECTION_HEADER_HEURISTIC_MAX_CHARS then
+		local section_header_start_index, _ = re.find(sanitized_line, "[A-Z ]^+3':'*")
+		if section_header_start_index and section_header_start_index == 1 then
+			return LINE_KIND.SECTION_HEADER
+		end
 	end
 
-	-- If line is not empty and contains more than just white space, return text
-	if line ~= "" and line:find("%S") then
+	-- If line is not empty and contains more than just white space, detect line as text.
+	if sanitized_line ~= "" and sanitized_line:find("%S") then
 		return LINE_KIND.TEXT
 	end
 
-	-- Otherwise, return nil
+	-- Line is indeterminate, may be whitespace or empty.
 	return nil
 end
 
@@ -343,8 +380,9 @@ end
 
 function capitalize_words_by_length(str)
 	local max_line_length_to_capitalize = CONFIG.CAPITALIZATION_HEURISTIC_MAX_CHARS
+	local sanitized_str_length = strip_color_tags(str):len()
 
-	if string.len(str) < max_line_length_to_capitalize then
+	if sanitized_str_length < max_line_length_to_capitalize then
 		return capitalize_words(str)
 	else
 		return capitalize_first_word(str)
@@ -352,34 +390,33 @@ function capitalize_words_by_length(str)
 end
 
 function capitalize_words(str)
-	local words = split_string_into_collection(str, " ")
-	local skip_words = map_table_values({ "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
-		"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
-		"msv / sec", "Р вЂ™Р’Вµg of adren.", "Р вЂ™Р’Вµg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
-		"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg" })
+	if not CAPITALIZATION_WORD_MAP then
+		CAPITALIZATION_WORD_MAP = map_table_values(CONFIG.CAPITALIZATION_SKIP_WORDS)
+	end
 
+	local words = split_string_into_collection(str, " ")
 	local capitalized_words = {}
 
 	for index, word in ipairs(words) do
 		-- If the word is in the uncapitalized words table, then skip it.
-		if index > 1 and skip_words[string.lower(word)] then
+		if index > 1 and CAPITALIZATION_WORD_MAP[string.lower(word)] then
 			table.insert(capitalized_words, word)
 			goto continue
 		end
 
-			if string.sub(word, 1, 1) == "(" then
-				-- Found a parenthetical, capitalize the word after the parenthetical.
-				table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
-			elseif string.sub(word, 1, 2) == "%c" then
-				-- Found a color tag, capitalize the word after the color tag.
-				local tag_end_index = string.find(word, "]")
-				local tag = string.sub(word, 1, tag_end_index)
-				local tag_word = string.sub(word, tag_end_index + 1)
+		if string.sub(word, 1, 1) == "(" then
+			-- Found a parenthetical, capitalize the word after the parenthetical.
+			table.insert(capitalized_words, "(" .. capitalize_word(string.sub(word, 2)))
+		elseif string.sub(word, 1, 2) == "%c" then
+			-- Found a color tag, capitalize the word after the color tag.
+			local tag_end_index = string.find(word, "]")
+			local tag = string.sub(word, 1, tag_end_index)
+			local tag_word = string.sub(word, tag_end_index + 1)
 
-				table.insert(capitalized_words, tag .. capitalize_word(tag_word))
-			else
-				table.insert(capitalized_words, capitalize_word(word))
-			end
+			table.insert(capitalized_words, tag .. capitalize_word(tag_word))
+		else
+			table.insert(capitalized_words, capitalize_word(word))
+		end
 
 		::continue::
 	end

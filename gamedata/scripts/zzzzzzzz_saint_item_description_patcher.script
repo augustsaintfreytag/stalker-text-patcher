@@ -11,8 +11,13 @@ local original_build_desc_footer = ui_item.build_desc_footer
 
 ui_item.build_desc_header = function(obj, sec, str)
 	local header = original_build_desc_header(obj, sec, str)
-	header = normalize_desc(header)
-	
+
+	if debug_log_descriptions then
+		log_to_file(header)
+	end
+
+	header = normalize_desc(header) .. " \\n"
+
 	if debug_log_descriptions then
 		log_to_file(header)
 	end
@@ -22,8 +27,13 @@ end
 
 ui_item.build_desc_footer = function(obj, sec, str)
 	local footer = original_build_desc_footer(obj, sec, str)
+
+	if debug_log_descriptions then
+		log_to_file(footer .. log_divider)
+	end
+
 	footer = normalize_desc(footer)
-	
+
 	if debug_log_descriptions then
 		log_to_file(footer .. log_divider)
 	end
