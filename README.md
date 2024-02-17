@@ -1,3 +1,5 @@
+![Officer Document Stacks B 01](https://github.com/augustsaintfreytag/stalker-text-patcher/assets/7656669/6a1c96aa-997b-4911-94e6-34bce4f498ba)
+
 A script mod for STALKER Anomaly (Open X-Ray) to hot-patch names and descriptions of items before presentation. Hooks into the game's `ui_item.script` module to parse, format, and reprocess names and descriptions before they are displayed.
 
 > [!NOTE]
