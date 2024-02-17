@@ -39,5 +39,12 @@ UI_STRING_ELEMENT_SUBSTITUTION_VALUES = {
 		["st_craft_used_for"] = "CRAFTING",
 		["st_craft_unlocks"] = "CRAFTING",
 		["st_cook_used_for"] = "COOKING"
+	},
+	["ui_mcm_zz_item_artefact"] = {
+		["ui_mcm_item_artefact_title"] = "Artefact Condition",
+		["ui_mcm_menu_item_artefact"] = "Artefact Condition"
+	},
+	["ui_st_keybinding"] = {
+		["kb_prev_track"] = "Previous track"
 	}
 }
