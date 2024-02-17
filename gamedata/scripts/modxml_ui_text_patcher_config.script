@@ -6,6 +6,9 @@ UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 	},
 	["ui_st_momopate_wstats"] = {
 		"ui_inv_"
+	},
+	["ui_mcm_.+"] = {
+		"ui_mcm_.+_title"
 	}
 }
 
