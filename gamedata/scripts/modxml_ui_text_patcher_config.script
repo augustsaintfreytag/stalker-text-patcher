@@ -17,6 +17,15 @@ UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 UI_MENU_STRING_ELEMENT_PATTERNS = {
 	["ui_st_sortingplus"] = {
 		"st_rax_"
+	},
+	["st_tb_radio_text"] = {
+		"cb_pda_cancel"
+	},
+	["st_items_placeable"] = {
+		"st_place_furniture"
+	},
+	["st_hf_nomad_stash"] = {
+		"st_place_furniture"
 	}
 }
 
