@@ -27,9 +27,9 @@ This mod aims to provide the following features:
 - Trim extraneous whitespace before or after item descriptions
 
 > [!WARNING]
-> This mod is designed for *English* first and formatting for Ukrainian or Russian localization has not been tested.
+> This mod is designed for *English* first and formatting for Ukrainian or Russian localisation has not been tested.
 > 
-> Whole text substitutions use XML files that run through the same engine-level translation functions as other text in the game; as such, localization in all of the game's supported languages is generally supported if an XML text file for the language is provided. The engine may fall back to a default locale or output unlocalized strings when missing a localized variant. See `configs/text/<locale>` for string files.
+> Whole text substitutions use XML files that run through the same engine-level translation functions as other text in the game; as such, localisation in all of the game's supported languages is generally supported if an XML text file for the language is provided. The engine may fall back to a default locale or output unlocalised strings when missing a localised variant. See `configs/text/<locale>` for string files.
 
 ## Approach
 
