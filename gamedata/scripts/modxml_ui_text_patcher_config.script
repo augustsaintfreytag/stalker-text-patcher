@@ -34,30 +34,33 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 }
 
 -- XML file names and ids to be matched for full text substitution.
--- Matched record text will be substituted whole for the given value.
--- Does not use engine-level localization (en/ru), strings are used as-is.
+-- Matched record text will be substituted for the given identifier.
+--
+-- Uses engine-level localization if an identifier is supplied that exists
+-- in supported locales (e.g. `eng`, `ru`). If the given identifier can not
+-- be localized, it will be used as-is.
 UI_STRING_ELEMENT_SUBSTITUTION_VALUES = {
 	["ui_st_inventory"] = {
-		["ui_ammo_count"] = "Capacity",
-		["ui_inv_outfit_additional_weight"] = "Carry Weight",
-		["st_itm_desc_state_avail_workshop"] = "available (via mechanic)",
-		["ui_inv_weight"] = "Total Encumbrance",
-		["ui_inv_you_already_have"] = "Already in Inventory",
-		["ui_inv_survive_surge"] = "Emission Survival Chance",
-		["ui_inv_cant_buy_item"] = "Purchase Unavailable",
-		["ui_ammo_types"] = "CALIBRE",
-		["st_ui_awr_parts_list"] = "PARTS"
+		["ui_ammo_count"] = "ui_ammo_count_sub",
+		["ui_inv_outfit_additional_weight"] = "ui_inv_outfit_additional_weight_sub",
+		["st_itm_desc_state_avail_workshop"] = "st_itm_desc_state_avail_workshop_sub",
+		["ui_inv_weight"] = "ui_inv_weight_sub",
+		["ui_inv_you_already_have"] = "ui_inv_you_already_have_sub",
+		["ui_inv_survive_surge"] = "ui_inv_survive_surge_sub",
+		["ui_inv_cant_buy_item"] = "ui_inv_cant_buy_item_sub",
+		["ui_ammo_types"] = "ui_ammo_types_sub",
+		["st_ui_awr_parts_list"] = "st_ui_awr_parts_list_sub"
 	},
 	["st_used_for_craft"] = {
-		["st_craft_used_for"] = "CRAFTING",
-		["st_craft_unlocks"] = "CRAFTING",
-		["st_cook_used_for"] = "COOKING"
+		["st_craft_used_for"] = "st_craft_used_for_sub",
+		["st_craft_unlocks"] = "st_craft_unlocks_sub",
+		["st_cook_used_for"] = "st_cook_used_for_sub"
 	},
 	["ui_mcm_zz_item_artefact"] = {
-		["ui_mcm_item_artefact_title"] = "Artefact Condition",
-		["ui_mcm_menu_item_artefact"] = "Artefact Condition"
+		["ui_mcm_item_artefact_title"] = "ui_mcm_item_artefact_title_sub",
+		["ui_mcm_menu_item_artefact"] = "ui_mcm_menu_item_artefact_sub"
 	},
 	["ui_st_keybinding"] = {
-		["kb_prev_track"] = "Previous track"
+		["kb_prev_track"] = "kb_prev_track_sub"
 	}
 }
