@@ -26,8 +26,8 @@ This mod aims to provide the following features:
 - Reformat all spacing for sections in item descriptions (paragraph, header, bullet points)
 - Trim extraneous whitespace before or after item descriptions
 
-> [!IMPORTANT]
-> This mod is primarily designed for *English* only. It may work with Ukrainian or Russian localization if the included substitution text snippets are replaced in the mod's configuration files. A future version of the mod may use game-managed XML files for all text and allow for better localization.
+> [!WARNING]
+> This mod is designed for *English* first and formatting functionality for Ukrainian or Russian localization has not been tested. Whole text substitutions use XML files that run through the same engine-level translation functions as other text in the game; as such, localization in all of the game's supported languages is generally supported if an XML text file for the language is provided. The engine may fall back to a default locale or output unlocalized strings when missing a localized variant. See `configs/text/<locale>` for string files.
 
 ## Approach
 
