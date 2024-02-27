@@ -26,6 +26,10 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 	},
 	["st_hf_nomad_stash"] = {
 		"st_place_furniture"
+	},
+	["ui_st_other"] = {
+		"st_sleep",
+		"st_save"
 	}
 }
 
