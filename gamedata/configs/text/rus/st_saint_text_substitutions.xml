@@ -1,0 +1,61 @@
+<string_table>
+    <!-- Inventory -->
+
+    <string id="ui_ammo_count_sub">
+        <text>Емкость</text>
+    </string>
+    <string id="ui_inv_outfit_additional_weight_sub">
+        <text>Грузоподъемность</text>
+    </string>
+    <string id="st_itm_desc_state_avail_workshop_sub">
+        <text>доступно (через механика)</text>
+    </string>
+    <string id="ui_inv_weight_sub">
+        <text>Общая нагрузка</text>
+    </string>
+    <string id="ui_inv_you_already_have_sub">
+        <text>Уже в инвентаре</text>
+    </string>
+    <string id="ui_inv_survive_surge_sub">
+        <text>Шанс выжить при выбросе</text>
+    </string>
+    <string id="ui_inv_cant_buy_item_sub">
+        <text>Покупка недоступна</text>
+    </string>
+
+    <!-- Section Names-->
+
+    <string id="ui_ammo_types_sub">
+        <text>КАЛИБР</text>
+    </string>
+    <string id="st_ui_awr_parts_list_sub">
+        <text>ЗАПЧАСТИ</text>
+    </string>
+
+    <!-- Crafting Tooltip -->
+
+    <string id="st_craft_used_for_sub">
+        <text>КРАФТ</text>
+    </string>
+    <string id="st_craft_unlocks_sub">
+        <text>ЧЕРТЕЖИ</text>
+    </string>
+    <string id="st_cook_used_for_sub">
+        <text>ПРИГОТОВЛЕНИЕ ЕДЫ</text>
+    </string>
+
+    <!-- Artefact Descriptions -->
+
+    <string id="ui_mcm_item_artefact_title_sub">
+        <text>Состояние артефакта</text>
+    </string>
+    <string id="ui_mcm_menu_item_artefact_sub">
+        <text>Состояние артефакта</text>
+    </string>
+
+    <!-- Menus -->
+    <string id="kb_prev_track_sub">
+        <text>Предыдущий трек</text>
+    </string>
+
+</string_table>

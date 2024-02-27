@@ -1,0 +1,61 @@
+<string_table>
+	<!-- Inventory -->
+
+    <string id="ui_ammo_count_sub">
+		<text>Capacity</text>
+	</string>
+    <string id="ui_inv_outfit_additional_weight_sub">
+        <text>Carry Weight</text>
+    </string>
+	<string id="st_itm_desc_state_avail_workshop_sub">
+        <text>available (via mechanic)</text>
+    </string>
+	<string id="ui_inv_weight_sub">
+        <text>Total Encumbrance</text>
+    </string>
+	<string id="ui_inv_you_already_have_sub">
+        <text>Already in Inventory</text>
+    </string>
+	<string id="ui_inv_survive_surge_sub">
+        <text>Emission Survival Chance</text>
+	</string>
+	<string id="ui_inv_cant_buy_item_sub">
+        <text>Purchase Unavailable</text>
+	</string>
+
+	<!-- Section Names-->
+
+	<string id="ui_ammo_types_sub">
+        <text>CALIBRE</text>
+    </string>
+	<string id="st_ui_awr_parts_list_sub">
+        <text>PARTS</text>
+    </string>
+
+	<!-- Crafting Tooltip -->
+
+	<string id="st_craft_used_for_sub">
+        <text>CRAFTING</text>
+    </string>
+	<string id="st_craft_unlocks_sub">
+        <text>BLUEPRINTS</text>
+    </string>
+	<string id="st_cook_used_for_sub">
+        <text>COOKING</text>
+    </string>
+
+	<!-- Artefact Descriptions -->
+
+	<string id="ui_mcm_item_artefact_title_sub">
+		<text>Artefact Condition</text>
+	</string>
+	<string id="ui_mcm_menu_item_artefact_sub">
+		<text>Artefact Condition</text>
+	</string>
+
+	<!-- Menus -->
+	<string id="kb_prev_track_sub">
+		<text>Previous track</text>
+	</string>
+
+</string_table>
