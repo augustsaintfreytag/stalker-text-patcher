@@ -37,7 +37,7 @@ As more mods get developed and combined in packs, keeping naming conventions and
 
 The first part of this mod is a script-based module that augments the formulation of name and description texts via `ui_item`. Game engine calls two primary functions, `item_name` and the pair of `build_desc_header` and `build_desc_footer` to process item-related text (e.g. text shown in player inventory and tooltips). The text concatenated by the base game and all other preceding mods is then read, rewritten in multiple passes, and output as a consistently formatted piece. The behaviour of this module's rewrite passes can be configured in `saint_utils_config`.
 
-The second module is a DXML mod that handles supplementary patches for text that does not run through the `ui_item` script. The DXML part handles formatting for the labels of in-game menu items and also performs configurable arbitrary text substitution. It allows patching specific records in all of the game's localisation XML files using patterns, enabling easy to use bulk processing of strings.
+The second module is a DXML mod that handles supplementary patches for text that does not run through the `ui_item` script. The DXML part handles formatting for the labels of in-game menu items. It allows selecting and processing specific records in all of the game's localisation XML files using patterns to apply formatting rules in bulk.
 
 Actual item data is not touched and only rewritten in-engine before it is presented. Because of this post-processing approach, this mod is compatible with all other mods and mod packs and can patch virtually any item name and description text. Behaviour of all modules of this mod can be customised using the included `*_config` files. Do not edit the main mod script files.
 
