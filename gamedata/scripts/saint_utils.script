@@ -80,14 +80,18 @@ function rewrite_stacked_bullet_points(desc)
 			goto continue
 		end
 
-		-- local color_tag_start_index, color_tag_end_index = re.find(line, "('%c['[a-zA-Z0-9_, ]+']')")
-
 		-- Find start index after first occurrence of dot for matching.
 		local first_dot_start_index = line:find(DOT)
 
 		-- Find index of color tag, dot, color tag after initial dot to find unwanted concatenated segment.
 		local second_dot_start_index, _ = re.find(line,
 			"'%c['[a-zA-Z0-9_, ]+']'%s*'" .. DOT .. "'%s*'%c['[a-zA-Z0-9_, ]+']'", first_dot_start_index)
+
+		if not second_dot_start_index then
+			-- Found two dots in line but could not determine index of second dot, skip line.
+			table.insert(new_lines, line)
+			goto continue
+		end
 
 		-- Insert new line at second dot index, add to table.
 		local left_line = line:sub(1, second_dot_start_index - 1)
