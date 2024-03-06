@@ -26,7 +26,6 @@ function on_xml_read()
 		local capitalization_pattern_table = match_table_for_value(CONFIG.UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS,
 			file_name)
 		local menu_pattern_table = match_table_for_value(CONFIG.UI_MENU_STRING_ELEMENT_PATTERNS, file_name)
-		local substitution_table = match_table_for_value(CONFIG.UI_STRING_ELEMENT_SUBSTITUTION_VALUES, file_name)
 
 		if capitalization_pattern_table then
 			log("DXML UI text patcher running capitalization patterns for file '%s'.", file_name)
@@ -36,11 +35,6 @@ function on_xml_read()
 		if menu_pattern_table then
 			log("DXML UI text patcher running menu patterns for file '%s'.", file_name)
 			process_menu_elements(file_name, xml_obj, menu_pattern_table)
-		end
-
-		if substitution_table then
-			log("DXML UI text patcher running substitution patterns for file '%s'.", file_name)
-			process_substitution_elements(file_name, substitution_table, xml_obj)
 		end
 	end)
 end
@@ -77,30 +71,6 @@ function process_menu_elements(file_name, xml_obj, patterns)
 			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
 	end)
-end
-
--- Process: Substitution Elements
-
-function process_substitution_elements(file_name, substitution_table, xml_obj)
-	for match_id, substitution_text in pairs(substitution_table) do
-		local string_element = xml_obj:query("string[id=" .. match_id .. "]")[1]
-
-		if not string_element then
-			goto continue
-		end
-
-		with_text_element_from_string_element(xml_obj, string_element, function(id, text_element, text)
-			local localized_substitution_text = game.translate_string(substitution_text)
-			log(
-				"DXML UI text patcher setting element id '%s' to substitution text (input: '%s', output: '%s') in file '%s'.",
-				id,
-				saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(localized_substitution_text),
-				file_name)
-			xml_obj:setText(text_element, localized_substitution_text)
-		end)
-
-		::continue::
-	end
 end
 
 -- Iteration & Extraction
