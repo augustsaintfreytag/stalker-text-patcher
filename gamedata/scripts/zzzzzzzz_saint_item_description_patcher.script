@@ -1,42 +1,34 @@
 -- Modules
 
-local debug_log_descriptions = false
-
 local normalize_desc = saint_utils.normalize_desc
 local log_to_file = saint_utils.log_to_file
 local log_divider = saint_utils.log_divider
 
+-- Original Module References
+
 local original_build_desc_header = ui_item.build_desc_header
 local original_build_desc_footer = ui_item.build_desc_footer
+local original_sec_desc = ui_item.get_sec_desc
+local original_obj_desc = ui_item.get_obj_desc
+
+-- Overrides
 
 ui_item.build_desc_header = function(obj, sec, str)
 	local header = original_build_desc_header(obj, sec, str)
-
-	if debug_log_descriptions then
-		log_to_file(header)
-	end
-
-	header = normalize_desc(header) .. " \\n"
-
-	if debug_log_descriptions then
-		log_to_file(header)
-	end
-
-	return header
+	return normalize_desc(header) .. " \\n"
 end
 
 ui_item.build_desc_footer = function(obj, sec, str)
 	local footer = original_build_desc_footer(obj, sec, str)
+	return normalize_desc(footer)
+end
 
-	if debug_log_descriptions then
-		log_to_file(footer .. log_divider)
-	end
+ui_item.get_sec_desc = function(sec)
+	local desc = original_sec_desc(sec)
+	return normalize_desc(desc)
+end
 
-	footer = normalize_desc(footer)
-
-	if debug_log_descriptions then
-		log_to_file(footer .. log_divider)
-	end
-
-	return footer
+ui_item.get_obj_desc = function(obj)
+	local desc = original_obj_desc(obj)
+	return normalize_desc(desc)
 end
