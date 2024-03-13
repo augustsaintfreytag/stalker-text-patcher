@@ -43,4 +43,8 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 -- All elements in a given file will be checked and substrings will be replaced
 -- with the provided substitution string.
 UI_STRING_SUBSTITUTION_PATTERNS = {
+	["zzz_st_items_weapons_blackmarket"] = {
+		["'BlackMarket'"] = "Market",
+		["%s*'%c['[a-zA-Z0-9_, ]+']'%s+'•'%s+'%c['[a-zA-Z0-9_, ]+']'%s*'ATTACHMENTS:'"] = "ATTACHMENTS:"
+	}
 }
