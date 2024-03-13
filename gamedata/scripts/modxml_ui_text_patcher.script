@@ -32,6 +32,7 @@ function on_xml_read()
 		local capitalization_pattern_table = match_table_for_value(CONFIG.UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS,
 			file_name)
 		local menu_pattern_table = match_table_for_value(CONFIG.UI_MENU_STRING_ELEMENT_PATTERNS, file_name)
+		local substitution_pattern_table = match_table_for_value(CONFIG.UI_STRING_SUBSTITUTION_PATTERNS, file_name)
 
 		if capitalization_pattern_table then
 			log("DXML UI text patcher running capitalization patterns for file '%s'.", file_name)
@@ -41,6 +42,11 @@ function on_xml_read()
 		if menu_pattern_table then
 			log("DXML UI text patcher running menu patterns for file '%s'.", file_name)
 			process_menu_elements(file_name, xml_obj, menu_pattern_table)
+		end
+
+		if substitution_pattern_table then
+			log("DXML UI text patcher running substitution patterns for file '%s'.", file_name)
+			process_substitution_elements(file_name, xml_obj, substitution_pattern_table)
 		end
 	end)
 end
@@ -76,6 +82,27 @@ function process_menu_elements(file_name, xml_obj, patterns)
 		log("DXML UI text patcher formatting element id '%s' menu text (input: '%s', output: '%s') in file '%s'.", id,
 			ellipsized_string(text), ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
+	end)
+end
+
+-- Process: Substitution Elements
+
+function process_substitution_elements(file_name, xml_obj, patterns)
+	for_each_text_element_in_object(file_name, xml_obj, function(_, _)
+		-- No filtering by element id, substitution patterns are applied to all elements in file.
+		return true
+	end, function(id, text_element, text)
+		local processed_text = text
+
+		for pattern, substitution in pairs(patterns) do
+			processed_text = re.gsub(processed_text, pattern, substitution)
+		end
+
+		log(
+			"DXML UI text patcher processing substitution for element id '%s' text (input: '%s', output: '%s') in file '%s'.",
+			id,
+			ellipsized_string(text), ellipsized_string(processed_text), file_name)
+		xml_obj:setText(text_element, processed_text)
 	end)
 end
 

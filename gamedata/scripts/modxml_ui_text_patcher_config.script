@@ -38,3 +38,9 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 		"st_auto_looter_disable_auto_loot"
 	}
 }
+
+-- Query strings to be matched by localization file name.
+-- All elements in a given file will be checked and substrings will be replaced
+-- with the provided substitution string.
+UI_STRING_SUBSTITUTION_PATTERNS = {
+}
