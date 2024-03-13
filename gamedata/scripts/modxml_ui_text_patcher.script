@@ -8,6 +8,12 @@ end
 
 local CONFIG = modxml_ui_text_patcher_config
 
+-- References
+
+local re = saint_utils.re
+local capitalize_words = saint_utils.capitalize_words
+local ellipsized_string = saint_utils.ellipsized_string
+
 -- Entry Point
 
 function on_xml_read()
@@ -50,12 +56,12 @@ function process_capitalization_elements(file_name, xml_obj, patterns)
 			return
 		end
 
-		local formatted_text = saint_utils.capitalize_words(text)
+		local formatted_text = capitalize_words(text)
 
 		log(
 			"DXML UI text patcher capitalizing element id '%s' (input: '%s', output: '%s') in file '%s'.",
 			id,
-			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
+			ellipsized_string(text), ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
 	end)
 end
@@ -68,7 +74,7 @@ function process_menu_elements(file_name, xml_obj, patterns)
 	end, function(id, text_element, text)
 		local formatted_text = string.lower(text)
 		log("DXML UI text patcher formatting element id '%s' menu text (input: '%s', output: '%s') in file '%s'.", id,
-			saint_utils.ellipsized_string(text), saint_utils.ellipsized_string(formatted_text), file_name)
+			ellipsized_string(text), ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
 	end)
 end
