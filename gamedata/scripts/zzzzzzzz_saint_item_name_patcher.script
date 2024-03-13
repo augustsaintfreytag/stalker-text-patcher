@@ -1,8 +1,8 @@
--- Modules
+-- References
 
 local normalize_name = saint_utils.normalize_name
 
--- Original Module References
+-- Original References
 
 local original_item_name = ui_item.item_name
 local original_item_short_name = ui_item.item_short_name
