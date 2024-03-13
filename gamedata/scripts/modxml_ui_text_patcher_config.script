@@ -73,8 +73,13 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 }
 
 -- Query strings to be matched by localization file name.
--- All elements in a given file will be checked and substrings will be replaced
--- with the provided substitution string.
+-- All elements in a given file will be checked and substrings will
+-- be replaced with the provided substitution string.
+--
+-- This feature is intended for custom hot fixes that are not
+-- incorporated into general purpose formatting and rewrite logic.
+-- Text quirks that only appear in specific mods or user-defined
+-- substitutions can be defined here as an accessible alternative.
 UI_STRING_SUBSTITUTION_PATTERNS = {
 	["zzz_st_items_weapons_blackmarket"] = {
 		["'BlackMarket'"] = "Market",
