@@ -1,10 +1,11 @@
--- Modules
+-- References
 
 local normalize_desc = saint_utils.normalize_desc
+local hash_value = saint_utils.hash_value
 local log_to_file = saint_utils.log_to_file
 local log_divider = saint_utils.log_divider
 
--- Original Module References
+-- Original References
 
 local original_build_desc_header = ui_item.build_desc_header
 local original_build_desc_footer = ui_item.build_desc_footer
@@ -15,20 +16,28 @@ local original_obj_desc = ui_item.get_obj_desc
 
 ui_item.build_desc_header = function(obj, sec, str)
 	local header = original_build_desc_header(obj, sec, str)
-	return normalize_desc(header) .. " \\n"
+	local normalized_header = normalize_desc(header)
+
+	return normalized_header
 end
 
 ui_item.build_desc_footer = function(obj, sec, str)
 	local footer = original_build_desc_footer(obj, sec, str)
-	return normalize_desc(footer)
+	local normalized_footer = normalize_desc(footer)
+
+	return normalized_footer
 end
 
 ui_item.get_sec_desc = function(sec)
 	local desc = original_sec_desc(sec)
-	return normalize_desc(desc)
+	local normalized_desc = normalize_desc(desc)
+
+	return normalized_desc
 end
 
 ui_item.get_obj_desc = function(obj)
 	local desc = original_obj_desc(obj)
-	return normalize_desc(desc)
+	local normalized_desc = normalize_desc(desc)
+
+	return normalized_desc
 end

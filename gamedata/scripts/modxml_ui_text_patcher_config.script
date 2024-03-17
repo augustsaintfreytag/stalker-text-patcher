@@ -9,6 +9,39 @@ UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 	},
 	["ui_mcm_.+"] = {
 		"ui_mcm_.+_title"
+	},
+	["ui_st_encyclopedia_achievements"] = {
+		"encyclopedia_achievements"
+	},
+	["ui_st_encyclopedia_anomalies"] = {
+		"encyclopedia_mutants"
+	},
+	["ui_st_encyclopedia_artifacts"] = {
+		"encyclopedia_artifacts"
+	},
+	["ui_st_encyclopedia_factions"] = {
+		"encyclopedia_factions"
+	},
+	["ui_st_encyclopedia_features"] = {
+		"encyclopedia_features"
+	},
+	["ui_st_encyclopedia_features_options"] = {
+		"encyclopedia_features_options"
+	},
+	["ui_st_encyclopedia_historic"] = {
+		"encyclopedia_historic"
+	},
+	["ui_st_encyclopedia_items"] = {
+		"encyclopedia_items"
+	},
+	["ui_st_encyclopedia_locations"] = {
+		"encyclopedia_locations"
+	},
+	["ui_st_encyclopedia_features_mutants"] = {
+		"encyclopedia_features_mutants"
+	},
+	["ui_st_encyclopedia_options"] = {
+		"encyclopedia_options"
 	}
 }
 
@@ -36,5 +69,20 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 		"st_auto_looter_disable_auto_disassemble",
 		"st_auto_looter_enable_auto_loot",
 		"st_auto_looter_disable_auto_loot"
+	}
+}
+
+-- Query strings to be matched by localization file name.
+-- All elements in a given file will be checked and substrings will
+-- be replaced with the provided substitution string.
+--
+-- This feature is intended for custom hot fixes that are not
+-- incorporated into general purpose formatting and rewrite logic.
+-- Text quirks that only appear in specific mods or user-defined
+-- substitutions can be defined here as an accessible alternative.
+UI_STRING_SUBSTITUTION_PATTERNS = {
+	["zzz_st_items_weapons_blackmarket"] = {
+		["'BlackMarket'"] = "Market",
+		["%s*'%c['[a-zA-Z0-9_, ]+']'%s+'•'%s+'%c['[a-zA-Z0-9_, ]+']'%s*'ATTACHMENTS:'"] = "ATTACHMENTS:"
 	}
 }

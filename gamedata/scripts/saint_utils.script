@@ -1,17 +1,10 @@
-local gc
-
 -- Preloading
--- Mock game environment (`game`, `gc`) to allow running tests.
+-- Mock game bare environment to allow running tests.
 
 if game then
-	gc = game.translate_string
 	lulpeg = require "lulpeg"
 	re = lulpeg.re
 else
-	gc = function(str)
-		return str
-	end
-
 	SAINT_UTILS_CONFIG = require "gamedata/scripts/saint_utils_config"
 end
 
