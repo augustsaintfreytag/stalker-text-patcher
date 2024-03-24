@@ -140,10 +140,10 @@
 	</string>
 
 	<string id="st_mm_new_game_relations">
-		<text>FACTION RELATIONS:</text>
+		<text>RELATIONS:</text>
 	</string>
 	<string id="st_mm_new_game_description">
-		<text>FACTION DESCRIPTION:</text>
+		<text>DESCRIPTION:</text>
 	</string>
 	<string id="st_mm_new_game_points">
 		<text>Points</text>
