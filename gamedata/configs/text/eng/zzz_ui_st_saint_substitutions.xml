@@ -44,19 +44,4 @@
 	<string id="st_cook_used_for">
         <text>COOKING</text>
     </string>
-
-	<!-- Artefact Descriptions -->
-
-	<string id="ui_mcm_item_artefact_title">
-		<text>Artefact Condition</text>
-	</string>
-	<string id="ui_mcm_menu_item_artefact">
-		<text>Artefact Condition</text>
-	</string>
-
-	<!-- Menus -->
-
-	<string id="kb_prev_track">
-		<text>Previous track</text>
-	</string>
 </string_table>
