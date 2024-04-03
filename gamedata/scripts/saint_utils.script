@@ -485,6 +485,18 @@ function map_table_keys(collection)
 	return map
 end
 
+-- Utility: Hashing
+
+function hash_value(string)
+	local hash = 0
+
+	for i = 1, #string do
+		hash = string.byte(string, i) + bit.lshift(hash, 6) + bit.lshift(hash, 16) - hash
+	end
+
+	return hash
+end
+
 -- Logging
 
 function ellipsized_string(str, max_length)
