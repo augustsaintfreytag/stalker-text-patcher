@@ -21,7 +21,4 @@
 	<string id="st_tip">
 		<text>System</text>
 	</string>
-	<string id="ui_mm_video_advanced_volumetric_lights">
-		<text>Volumetric Light</text>
-	</string>
 </string_table>
