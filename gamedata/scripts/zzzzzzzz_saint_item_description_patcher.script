@@ -1,9 +1,6 @@
 -- References
 
 local normalize_desc = saint_utils.normalize_desc
-local hash_value = saint_utils.hash_value
-local log_to_file = saint_utils.log_to_file
-local log_divider = saint_utils.log_divider
 
 -- Original References
 
