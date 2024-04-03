@@ -17,7 +17,7 @@ local ellipsized_string = saint_utils.ellipsized_string
 -- Entry Point
 
 function on_xml_read()
-	log("Loading Saint's DXML UI text patcher.")
+	log("Loading Saint's DXML text patcher.")
 
 	RegisterScriptCallback("on_xml_read", function(xml_scope_name, xml_obj)
 		-- Prevalidation
@@ -35,17 +35,17 @@ function on_xml_read()
 		local substitution_pattern_table = match_table_for_value(CONFIG.UI_STRING_SUBSTITUTION_PATTERNS, file_name)
 
 		if capitalization_pattern_table then
-			log("DXML UI text patcher running capitalization patterns for file '%s'.", file_name)
+			log("DXML text patcher running capitalization patterns for file '%s'.", file_name)
 			process_capitalization_elements(file_name, xml_obj, capitalization_pattern_table)
 		end
 
 		if menu_pattern_table then
-			log("DXML UI text patcher running menu patterns for file '%s'.", file_name)
+			log("DXML text patcher running menu patterns for file '%s'.", file_name)
 			process_menu_elements(file_name, xml_obj, menu_pattern_table)
 		end
 
 		if substitution_pattern_table then
-			log("DXML UI text patcher running substitution patterns for file '%s'.", file_name)
+			log("DXML text patcher running substitution patterns for file '%s'.", file_name)
 			process_substitution_elements(file_name, xml_obj, substitution_pattern_table)
 		end
 	end)
@@ -65,7 +65,7 @@ function process_capitalization_elements(file_name, xml_obj, patterns)
 		local formatted_text = capitalize_words(text)
 
 		log(
-			"DXML UI text patcher capitalizing element id '%s' (input: '%s', output: '%s') in file '%s'.",
+			"DXML text patcher capitalizing element id '%s' (input: '%s', output: '%s') in file '%s'.",
 			id,
 			ellipsized_string(text), ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
@@ -79,7 +79,7 @@ function process_menu_elements(file_name, xml_obj, patterns)
 		return patterns_contain_id(patterns, id)
 	end, function(id, text_element, text)
 		local formatted_text = string.lower(text)
-		log("DXML UI text patcher formatting element id '%s' menu text (input: '%s', output: '%s') in file '%s'.", id,
+		log("DXML text patcher formatting element id '%s' menu text (input: '%s', output: '%s') in file '%s'.", id,
 			ellipsized_string(text), ellipsized_string(formatted_text), file_name)
 		xml_obj:setText(text_element, formatted_text)
 	end)
@@ -99,7 +99,7 @@ function process_substitution_elements(file_name, xml_obj, patterns)
 		end
 
 		log(
-			"DXML UI text patcher processing substitution for element id '%s' text (input: '%s', output: '%s') in file '%s'.",
+			"DXML text patcher processing substitution for element id '%s' text (input: '%s', output: '%s') in file '%s'.",
 			id,
 			ellipsized_string(text), ellipsized_string(processed_text), file_name)
 		xml_obj:setText(text_element, processed_text)
@@ -116,7 +116,7 @@ function for_each_text_element_in_object(file_name, xml_obj, predicate, callback
 	local string_elements = xml_obj:query("string")
 
 	if not string_elements or #string_elements == 0 then
-		log("DXML UI text patcher did not find any string elements in file '%s'.", file_name)
+		log("DXML text patcher did not find any string elements in file '%s'.", file_name)
 		return
 	end
 
@@ -129,7 +129,7 @@ function for_each_text_element_in_object(file_name, xml_obj, predicate, callback
 		return
 	end
 
-	log("DXML UI text patcher found %s string elements (filtered from %s) in file '%s'.", #filtered_string_elements,
+	log("DXML text patcher found %s string elements (filtered from %s) in file '%s'.", #filtered_string_elements,
 		#string_elements, file_name)
 
 	for _, string_element in ipairs(filtered_string_elements) do
@@ -146,7 +146,7 @@ function with_text_element_from_string_element(xml_obj, string_element, callback
 	local text_element = xml_obj:query("string[id=" .. id .. "] > text")[1]
 
 	if not text_element then
-		log("DXML UI text patcher could not find predetermined text/string element pair with id '%s'.", id)
+		log("DXML text patcher could not find predetermined text/string element pair with id '%s'.", id)
 		return nil
 	end
 
