@@ -510,7 +510,7 @@ function ellipsized_string(str, max_length)
 end
 
 function log_to_file(message)
-	local log_file = io.open("log_saint_utils.txt", "a")
+	local log_file = io.open("saint_utils.log", "a")
 	log_file:write(message .. "\n")
 	log_file:close(log_file)
 end
