@@ -44,7 +44,8 @@ UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 		"encyclopedia_options"
 	},
 	["zzz_st_saint_bhs_overhaul_inventory"] = {
-		"ui_inv_"
+		"ui_inv_",
+		"st_levels"
 	}
 }
 
