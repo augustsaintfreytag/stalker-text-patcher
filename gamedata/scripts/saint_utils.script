@@ -388,7 +388,7 @@ end
 
 function capitalize_words(str)
 	if not CAPITALIZATION_WORD_MAP then
-		CAPITALIZATION_WORD_MAP = map_table_values(CONFIG.CAPITALIZATION_SKIP_WORDS)
+		CAPITALIZATION_WORD_MAP = map_from_table_values(CONFIG.CAPITALIZATION_SKIP_WORDS)
 	end
 
 	local words = split_string_into_collection(str, " ")
@@ -465,7 +465,7 @@ function split_string_into_collection(str, sep)
 	return lines
 end
 
-function map_table_values(collection)
+function map_from_table_values(collection)
 	local map = {}
 
 	for _, value in ipairs(collection) do
