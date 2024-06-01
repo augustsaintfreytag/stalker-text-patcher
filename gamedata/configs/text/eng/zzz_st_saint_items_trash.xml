@@ -356,13 +356,13 @@
 	</string>
 
 	<string id="st_jewelry_box">
-		<text>Decorated Jewellery Box</text>
+		<text>Decorated Jewelery Box</text>
 	</string>
 	<string id="st_jewelry_box_descr">
-		<text>A Romanian jewelry box, exquisitely crafted from rich, dark wood and adorned with intricate carvings, with moderate signs of wear. The design incorporates motifs inspired by the village of Horezu, known for its traditional ceramics and woodwork. The lid features a delicate engraving of the Horezu Monastery, a symbol of the village’s cultural heritage and UNESCO World Heritage site. Inside, the box is lined with soft velvet to offer a safe and elegant space for items. The box contains a number of bracelets, rings, and necklaces made from different materials. \n \n
+		<text>A Romanian jewelry box, exquisitely crafted from rich, dark wood and adorned with intricate carvings, with moderate signs of wear. The design incorporates motifs inspired by the village of Horezu, known for its traditional ceramics and woodwork. The lid features a delicate engraving of the Horezu Monastery, a symbol of the village’s cultural heritage and UNESCO World Heritage site. Inside, the box is lined with soft velvet and offers plenty of space for items. The box contains a number of bracelets, rings, and necklaces made from different materials. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] personal belongings\n
-		%c[d_cyan] • %c[ui_gray_2] valuable\n
+		%c[d_cyan] • %c[ui_gray_2] valuable item\n
 		</text>
 	</string>
 
