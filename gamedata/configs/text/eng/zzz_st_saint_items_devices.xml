@@ -90,8 +90,8 @@
 		<text>An advanced prototype field detector based off the functionality and design of the Veles detector. Like its reference model, the device operates by sending out electromagnetic pulses at specific harmonic frequencies by a rotating emitter. Anomalous objects reflect the received pulse back towards the device with signature alterations to frequency, amplitude, and phase shift. The difference in pulses is used to calculate distance to the artifact once detected. In parallel, the device generates a low energy electromagnetic field around itself and uses a concentrated array of sensors to measure distortions to the field. The hybrid mode allows it to reliably detect a much higher breadth of anomalous formations than more basic detectors. The Svarog device is outfitted with extra processing components and can also approximate areas of anomalous activity instead of only evaluating peaks in its measurement data. The device features a similar LED screen as the Veles detector and displays both formations and areas in a cone-shaped pattern in front of the user. It is housed in a durable and weather-resistant polymer case. The Svarog detector is considered a high-tier detector type. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] technological item\n
+		%c[d_orange] • %c[ui_gray_2] anomalous field detection\n
 		%c[d_orange] • %c[ui_gray_2] Tier IV artifact detection\n
-		%c[d_orange] • %c[ui_gray_2] Tier IV anomalous field detection\n
 		</text>
 	</string>
 	
@@ -140,40 +140,43 @@
 	</string>
 	
 	<string id="st_device_torch_nv_1_name">
-		<text>Headlamp w/ 1PN93-1 Nightvision</text>
+		<text>Headlamp w/ 1PN93-1 Night Vision</text>
 	</string>
 	<string id="st_device_torch_nv_1_descr">
-		<text>A head-mounted combined light amplification device and flashlight with a lightweight aluminum frame and adjustable elastic straps for a secure fit. The standard-issue 1PN93-1 Russian Military Forces night-vision device uses a low-resolution image intensifier tube and offers basic visibility in low light conditions. The flashlight module offers regular illumination, useful for nighttime and underground operations and multi-day expeditions. It is outfitted with high-intensity LED bulbs and produces a beam of up to 100 meters. The housing is water-resistant and shockproof, built to withstand the extensive wear and tear of everyday use. The 1PN93-1 model is considered an entry-level night-vision device and has a number of drawbacks, including susceptibility to bright light sources and an above average power drain. It is used by operatives seeking inexpensive night vision and low rank military personnel. \n \n
+		<text>A head-mounted combined night vision device and flashlight with a lightweight aluminum frame and adjustable elastic straps for a secure fit. The standard-issue 1PN93-1 light amplification device uses a low-resolution image intensifier tube and offers basic visibility in low light conditions. It has an above-average power drain ans is highly susceptible to bright light sources. The flashlight module offers regular illumination, useful for nighttime and underground operations and multi-day expeditions. It is outfitted with high-intensity LED bulbs and produces a beam of up to 100 meters. The housing is water-resistant and shockproof, built to withstand the extensive wear and tear of everyday use. The 1PN93-1 model is considered an entry-level night-vision device. It is used by operatives seeking inexpensive night vision and low rank military personnel. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] technological item\n
-		%c[d_orange] • %c[ui_gray_2] equipped light source\n
-		%c[d_orange] • %c[ui_gray_2] equipped light amplification device\n
+		%c[d_orange] • %c[ui_gray_2] light source\n
+		%c[d_orange] • %c[ui_gray_2] Tier I night vision\n
 		%c[d_orange] • %c[ui_gray_2] long-press NVG button to toggle\n
 		%c[d_orange] • %c[ui_gray_2] short-press NVG button to adjust brightness\n
 		</text>
 	</string>
 	
 	<string id="st_device_torch_nv_2_name">
-		<text>Headlamp w/ PN21KL Nightvision</text>
+		<text>Headlamp w/ PN21KL Night Vision</text>
 	</string>
 	<string id="st_device_torch_nv_2_descr">
-		<text>A standard head-mounted flashlight in fully working order. Useful for stalkers who find themselves out and about after dark, but may attract trouble if used unwisely. This head lamp comes with an IIT generation 2+ image intensification. Intended for operation at night under natural illumination and in complete darkness with the infrared illuminator.\n \n
+		<text>A head-mounted combined night vision device and flashlight with a lightweight aluminum frame and adjustable elastic straps for a secure fit. The PN21KL is a compact, multifunctional light amplification device designed for military and law enforcement applications. It utilizes a high-performance Gen 2+ image intensifier tube alongside an infrared illuminator and provides improved resolution and image clarity in low-light scenarios. Its field of view is an upgrade from lower-end models, though still limited. The device has a high power drain and is susceptible to bright light sources. The flashlight module offers regular illumination, useful for nighttime and underground operations and multi-day expeditions. It is outfitted with high-intensity LED bulbs and produces a beam of up to 100 meters. The housing is water-resistant and shockproof, built to withstand the extensive wear and tear of everyday use. The PN21KL model is considered an intermediate-level night-vision device. It is widely used by experienced operatives, contracted mercenaries, and higher rank military personnel. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] technological item\n
-		%c[d_orange] • %c[ui_gray_2] equipped light source\n
-		%c[d_orange] • %c[ui_gray_2] equipped light amplification device\n
+		%c[d_orange] • %c[ui_gray_2] light source\n
+		%c[d_orange] • %c[ui_gray_2] Tier II night vision\n
 		%c[d_orange] • %c[ui_gray_2] long-press NVG button to toggle\n
 		%c[d_orange] • %c[ui_gray_2] short-press NVG button to adjust brightness\n
 		</text>
 	</string>
 	
 	<string id="st_device_torch_nv_3_name">
-		<text>Headlamp w/ Oracle Psi-stimulator</text>
+		<text>Headlamp w/ ANPN-20 Night Vision</text>
 	</string>
 	<string id="st_device_torch_nv_3_descr">
-		<text>A standard head-mounted flashlight in fully working order. Useful for stalkers who find themselves out and about after dark, but may attract trouble if used unwisely. This head lamp has image-processing software that removes video noise and enhances image-intensifying capabilities of PN21K units, thus making it a full-fledged IIT generation 3+ night vision device.\n \n
+		<text>
+		A head-mounted combined night vision device and flashlight with a lightweight aluminum frame and adjustable elastic straps for a secure fit. The ANPN-20 is a multifunctional light amplification device designed primarily for military applications. It utilizes a high-performance IIT Gen 3+ image intensifier tube alongside an infrared illuminator with extended image-processing capabilities. It provides improved resolution and image clarity in low-light scenarios with high field of view. All its top of the line functionality comes at the cost of high power drain. The flashlight module offers regular illumination, useful for nighttime and underground operations and multi-day expeditions. It is outfitted with high-intensity LED bulbs and produces a beam of up to 100 meters. The housing is water-resistant and shockproof, built to withstand the extensive wear and tear of everyday use. The ANPN-20 model is considered a high-end night-vision device. It is widely used by experienced operatives, contracted mercenaries, and top rank military personnel. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] technological item\n
+		%c[d_orange] • %c[ui_gray_2] light source\n
+		%c[d_orange] • %c[ui_gray_2] Tier III night vision\n
 		%c[d_orange] • %c[ui_gray_2] long-press NVG button to toggle\n
 		%c[d_orange] • %c[ui_gray_2] short-press NVG button to adjust brightness\n
 		</text>
