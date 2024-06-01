@@ -7,6 +7,7 @@
 	<string id="st_pda_descr">
 		<text>A portable hand-held computer with vital functions for the day to day life in the exclusion zone. This series of PDAs was developed specifically for use in the Zone and is one of the few electronic devices able to operate without significant interference. All PDAs come in a durable casing, are dust-resistant and waterproof up to a few meters of depth and have special internal shielding to electrical pulses common around anomalies and during emissions. All models come equipped with a GPS module that provides highly accurate geolocation and bearing by evaluating signal pings from a number of antennae and relays inside the perimeter, making it the only viable electronic means of location. Though the model and firmware appear notably outdated, it has inarguably established itself as the device of choice for communication, navigation, task organization, an encyclopedia, and storage for personal information. This particular device is a basic model providing core functionality. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
+		%c[d_blue] • %c[ui_gray_2] workshop item\n
 		%c[d_cyan] • %c[ui_gray_2] technological item\n
 		</text>
 	</string>
