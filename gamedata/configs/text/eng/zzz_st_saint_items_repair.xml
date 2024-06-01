@@ -87,7 +87,7 @@
 		<text>Cleaning Solvent ("Hoppe's No. 9")</text>
 	</string>
 	<string id="st_solvent_descr">
-		<text>Western-made, high-quality firearm cleaning solvent intended for lubricating and protecting firearms. However, the oil requires adequate tools to be spread properly. "No. 9" should thus be regarded as more of an add-on than a stand-alone maintenance item.\n \n
+		<text>A high-quality, Western-made firearm cleaning solvent designed for lubricating and protecting firearms. It requires appropriate tools for proper application, making it an additive rather than a standalone solution. Known for its distinctive smell, "Hoppe's No. 9" has been a staple in firearm maintenance for decades. Commonly used for cleaning barrels, actions, and other metal parts, users should ensure the solvent is thoroughly removed to avoid residue buildup, which can attract dirt and impair function.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] weapon cleaning item\n
@@ -99,7 +99,7 @@
 		<text>Spray Lubricant ("Brunox Gun Care")</text>
 	</string>
 	<string id="st_gun_oil_descr">
-		<text>Spray can containing oil intended for lubricating and protecting firearms. Frequent application will prevent guns from malfunctioning and corroding. However, the oil requires adequate tools to be spread properly. "Brunox" should thus be regarded as more of an add-on than a stand-alone maintenance item.\n \n
+		<text>A spray can containing oil intended for lubricating and protecting firearms. Frequent application will prevent guns from malfunctioning and corroding. The aerosol nature of "Brunox" allows for easy distribution in hard-to-reach areas, but users must be careful to wipe off excess to prevent attracting dust and debris. Ideal for quick maintenance sessions, though it should be paired with more thorough cleaning routines for best results.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] weapon cleaning item\n
@@ -111,7 +111,7 @@
 		<text>Cleaning Solvent ("Dvojka")</text>
 	</string>
 	<string id="st_gun_oil_ru_d_descr">
-		<text>Iconic Red Army oil that has been in service for almost 70 years, intended for lubricating and protecting firearms. The metal bottle is divided into two separate compartments, one for oil and the other for the cleaning solvent. However, the oil requires adequate tools to be spread properly. "Dvojka" should thus be regarded as more of an add-on than a stand-alone maintenance item.\n \n
+		<text>An iconic Red Army oil that has been in service for almost 70 years, intended for lubricating and protecting firearms. The metal bottle is divided into two compartments, one for oil and the other for cleaning solvent. Its robust design makes it suitable for field use. Users should be attentive when applying "Dvojka" to ensure even coverage and avoid over-lubrication, which can lead to residue buildup and subsequent jamming of moving parts.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] weapon cleaning item\n
@@ -123,7 +123,7 @@
 		<text>Gun Oil ("Rusak")</text>
 	</string>
 	<string id="st_gun_oil_ru_descr">
-		<text>Plastic bottle containing a budget Russian mineral gun oil intended for lubricating and protecting firearms. However, the oil requires adequate tools to be spread properly. "Rusak" should thus be regarded as more of an add-on than a stand-alone maintenance item.\n \n
+		<text>A plastic bottle containing budget Russian mineral gun oil intended for lubricating and protecting firearms. Its affordable nature makes it a common choice for cost-conscious users. However, like other oils, it requires appropriate tools for proper application. "Rusak" should be applied sparingly to avoid excess oil that can attract dust and debris, and it is best used as part of a comprehensive cleaning routine rather than on its own.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] weapon cleaning item\n
@@ -139,11 +139,11 @@
 		<text>Sewing Kit (Basic)</text>
 	</string>
 	<string id="st_sewing_kit_b_descr">
-		<text>A light sewing kit consisting of a cloth reel, several steel needles and a pair of scissors. Can be used to sew up bullet holes or ruptures in soft fabrics of outfits.\n \n
+		<text>A light sewing kit consisting of a cloth reel, several steel needles, and a pair of scissors. Suitable for sewing up bullet holes or ruptures in soft fabrics of outfits. Users should ensure to match the thread type to the fabric to maintain durability and avoid additional damage. A common choice for simple mending tasks like tears and rips in non-reinforced materials.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and light headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and light headgear sets\n
 		</text>
 	</string>
 
@@ -151,23 +151,23 @@
 		<text>Sewing Kit (Advanced)</text>
 	</string>
 	<string id="st_sewing_kit_a_descr">
-		<text>An advanced sewing kit containing better sewing accessories than its basic counterpart. Double reels of nylon thread and a large selection of higher-quality needles make it suitable for working on thicker and harder materials, including lighter mutant skins and artificial fibers.\n \n
+		<text>An advanced sewing kit containing double reels of nylon thread and a large selection of higher-quality needles, suitable for working on thicker and harder materials, including lighter mutant skins and artificial fibers. Users should select appropriate needle sizes and thread tension to prevent material damage. It is the most common choice for field repairs and generally contains better sewing accessories than its more basic counterpart.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and light headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and light headgear sets\n
 		</text>
 	</string>
-	
+
 	<string id="st_sewing_kit_h">
 		<text>Sewing Kit (Heavy)</text>
 	</string>
 	<string id="st_sewing_kit_h_descr">
-		<text>This military-grade, heavy sewing kit is designed to handle fractures in protective plates of modern combat armors. It contains enough metallic thread to put together outfits that have literally been torn apart. Capable of sewing on even the hardest of mutant hides.\n \n
+		<text>A military-grade heavy sewing kit, primarily designed to handle fractures in protective plates of modern combat armors. It contains enough metallic thread to put together outfits that have literally been torn apart. Capable of sewing on even the hardest of mutant hides, users should ensure to apply consistent pressure to avoid weakening the stitches. Usually stocked in most workshops and carried and used by mechanics for extended patching.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and light headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and light headgear sets\n
 		</text>
 	</string>
 
@@ -175,11 +175,11 @@
 		<text>Glue Tube ("M17")</text>
 	</string>
 	<string id="st_glue_e_descr">
-		<text>M17 is a result of a Soviet military-industrial research project intended to devise an extremely potent, single-ingredient adhesive which could be used in any situation regardless of purpose and the materials involved. There is almost no damage that the glue won't be able to repair. Can be used with all materials available in the Zone.\n \n
+		<text>A tube of high quality universal adhesive. M17 is the result of a Soviet military-industrial research project intended to devise an extremely potent, single-ingredient adhesive that could be used in any situation regardless of purpose and the materials involved. There is almost no damage that the glue won't be able to repair. Effective on virtually all materials used for worn protective gear, backpacks, tents, and other pieces of gear. Glue should be sparingly and surfaces must be clean and dry before application to maximize adhesion strength. M17 is a popular choice for emergency repairs of expensive equipment and is considered a top of the line glue.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and light headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and light headgear sets\n
 		</text>
 	</string>
 
@@ -187,11 +187,11 @@
 		<text>Glue Tube ("Tur")</text>
 	</string>
 	<string id="st_glue_a_descr">
-		<text>A modified epoxy-based adhesive produced by the Ukrainian chemical industry to quickly bind most solid materials. The glue binds both textile fabrics and lighter protective materials like Kevlar, but is useless when it comes to metals.\n \n
+		<text>A tube of a modified epoxy-based adhesive, produced by the Ukrainian chemical industry for quick binding of most solid materials. The glue binds both textile fabrics and lighter protective materials like Kevlar, but is useless when it comes to metals. Users should allow adequate curing time for maximum bond strength and ensure that bonded surfaces are held together securely during the drying process. It is a common above-entry-level glue for basic repair tasks when more advanced equipment is not available.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and headgear sets\n
 		</text>
 	</string>
 
@@ -199,11 +199,11 @@
 		<text>Glue Tube ("Zviezda")</text>
 	</string>
 	<string id="st_glue_b_descr">
-		<text>Cheapest of the synthetic adhesives available in the Zone, this epoxy-based solution may be used to put together slightly torn pieces of fabric or to patch up small holes.\n \n
+		<text>A versatile epoxy-based solution for repair and patching work. Zviezda is a synthetic adhesive with reasonable strength and durablity. It may be used with fitting replacement pieces to mend torn clothing and equipment. While cost-effective, it is less durable than higher-end products and should be primarily used for temporary repairs. Users should clean and roughen the surfaces before application to improve the adhesive bond. It is cheapest of the synthetic adhesives available in the Zone.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and light headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and light headgear sets\n
 		</text>
 	</string>
 
@@ -211,23 +211,23 @@
 		<text>Armor Repair Kit (Light)</text>
 	</string>
 	<string id="st_light_repair_kit_descr">
-		<text>This complex and heavy set includes everything necessary, from ultra-durable threads and needles to polymer-based patches, for conducting complete repairs on any hi-tech armor. Can be used regardless of materials involved, be it heavy cloth or military-grade Kevlar sheets.\n \n
+		<text>A lightweight repair kit designed for maintaining light armor. It includes ultra-durable threads, needles, and polymer-based patches. Effective for repairing materials such as heavy cloth and light Kevlar sheets, this kit is essential for ensuring the integrity of lightly armored vests and jackets. Users should be meticulous in applying the patches to ensure a secure bond and avoid additional wear.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] light outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] very light and light armor\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] Light armor\n
 		</text>
 	</string>
-	
+
 	<string id="st_medium_repair_kit">
 		<text>Armor Repair Kit (Medium)</text>
 	</string>
 	<string id="st_medium_repair_kit_descr">
-		<text>This complex and heavy set includes everything necessary, from ultra-durable threads and needles to polymer-based patches, for conducting complete repairs on any hi-tech armor. Can be used regardless of materials involved, be it heavy cloth or military-grade Kevlar sheets.\n \n
+		<text>A comprehensive repair kit suited for medium armor. It includes high-quality threads, needles, and polymer-based patches capable of mending heavy cloth and military-grade Kevlar sheets. Designed for medium-weight armored vests and tactical gear, users should apply consistent pressure when stitching to ensure durability and avoid future tearing.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] medium outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] medium armor\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] Medium armor\n
 		</text>
 	</string>
 
@@ -235,11 +235,11 @@
 		<text>Armor Repair Kit (Heavy)</text>
 	</string>
 	<string id="st_exolight_repair_kit_descr">
-		<text>This complex and heavy set includes everything necessary, from ultra-durable threads and needles to polymer-based patches, for conducting complete repairs on any hi-tech armor. Can be used regardless of materials involved, be it heavy cloth or military-grade Kevlar sheets.\n \n
+		<text>A robust repair kit tailored for heavy armor. It contains ultra-durable threads, needles, and polymer-based patches suitable for heavy cloth, thick Kevlar, and composite materials. Ideal for maintaining combat-grade armor, users should ensure proper alignment and secure stitching to restore the armor's full protective capabilities.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] heavy outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] heavy armor\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] Heavy armor\n
 		</text>
 	</string>
 
@@ -247,11 +247,11 @@
 		<text>Armor Repair Kit (Exoskeleton)</text>
 	</string>
 	<string id="st_exo_repair_kit_descr">
-		<text>This complex and heavy set includes everything necessary, from ultra-durable threads and needles to polymer-based patches, for conducting complete repairs on any hi-tech armor. Can be used regardless of materials involved, be it heavy cloth or military-grade Kevlar sheets.\n \n
+		<text>An advanced repair kit specifically for exoskeleton suits. It includes high-tensile threads, reinforced needles, and specialized patches for conducting comprehensive repairs. Suitable for heavy cloth and military-grade Kevlar, as well as advanced composite materials used in exoskeleton construction. Users should take care to follow precise repair protocols to maintain the suit's functionality and its overall integrity.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] exoskeleton repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] exoskeletons\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] Exoskeletons\n
 		</text>
 	</string>
 
@@ -259,11 +259,11 @@
 		<text>Repair Kit (Headgear)</text>
 	</string>
 	<string id="st_helmet_repair_kit_descr">
-		<text>This kit contains everything that is needed to perform effective repair of modern combat helmets. It features heavy tools that will allow work on hard materials such as Kevlar, steel or titanium, as well as a very strong, methacrylate-based adhesive.\n \n
+		<text>A specialized kit for repairing modern combat helmets. It features heavy-duty tools and materials, including Kevlar, steel, and titanium components, as well as a strong methacrylate-based adhesive. Effective for restoring structural integrity, users should ensure all repairs are securely bonded and thoroughly tested for durability under stress.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] headgear repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] medium and heavy headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] Medium and heavy headgear sets\n
 		</text>
 	</string>
 
@@ -271,11 +271,11 @@
 		<text>Armor Repair Kit (Emergency)</text>
 	</string>
 	<string id="st_armor_repair_fa_descr">
-		<text>A repair set allowing emergency outfit repairs. Includes military grade duct tape and ready-to-use sheets of thick textile in a variety of shapes and sizes making it possible to quickly patch up any outfit damage.\n \n
+		<text>An emergency repair set for quick fixes in the field. It includes military-grade duct tape and pre-cut sheets of thick textile in various shapes and sizes. Designed for fast application, this kit allows users to rapidly patch up damaged areas, ensuring temporary protection until more thorough repairs can be made.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] outfit repair item\n
-		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] all outfits and light headgear sets\n
+		%c[d_orange] • %c[0,255,255,255] Compatibility: %c[ui_gray_2] All outfits and light headgear sets\n
 		</text>
 	</string>
 
@@ -291,7 +291,7 @@
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_cyan] • %c[ui_gray_2] toolkit\n \n
-		%c[0,255,255,255]Compatibility: %c[ui_gray_2] knives and blades\n
+		%c[0,255,255,255]Compatibility: %c[ui_gray_2] Knives and blades\n
 		</text>
 	</string>
 
