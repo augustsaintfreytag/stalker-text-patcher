@@ -22,8 +22,8 @@
 		<text>A strong carbonated energy drink with added sugar. Commonly used by stalkers on long trips due to its alertness-boosting effects. It is a highly refreshing, popular beverage with an overwhelmingly sweet and slightly acidic taste. Besides its positive cognitive effects, it also reduces the effects of alcohol intoxication. Should be consumed in moderation. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_blue] • %c[ui_gray_2] drink\n
-		%c[d_blue] • %c[ui_gray_2] imported\n
-		%c[d_blue] • %c[ui_gray_2] stimulant\n
+		%c[d_blue] • %c[ui_gray_2] imported item\n
+		%c[d_blue] • %c[ui_gray_2] minor stimulant\n
 		%c[d_blue] • %c[ui_gray_2] potent alcohol sobering effect\n
 		%c[d_blue] • %c[ui_gray_2] clean nutrition source\n
 		</text>
@@ -38,8 +38,8 @@
 	<string id="st_ground_coffee_descr">
 		<text>A pack of Ukrainian brand coffee beans. Contains a dark roast house blend of part Arabica, part Robusta beans with a piercing aroma, a recognizable smell around many camps in the Zone, perfectly suited for welcoming the day's first radiant beams. Tasting notes: Hints of barley and vanilla with undertones of pine and ash. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] imported\n
-		%c[d_blue] • %c[ui_gray_2] stimulant\n
+		%c[d_blue] • %c[ui_gray_2] imported item\n
+		%c[d_blue] • %c[ui_gray_2] minor stimulant\n
 		</text>
 	</string>
 
@@ -51,7 +51,7 @@
 		<text>A durable thermos flask filled with brewed coffee. The brew appears to be from a dark roast with a piercing aroma. Tasting notes: Hints of barley and vanilla with undertones of pine and ash. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_blue] • %c[ui_gray_2] drink\n
-		%c[d_blue] • %c[ui_gray_2] stimulant\n
+		%c[d_blue] • %c[ui_gray_2] minor stimulant\n
 		%c[d_blue] • %c[ui_gray_2] potent alcohol sobering effect\n
 		</text>
 	</string>
@@ -64,8 +64,8 @@
 		<text>An imported can of milk coffee, ready to drink. Brewed from Arabica coffee beans, sweetened, mixed with oat milk, and packed in a can. Generally considered below average in taste for coffee consumed in the Zone, but valued for its long shelf life and ease of consumption compared to self-brewed coffee. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_blue] • %c[ui_gray_2] drink\n
-		%c[d_blue] • %c[ui_gray_2] imported\n
-		%c[d_blue] • %c[ui_gray_2] stimulant\n
+		%c[d_blue] • %c[ui_gray_2] imported item\n
+		%c[d_blue] • %c[ui_gray_2] minor stimulant\n
 		%c[d_blue] • %c[ui_gray_2] potent alcohol sobering effect\n
 		%c[d_blue] • %c[ui_gray_2] clean nutrition source\n
 		</text>
