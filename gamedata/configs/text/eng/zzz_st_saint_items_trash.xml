@@ -2,7 +2,9 @@
 
 <string_table>
 
-	<!-- Usable Items -->
+	<!-- 
+		USABLE ITEMS 
+	-->
 
 	<string id="st_guitar_name">
 		<text>Guitar</text>
@@ -10,7 +12,7 @@
 	<string id="st_guitar_descr">
 		<text>A seven-string acoustic guitar constructed from birch wood, a material commonly used in Soviet-era instruments due to its availability and durability. This guitar features a wide fretboard and a distinctive tone. Its body is designed in a classic, hourglass shape, providing a balanced sound projection, and the birch wood imparts a warm, bright quality to the notes, making it suitable for both solo performances and accompaniment. It shows signs of wear, including surface scratches, faded varnish, and minor dents on the body, indicative of extensive use and frequent handling. The fretboard shows slight grooving from years of play, while the tuning pegs exhibit oxidation but remain functional. Despite its age and visible wear, the guitar retains its rich, vibrant sound. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] personal belongings\n
+		%c[d_cyan] • %c[ui_gray_2] personal belongings\n
 		%c[d_orange] • %c[ui_gray_2] playable instrument\n
 		</text>
 	</string>
@@ -21,7 +23,7 @@
 	<string id="st_harmonica_descr">
 		<text>A small harmonica made from stainless steel with precision-engineered reeds for durability and consistent tonal quality. This compact, mouth-blown instrument features a diatonic scale, enabling it to produce a rich range of notes despite its small size. Its design allows for both melodic playing and rhythmic effects. Commonly used in blues, folk, and rock music, its portability makes it a favored choice for musicians in even tougher environments. In the Zone, it's among the most popular musical instruments played at campfires all over. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] personal belongings\n
+		%c[d_cyan] • %c[ui_gray_2] personal belongings\n
 		%c[d_orange] • %c[ui_gray_2] playable instrument\n
 		</text>
 	</string>
@@ -32,12 +34,14 @@
 	<string id="st_hand_watch_descr">
 		<text>A Soviet-era analogue wrist watch featuring a robust mechanical movement encased in durable stainless steel. Designed for reliability and longevity, it utilizes a hand-wound mechanism with an approximate 36-hour power reserve. The dial is marked with clear, luminescent numerals and indices, ensuring legibility in low-light conditions. Equipped with a scratch-resistant glass and a reinforced leather strap, it provides both protection and comfort for extended wear. Despite being constantly exposed to anomalous fields in the Zone, it appears to keep its time without needing adjustments. Commonly carried as a fallback when electronic devices fail due to interference or anomalies. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] personal belongings\n
-		%c[d_blue] • %c[ui_gray_2] time-keeping\n
+		%c[d_cyan] • %c[ui_gray_2] personal belongings\n
+		%c[d_cyan] • %c[ui_gray_2] time-keeping\n
 		</text>
 	</string>
 
-	<!-- Materials & Crafting -->
+	<!-- 
+		MATERIALS & CRAFTING 
+	-->
 
 	<string id="st_ball_hammer">
 		<text>Ball-peen Hammer</text>
@@ -45,7 +49,7 @@
 	<string id="st_ball_hammer_descr">
 		<text>A metalworking hammer featuring a forged steel head with one flat and one rounded end. The flat face is designed for striking punches and chisels, while the ball end is utilized for peening, shaping metal, and creating textures. The head is securely attached to a hickory wood handle, offering durability and shock absorption during repeated use. Its balanced weight distribution ensures precision and control, essential for detailed metalworking tasks. In the Zone, portable hammers are indispensable for repairs and crafting improvised tools. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] workshop tool\n
+		%c[d_cyan] • %c[ui_gray_2] utility item\n
 		</text>
 	</string>
 
@@ -55,7 +59,7 @@
 	<string id="st_broken_detector_descr">
 		<text>A broken artifact detector, once used to locate anomalous energy signatures within the Zone. Its casing, made of durable plastic and metal components, shows severe damage and extensive wear. Internal circuitry is exposed and its screen is damaged beyond repair. Some of the valuable internal circuitry and materials may be salvaged and repurposed. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] scrap item\n
+		%c[d_cyan] • %c[ui_gray_2] scrap item\n
 		</text>
 	</string>
 
@@ -65,7 +69,7 @@
 	<string id="st_flashlight_broken_descr">
 		<text>A broken hand-held flashlight, an older model designed to operate on D-type batteries. Constructed with a rugged aluminum casing, it was built to withstand harsh conditions. Its lens and cap are cracked, and the bulb inside is shattered. The battery contacts show signs of heavy corrosion and the power switch is missing. Broken flashlights, like other lost and found pieces of equipment, are valued items scavenged for their materials and electronic scrap. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] scrap item\n
+		%c[d_cyan] • %c[ui_gray_2] scrap item\n
 		</text>
 	</string>
 
@@ -75,7 +79,7 @@
 	<string id="st_duct_tape_descr">
 		<text>A roll of black duct tape, crafted from heavy cotton cloth with a pressure-sensitive adhesive backing, can be ripped by hand without the need for additional tools. Renowned for its strength and versatility, this tape adheres securely to a variety of surfaces, providing a reliable seal in both indoor and outdoor conditions. The cloth weave enhances durability, allowing it to withstand wear, moisture, and temperature fluctuations. Commonly used for repairs, sealing, and reinforcing equipment, it is a staple in any repair kit. In the Zone, its practical utility is unmatched, enabling a reliable option to patch torn gear, secure loose items, and sometimes even providing makeshift insulation from environmental hazards. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
-		%c[d_blue] • %c[ui_gray_2] utility item\n
+		%c[d_cyan] • %c[ui_gray_2] utility item\n
 		</text>
 	</string>
 
@@ -197,7 +201,9 @@
 		</text>
 	</string>
 
-	<!-- Other -->
+	<!-- 
+		OTHER
+	-->
 
 	<string id="st_batteries_empty">
 		<text>Empty Batteries</text>
@@ -343,7 +349,9 @@
 		</text>
 	</string>
 
-	<!-- Junk -->
+	<!-- 
+		JUNK
+	-->
 
 	<string id="st_cards">
 		<text>Deck of Cards</text>
@@ -387,7 +395,7 @@
 		</text>
 	</string>
 	<string id="st_headlamp">
-		<text>Broken Head Lamp</text>
+		<text>Broken Headlamp</text>
 	</string>
 	<string id="st_headlamp_descr">
 		<text>A damaged headlamp on a strap intended to be worn on the head. The plastic casing is cracked in multiple spots and no longer protects the wiring from dust and rain and the lightbulb is missing entirely. The elastic head strap is stretched and has been torn apart. Additionally, the model uses an outdated battery type no longer commonly available. \n \n
