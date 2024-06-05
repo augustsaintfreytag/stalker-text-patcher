@@ -378,7 +378,7 @@
 		<text>Worn Metal Shovel</text>
 	</string>
 	<string id="st_shovel_old_descr">
-		<text>An old metal shovel, particularly an decades old version of the iconic "Kovelskie" model, one commonly found in households across Eastern Europe. It sports a sturdy blade made from iron, slightly rusted from years of use, and a flat edge that can be used for digging and moving soil. The handle is made from wood and shows signs of wear, small cracks, and a weathered patina. Even though older than many of its users, shovel designs have barely evolved over time and the Kovelskie shovel remains a reliable tool. May be highly impractible to carry and provides no commonplace use in the Zone, but can be repurposed into scrap metal. \n \n
+		<text>An old metal shovel, particularly, a decades old version of the iconic "Kovelskie" model, one commonly found in households across Eastern Europe. It sports a sturdy blade made from iron, slightly rusted from years of use, and a flat edge that can be used for digging and moving soil. The handle is made from wood and shows signs of wear, small cracks, and a weathered patina. Even though older than many of its users, shovel designs have barely evolved over time and the Kovelskie shovel remains a reliable tool. May be highly impractible to carry and provides no commonplace use in the Zone, but can be repurposed into scrap metal. \n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] scrap item\n
 		</text>
