@@ -131,6 +131,9 @@
     <string id="ui_inv_weight">
         <text>Total Encumbrance</text>
     </string>
+	<string id="ui_inv_outfit_speed">
+		<text>Movement Speed</text>
+	</string>
 
     <!-- Inventory Text -->
 
