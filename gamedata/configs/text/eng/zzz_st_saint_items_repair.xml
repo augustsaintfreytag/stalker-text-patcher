@@ -7,10 +7,10 @@
 -->
 
 	<string id="st_rasp_tool">
-		<text>File</text>
+		<text>File Set</text>
 	</string>
 	<string id="st_rasp_tool_descr">
-		<text>A weapon cleaning file crafted from high-carbon steel, offering precision and durability for maintaining the parts of various firearms. It has fine and uniform teeth to effectively remove rust, burrs, and fouling from metal surfaces. An ergonomic handle provides a comfortable grip for precise control in delicate repair tasks. Files of different sizes are commonly used in repair workshops and camps for maintaining weapon parts, an essential task for preventing malfunctions and extending the lifespan of carried weaponry.\n \n
+		<text>A set of gunsmithing files made from high-carbon steel, offering precision and durability for maintaining the parts of various firearms. It has fine and uniform teeth to effectively remove rust, burrs, and fouling from metal surfaces. An ergonomic handle provides a comfortable grip for precise control in delicate repair tasks. Files of different sizes are commonly used in repair workshops and camps for maintaining weapon parts, an essential task for preventing malfunctions and extending the lifespan of carried weaponry.\n \n
 		%c[ui_gray_3]PROPERTIES:\n
 		%c[d_cyan] • %c[ui_gray_2] workshop item\n
 		%c[d_orange] • %c[ui_gray_2] weapon part maintenance item\n
