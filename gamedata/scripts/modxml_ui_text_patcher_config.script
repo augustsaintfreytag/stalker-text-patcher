@@ -73,6 +73,9 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 		"st_auto_looter_disable_auto_disassemble",
 		"st_auto_looter_enable_auto_loot",
 		"st_auto_looter_disable_auto_loot"
+	},
+	["st_items_magazines"] = {
+		"st_mag_unload_ammo"
 	}
 }
 
