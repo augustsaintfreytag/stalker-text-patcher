@@ -73,6 +73,9 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 		"st_auto_looter_disable_auto_disassemble",
 		"st_auto_looter_enable_auto_loot",
 		"st_auto_looter_disable_auto_loot"
+	},
+	["st_items_magazines"] = {
+		"st_mag_unload_ammo"
 	}
 }
 
@@ -85,8 +88,5 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 -- Text quirks that only appear in specific mods or user-defined
 -- substitutions can be defined here as an accessible alternative.
 UI_STRING_SUBSTITUTION_PATTERNS = {
-	["zzz_st_items_weapons_blackmarket"] = {
-		["'BlackMarket'"] = "Market",
-		["%s*'%c['[a-zA-Z0-9_, ]+']'%s+'•'%s+'%c['[a-zA-Z0-9_, ]+']'%s*'ATTACHMENTS:'"] = "ATTACHMENTS:"
-	}
+	["zzz_st_items_weapons_blackmarket"] = {}
 }
