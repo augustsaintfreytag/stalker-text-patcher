@@ -206,52 +206,78 @@ function rewrite_desc_bullet_point_lines(desc)
 
 	for i = 1, #lines do
 		local line = lines[i]
-		-- Find index of the last character in a match of color tag, dot, color tag, and whitespace.
-		local _, leader_end_index =
-			re.find(line, "'" .. DOT .. "'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*")
-
-		if not leader_end_index then
-			table.insert(new_lines, line)
-			goto continue
-		end
-
-		-- Bullet point line found, destructure into components.
-
-		local line_prefix = line:sub(1, leader_end_index)
-		local line_content = line:sub(leader_end_index + 1)
-
-		-- Check for parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
-
-		if CONFIG.COLOR_DESC_PARENTHETICALS then
-			line_content = color_line_parentheticals(line_content)
-		end
-
-		-- Check for parenthetical for coloring and split capitalization.
-
-		if CONFIG.CAPITALIZATION_SPLIT_FOR_PARENTHETICALS then
-			line_content = capitalize_line_parenthetical(line_content)
-		end
-
-		-- Check for colon in line, capitalize left side, capitalize right side by length.
-
-		if line_content:find(":") then
-			line_content = format_line_colons(line_content)
-		else
-			line_content = format_line_component(line_content)
-		end
-
-		-- Define rewritten line with bullet point with appropriate color tags and spacing.
-		line_content = line_leader() .. line_content
-		table.insert(new_lines, line_content)
-
-		::continue::
+		rewrite_desc_bullet_point_line(new_lines, line)
 	end
 
 	return table.concat(new_lines, " \\n")
 end
 
-function line_leader()
+function rewrite_desc_bullet_point_line(new_lines, line)
+	-- Find index of the last character in a match of color tag, dot, color tag, and whitespace.
+	local _, leader_end_index =
+		re.find(line, "'" .. DOT .. "'%s*('%c['[a-zA-Z0-9_, ]+']')*%s*")
+
+	if not leader_end_index then
+		table.insert(new_lines, line)
+		return
+	end
+
+	-- Bullet point line found, destructure into components.
+
+	local line_prefix = line:sub(1, leader_end_index)
+	local line_content = line:sub(leader_end_index + 1)
+
+	-- Extract color tag from line prefix (%c[…]), if present.
+
+	local line_bullet_color_tag = bullet_color_tag_from_line(line_prefix)
+	line_content = strip_color_tags(line_content)
+
+	-- Check for parenthetical in line content and wrap in appropriate color tags (`COLOR.PARENTHETICAL`).
+
+	if CONFIG.COLOR_DESC_PARENTHETICALS then
+		line_content = color_line_parentheticals(line_content)
+	end
+
+	-- Check for parenthetical for coloring and split capitalization.
+
+	if CONFIG.CAPITALIZATION_SPLIT_FOR_PARENTHETICALS then
+		line_content = capitalize_line_parenthetical(line_content)
+	end
+
+	-- Check for colon in line, capitalize left side, capitalize right side by length.
+
+	if line_content:find(":") then
+		line_content = format_line_colons(line_content)
+	else
+		line_content = format_line_component(line_content)
+	end
+
+	-- Define rewritten line with bullet point with appropriate color tags and spacing.
+	line_content = make_line_leader(line_bullet_color_tag) .. line_content
+	table.insert(new_lines, line_content)
+end
+
+function make_line_leader(color_tag)
+	if color_tag ~= nil and color_tag ~= "" then
+		return " " .. color_tag .. " " .. DOT .. " "
+	end
+
 	return " " .. COLOR.BULLET_NEUTRAL .. " " .. DOT .. " "
+end
+
+function bullet_color_tag_from_line(line)
+	local line_bullet_color_tag_start_index, line_bullet_color_tag_end_index = re.find(line,
+		"'%c['[a-zA-Z0-9_, ]+']'")
+
+	if line_bullet_color_tag_start_index == nil then
+		return nil
+	end
+
+	local line_bullet_color_tag = line:sub(line_bullet_color_tag_start_index, line_bullet_color_tag_end_index)
+
+	-- log_to_file("Extracted bullet point color tag '" .. tostring(line_bullet_color_tag) .. "' from line prefix '" .. ellipsized_string(line) .. "'.")
+
+	return line_bullet_color_tag
 end
 
 function format_line_colons(line)
@@ -264,13 +290,16 @@ function format_line_colons(line)
 	local line_name_left = line:sub(1, line_colon_index - 1)
 	local line_name_right = line:sub(line_colon_index + 1)
 
+	line_name_left = trim_string(line_name_left)
+	line_name_right = trim_string(line_name_right)
+
 	line_name_left = capitalize_words(line_name_left)
 	line_name_right = capitalize_words_by_length(line_name_right)
 
 	if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
 		return COLOR.TEXT ..
 			line_name_left ..
-			":" .. COLOR.TEXT_EMPHASIS .. line_name_right
+			": " .. COLOR.TEXT_EMPHASIS .. line_name_right
 	end
 
 	return COLOR.TEXT .. line_name_left .. ":" .. line_name_right
