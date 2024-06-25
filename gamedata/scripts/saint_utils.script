@@ -315,16 +315,24 @@ end
 
 function capitalize_line_parenthetical(line)
 	local parentheses_start_index, _ = line:find("%(")
+	local parentheses_end_index, _ = line:find("%)")
 
-	if not parentheses_start_index then
+	if not parentheses_start_index or not parentheses_end_index then
 		return line
 	end
 
 	-- Found parenthetical, split string up to first parenthesis.
-	local line_content_left = line:sub(1, parentheses_start_index - 1)
-	local line_content_right = line:sub(parentheses_start_index)
+	local line_content_pre = line:sub(1, parentheses_start_index - 1)
 
-	return capitalize_words_by_length(line_content_left) .. line_content_right
+	-- Split string from after parenthetical to next
+	local line_content_parenthetical = line:sub(parentheses_start_index + 1, parentheses_end_index - 1)
+
+	-- Split string from after parenthetical to end
+	local line_content_post = line:sub(parentheses_end_index + 1)
+
+	return capitalize_words_by_length(line_content_pre) .. "(" ..
+		capitalize_words_by_length(line_content_parenthetical) .. ")" ..
+		line_content_post
 end
 
 function normalize_desc_parentheses(str)
