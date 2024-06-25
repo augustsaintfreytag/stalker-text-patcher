@@ -88,16 +88,5 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 -- Text quirks that only appear in specific mods or user-defined
 -- substitutions can be defined here as an accessible alternative.
 UI_STRING_SUBSTITUTION_PATTERNS = {
-	["zzz_st_items_weapons_blackmarket"] = {
-		["'BlackMarket'"] = "Market",
-		["%s*'%c['[a-zA-Z0-9_, ]+']'%s+'•'%s+'%c['[a-zA-Z0-9_, ]+']'%s*'ATTACHMENTS:'"] = "ATTACHMENTS:",
-		["'%c['[a-zA-Z0-9_, ]+']'%s+'•'%s+'%c['[a-zA-Z0-9_, ]+']'%s*'ATTACHMENTS:'"] = "ATTACHMENTS:",
-		["'PU scope.'"] = "PU Scope",
-		["'integrated).'"] = "integrated)",
-		["'modification).'"] = "modification)",
-		["'compatible suppressor.'"] = "compatible suppressor",
-		["'Tritium sight.'"] = "Tritium Sight",
-		["'GP-25 compatible grenade launcher.'"] = "GP-25 compatible grenade launcher",
-		["'Tactical laser aiming module.'"] = "Tactical laser aiming module",
-	}
+	["zzz_st_items_weapons_blackmarket"] = {}
 }
