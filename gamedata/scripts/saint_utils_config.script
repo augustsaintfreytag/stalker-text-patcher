@@ -6,6 +6,10 @@ COLOR_DESC_PARENTHETICALS = false
 -- Applies `COLOR.TEXT_EMPHASIS` to text after colon, distinguishing left- and right-hand side.
 COLOR_DESC_COLON_BULLET_POINTS = true
 
+-- Only capitalize the first word in any string running through capitalization.
+-- Reduced operation mode if less aggressive capitalization is preferred.
+CAPITALIZATION_ONLY_CAPITALIZE_FIRST_WORD = true
+
 -- The maximum number of characters in a snippet to assume it as a heading-like text to be capitalized.
 -- Primarily applies to text in bullet points.
 CAPITALIZATION_HEURISTIC_MAX_CHARS = 28

@@ -413,6 +413,10 @@ end
 -- Utility: Capitalization
 
 function capitalize_words_by_length(str)
+	if CONFIG.CAPITALIZATION_ONLY_CAPITALIZE_FIRST_WORD then
+		return capitalize_first_word(str)
+	end
+
 	local max_line_length_to_capitalize = CONFIG.CAPITALIZATION_HEURISTIC_MAX_CHARS
 	local sanitized_str_length = strip_color_tags(str):len()
 
