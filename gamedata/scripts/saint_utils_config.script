@@ -8,7 +8,7 @@ COLOR_DESC_COLON_BULLET_POINTS = true
 
 -- The maximum number of characters in a snippet to assume it as a heading-like text to be capitalized.
 -- Primarily applies to text in bullet points.
-CAPITALIZATION_HEURISTIC_MAX_CHARS = 38
+CAPITALIZATION_HEURISTIC_MAX_CHARS = 28
 
 -- When capitalizing the text of a bullet point line, capitalize outside parenthesis first
 -- and inside parenthesis separately.
