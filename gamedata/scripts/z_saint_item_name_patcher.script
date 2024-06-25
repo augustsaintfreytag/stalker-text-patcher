@@ -1,0 +1,42 @@
+function apply_patches()
+	-- References
+
+	local normalize_name = saint_utils.normalize_name
+
+	-- Original References
+
+	local original_item_name = ui_item.item_name
+	local original_item_short_name = ui_item.item_short_name
+	local original_sec_name = ui_item.get_sec_name
+	local original_sec_short_name = ui_item.get_sec_short_name
+	local original_obj_name = ui_item.get_obj_name
+	local original_obj_short_name = ui_item.get_obj_short_name
+
+	-- Overrides
+
+	ui_item.item_name = function(obj, sec, str)
+		return normalize_name(original_item_name(obj, sec, str))
+	end
+
+	ui_item.item_short_name = function(obj, sec, str)
+		return normalize_name(original_item_short_name(obj, sec, str))
+	end
+
+	ui_item.get_sec_name = function(sec)
+		return normalize_name(original_sec_name(sec))
+	end
+
+	ui_item.get_sec_short_name = function(sec)
+		return normalize_name(original_sec_short_name(sec))
+	end
+
+	ui_item.get_obj_name = function(obj)
+		return normalize_name(original_obj_name(obj))
+	end
+
+	ui_item.get_obj_short_name = function(obj)
+		return normalize_name(original_obj_short_name(obj))
+	end
+end
+
+apply_patches()
