@@ -1,0 +1,4 @@
+-- Reference scripts to load them early
+
+local _ = z_saint_item_name_patcher
+local _ = z_saint_item_description_patcher
