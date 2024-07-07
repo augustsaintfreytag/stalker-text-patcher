@@ -293,7 +293,7 @@ function format_line_colons(line)
 	line_name_left = trim_string(line_name_left)
 	line_name_right = trim_string(line_name_right)
 
-	line_name_left = capitalize_words(line_name_left)
+	line_name_left = capitalize_words_by_length(line_name_left)
 	line_name_right = capitalize_words_by_length(line_name_right)
 
 	if CONFIG.COLOR_DESC_COLON_BULLET_POINTS then
