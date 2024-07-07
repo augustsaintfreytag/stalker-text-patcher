@@ -1,4 +1,5 @@
 -- Reference scripts to load them early
 
+-- local _ = z_saint_inject_desc_section_header
 local _ = z_saint_item_name_patcher
 local _ = z_saint_item_description_patcher
