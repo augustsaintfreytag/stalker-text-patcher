@@ -64,10 +64,6 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 	["st_hf_nomad_stash"] = {
 		"st_place_furniture"
 	},
-	["ui_st_other"] = {
-		"st_sleep",
-		"st_save"
-	},
 	["st_auto_looter"] = {
 		"st_auto_looter_enable_auto_disassemble",
 		"st_auto_looter_disable_auto_disassemble",
