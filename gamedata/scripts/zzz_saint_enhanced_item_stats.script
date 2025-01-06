@@ -348,21 +348,39 @@ end
 
 -- Formats a time value given in seconds into a human-readable format (seconds, minutes).
 -- Uses localized unit descriptions `ui_inv_seconds` and `ui_inv_minutes`.
-function prop_formatted_time(val)
+function prop_formatted_time(val, skip_instant)
 	if type(val) ~= "number" then
 		return val
 	end
 
 	local formatted = ""
-	local seconds = val % 60
+	local seconds = math.floor(val % 60)
 	local minutes = math.floor(val / 60) % 60
 
-	if minutes > 1 then
-		formatted = minutes .. " " .. game.translate_string("ui_inv_minutes")
+	if minutes > 0 then
+		local denominator = game.translate_string("ui_inv_minutes")
+
+		-- If minute is exactly one, remove trailing "s".
+		if minutes == 1 then
+			denominator = string.sub(denominator, 1, -2)
+		end
+
+		formatted = minutes .. " " .. denominator
 	elseif seconds > 1 then
-		formatted = seconds .. " " .. game.translate_string("ui_inv_seconds")
+		local denominator = game.translate_string("ui_inv_seconds")
+
+		-- If second is exactly one, remove trailing "s".
+		if seconds == 1 then
+			denominator = string.sub(denominator, 1, -2)
+		end
+
+		formatted = seconds .. " " .. denominator
 	else
-		formatted = game.translate_string("ui_inv_time_instant")
+		if skip_instant then
+			formatted = seconds .. " " .. game.translate_string("ui_inv_seconds")
+		else
+			formatted = game.translate_string("ui_inv_time_instant")
+		end
 	end
 
 	return formatted
