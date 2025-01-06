@@ -43,6 +43,9 @@ UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 	["ui_st_encyclopedia_options"] = {
 		"encyclopedia_options"
 	},
+	["st_levels"] = {
+		"space_restrictor"
+	},
 	["zzz_st_saint_bhs_overhaul_inventory"] = {
 		"ui_inv_",
 		"st_levels"
@@ -64,10 +67,6 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 	["st_hf_nomad_stash"] = {
 		"st_place_furniture"
 	},
-	["ui_st_other"] = {
-		"st_sleep",
-		"st_save"
-	},
 	["st_auto_looter"] = {
 		"st_auto_looter_enable_auto_disassemble",
 		"st_auto_looter_disable_auto_disassemble",
@@ -88,5 +87,16 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 -- Text quirks that only appear in specific mods or user-defined
 -- substitutions can be defined here as an accessible alternative.
 UI_STRING_SUBSTITUTION_PATTERNS = {
-	["zzz_st_items_weapons_blackmarket"] = {}
+	["st_items_weapons"] = {
+		["cuts thick skin%?:"] = "Field dressing:",
+		["cut thick skin%?:"] = "Field dressing:",
+		["%%c%[ui_red%]NO"] = "Light hides",
+		["%%c%[ui_green%]YES"] = "Light and heavy hides",
+	},
+	["st_items_weapons_bas_eng"] = {
+		["cuts thick skin%?:"] = "Field dressing:",
+		["cut thick skin%?:"] = "Field dressing:",
+		["%%c%[ui_red%]NO"] = "Light hides",
+		["%%c%[ui_green%]YES"] = "Light and heavy hides",
+	}
 }
