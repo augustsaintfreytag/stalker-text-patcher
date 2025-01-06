@@ -87,5 +87,16 @@ UI_MENU_STRING_ELEMENT_PATTERNS = {
 -- Text quirks that only appear in specific mods or user-defined
 -- substitutions can be defined here as an accessible alternative.
 UI_STRING_SUBSTITUTION_PATTERNS = {
-	["zzz_st_items_weapons_blackmarket"] = {}
+	["st_items_weapons"] = {
+		["cuts thick skin%?:"] = "Field dressing:",
+		["cut thick skin%?:"] = "Field dressing:",
+		["%%c%[ui_red%]NO"] = "Light hides",
+		["%%c%[ui_green%]YES"] = "Light and heavy hides",
+	},
+	["st_items_weapons_bas_eng"] = {
+		["cuts thick skin%?:"] = "Field dressing:",
+		["cut thick skin%?:"] = "Field dressing:",
+		["%%c%[ui_red%]NO"] = "Light hides",
+		["%%c%[ui_green%]YES"] = "Light and heavy hides",
+	}
 }
