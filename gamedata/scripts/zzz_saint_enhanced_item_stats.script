@@ -15,7 +15,12 @@ local clr_list = {
 	["info_n_txt"] = GetARGB(200, 255, 100, 100),
 }
 
+-- local original_update = utils_ui.UIInfoItem.Update
+
 function utils_ui.UIInfoItem:Update(obj, sec, flags)
+	-- Can't call original chain, would crash with unsupported values.
+	-- original_update(self, obj, sec, flags)
+
 	if not self:Pass(obj, sec) then
 		self:Show(false)
 		return
