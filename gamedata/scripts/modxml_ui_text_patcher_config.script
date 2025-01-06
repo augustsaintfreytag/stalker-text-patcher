@@ -43,6 +43,9 @@ UI_STRING_ELEMENT_CAPITALIZATION_PATTERNS = {
 	["ui_st_encyclopedia_options"] = {
 		"encyclopedia_options"
 	},
+	["st_levels"] = {
+		"space_restrictor"
+	},
 	["zzz_st_saint_bhs_overhaul_inventory"] = {
 		"ui_inv_",
 		"st_levels"
