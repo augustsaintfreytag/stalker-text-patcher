@@ -101,7 +101,9 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 		obj_b = slot > 0 and db.actor:item_in_slot(slot)
 	end
 
-	local value = utils_ui.stats_table[section_type]
+	local obj_are_same = obj_b and (obj:id() == obj_b:id())
+
+	local properties = utils_ui.stats_table[section_type] or {}
 	local cnt, y = 0, 0
 	local cnt_last
 
@@ -125,7 +127,7 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 		return false
 	end
 
-	for stat, gr in spairs(value, utils_ui.sort_by_index) do
+	for stat, gr in spairs(properties, utils_ui.sort_by_index) do
 		-- get stat value
 		local val_a = utils_ui.utils_ui.get_stats_value(obj, sec, gr, stat)
 		local val_a_is_empty = val_is_empty(val_a)
@@ -163,17 +165,24 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 		ele.comp:Show(false)
 
 		if gr.track then
-			val_a = tonumber(val_a) or 0 -- This routine assumes numeric value, force convert to prevent crashes.
 			local valbar_a = clamp((math.abs(val_a) * gr.magnitude), 0, 1)
 
 			-- Comparison item
 			local val_b = obj_b and utils_ui.get_stats_value(obj_b, obj_b:section(), gr, stat)
-			val_b = tonumber(val_b) or 0 -- This routine assumes numeric value, force convert to prevent crashes.
-			local valbar_b = val_b and clamp((math.floor(math.abs(val_b) * gr.magnitude)), 0, 1)
+			local valbar_b = val_b and clamp((math.abs(val_b) * gr.magnitude), 0, 1)
 
-			if valbar_b and (valbar_a ~= valbar_b) then
+			-- printf("ZSEIS - Comparing item '" ..
+			-- 	obj:section() ..
+			-- 	"' ('" ..
+			-- 	obj:id() ..
+			-- 	"'), value '" ..
+			-- 	tostring(val_a * gr.magnitude) ..
+			-- 	"' with item '" ..
+			-- 	obj_b:section() .. "' ('" .. obj_b:id() .. "'), value '" .. tostring(val_b * gr.magnitude) .. "'.")
+
+			if not obj_are_same and valbar_b and (valbar_a ~= valbar_b) then
 				-- If focussed item's value is bigger than slot item's value -> focussed item's bar: green + 2nd layer
-				if valbar_a > valbar_b then
+				if val_a > val_b then
 					ele.bar1:SetProgressPos(valbar_b)
 					ele.bar1:SetColor(clr_list["info_def"])
 
@@ -193,14 +202,23 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 					ele.comp:SetTextColor(clr_list["info_n_txt"])
 				end
 
-				local diff_val = math.ceil((valbar_a - valbar_b) * 100)
-				ele.comp:SetText((diff_val > 0 and "+" or "") .. diff_val .. "%")
+				local display_val = math.ceil(val_a * gr.magnitude * 100)
+				local diff_val = math.ceil((val_a - val_b) * gr.magnitude * 100)
+
+				ele.comp:SetText(display_val .. "% (" .. (diff_val > 0 and "+" or "") .. diff_val .. "%)")
 				ele.comp:Show(true)
+
 				ele.bar1:Show(true)
-				ele.bar2:Show(true)
 				ele.bar1:ShowBackground(false)
+
+				ele.bar2:Show(true)
 			else
 				-- No comparison
+				local display_val = math.ceil(val_a * gr.magnitude * 100)
+				ele.comp:SetTextColor(clr_list["info_def"])
+				ele.comp:SetText(display_val .. "%")
+				ele.comp:Show(true)
+
 				ele.bar1:SetProgressPos(valbar_a)
 				ele.bar1:SetColor(clr_list["info_def"])
 				ele.bar1:Show(true)
@@ -231,8 +249,6 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 
 				if valbar_b and (valbar_a ~= valbar_b) then
 					local diff_val = math.ceil(valbar_a - valbar_b)
-					-- …
-
 					ele.comp:SetText("(" .. (diff_val > 0 and "+" or "") .. diff_val .. ")")
 					ele.comp:Show(true)
 					clr = (valbar_a > valbar_b) and clr_list["info_p_txt"] or clr_list["info_n_txt"]
@@ -384,7 +400,4 @@ function prop_formatted_time(val, skip_instant)
 	end
 
 	return formatted
-end
-
-function on_game_start()
 end
