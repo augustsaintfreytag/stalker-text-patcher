@@ -15,7 +15,12 @@ local clr_list = {
 	["info_n_txt"] = GetARGB(200, 255, 100, 100),
 }
 
+-- local original_update = utils_ui.UIInfoItem.Update
+
 function utils_ui.UIInfoItem:Update(obj, sec, flags)
+	-- Can't call original chain, would crash with unsupported values.
+	-- original_update(self, obj, sec, flags)
+
 	if not self:Pass(obj, sec) then
 		self:Show(false)
 		return
@@ -96,7 +101,9 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 		obj_b = slot > 0 and db.actor:item_in_slot(slot)
 	end
 
-	local value = utils_ui.stats_table[section_type]
+	local obj_are_same = obj_b and (obj:id() == obj_b:id())
+
+	local properties = utils_ui.stats_table[section_type] or {}
 	local cnt, y = 0, 0
 	local cnt_last
 
@@ -120,7 +127,7 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 		return false
 	end
 
-	for stat, gr in spairs(value, utils_ui.sort_by_index) do
+	for stat, gr in spairs(properties, utils_ui.sort_by_index) do
 		-- get stat value
 		local val_a = utils_ui.utils_ui.get_stats_value(obj, sec, gr, stat)
 		local val_a_is_empty = val_is_empty(val_a)
@@ -158,17 +165,24 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 		ele.comp:Show(false)
 
 		if gr.track then
-			val_a = tonumber(val_a) or 0 -- This routine assumes numeric value, force convert to prevent crashes.
 			local valbar_a = clamp((math.abs(val_a) * gr.magnitude), 0, 1)
 
 			-- Comparison item
 			local val_b = obj_b and utils_ui.get_stats_value(obj_b, obj_b:section(), gr, stat)
-			val_b = tonumber(val_b) or 0 -- This routine assumes numeric value, force convert to prevent crashes.
-			local valbar_b = val_b and clamp((math.floor(math.abs(val_b) * gr.magnitude)), 0, 1)
+			local valbar_b = val_b and clamp((math.abs(val_b) * gr.magnitude), 0, 1)
 
-			if valbar_b and (valbar_a ~= valbar_b) then
+			-- printf("ZSEIS - Comparing item '" ..
+			-- 	obj:section() ..
+			-- 	"' ('" ..
+			-- 	obj:id() ..
+			-- 	"'), value '" ..
+			-- 	tostring(val_a * gr.magnitude) ..
+			-- 	"' with item '" ..
+			-- 	obj_b:section() .. "' ('" .. obj_b:id() .. "'), value '" .. tostring(val_b * gr.magnitude) .. "'.")
+
+			if not obj_are_same and valbar_b and (valbar_a ~= valbar_b) then
 				-- If focussed item's value is bigger than slot item's value -> focussed item's bar: green + 2nd layer
-				if valbar_a > valbar_b then
+				if val_a > val_b then
 					ele.bar1:SetProgressPos(valbar_b)
 					ele.bar1:SetColor(clr_list["info_def"])
 
@@ -188,14 +202,23 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 					ele.comp:SetTextColor(clr_list["info_n_txt"])
 				end
 
-				local diff_val = math.ceil((valbar_a - valbar_b) * 100)
-				ele.comp:SetText((diff_val > 0 and "+" or "") .. diff_val .. "%")
+				local display_val = math.ceil(val_a * gr.magnitude * 100)
+				local diff_val = math.ceil((val_a - val_b) * gr.magnitude * 100)
+
+				ele.comp:SetText(display_val .. "% (" .. (diff_val > 0 and "+" or "") .. diff_val .. "%)")
 				ele.comp:Show(true)
+
 				ele.bar1:Show(true)
-				ele.bar2:Show(true)
 				ele.bar1:ShowBackground(false)
+
+				ele.bar2:Show(true)
 			else
 				-- No comparison
+				local display_val = math.ceil(val_a * gr.magnitude * 100)
+				ele.comp:SetTextColor(clr_list["info_def"])
+				ele.comp:SetText(display_val .. "%")
+				ele.comp:Show(true)
+
 				ele.bar1:SetProgressPos(valbar_a)
 				ele.bar1:SetColor(clr_list["info_def"])
 				ele.bar1:Show(true)
@@ -226,8 +249,6 @@ function utils_ui.UIInfoItem:Update(obj, sec, flags)
 
 				if valbar_b and (valbar_a ~= valbar_b) then
 					local diff_val = math.ceil(valbar_a - valbar_b)
-					-- …
-
 					ele.comp:SetText("(" .. (diff_val > 0 and "+" or "") .. diff_val .. ")")
 					ele.comp:Show(true)
 					clr = (valbar_a > valbar_b) and clr_list["info_p_txt"] or clr_list["info_n_txt"]
@@ -343,25 +364,40 @@ end
 
 -- Formats a time value given in seconds into a human-readable format (seconds, minutes).
 -- Uses localized unit descriptions `ui_inv_seconds` and `ui_inv_minutes`.
-function prop_formatted_time(val)
+function prop_formatted_time(val, skip_instant)
 	if type(val) ~= "number" then
 		return val
 	end
 
 	local formatted = ""
-	local seconds = val % 60
+	local seconds = math.floor(val % 60)
 	local minutes = math.floor(val / 60) % 60
 
-	if minutes > 1 then
-		formatted = minutes .. " " .. game.translate_string("ui_inv_minutes")
+	if minutes > 0 then
+		local denominator = game.translate_string("ui_inv_minutes")
+
+		-- If minute is exactly one, remove trailing "s".
+		if minutes == 1 then
+			denominator = string.sub(denominator, 1, -2)
+		end
+
+		formatted = minutes .. " " .. denominator
 	elseif seconds > 1 then
-		formatted = seconds .. " " .. game.translate_string("ui_inv_seconds")
+		local denominator = game.translate_string("ui_inv_seconds")
+
+		-- If second is exactly one, remove trailing "s".
+		if seconds == 1 then
+			denominator = string.sub(denominator, 1, -2)
+		end
+
+		formatted = seconds .. " " .. denominator
 	else
-		formatted = game.translate_string("ui_inv_time_instant")
+		if skip_instant then
+			formatted = seconds .. " " .. game.translate_string("ui_inv_seconds")
+		else
+			formatted = game.translate_string("ui_inv_time_instant")
+		end
 	end
 
 	return formatted
-end
-
-function on_game_start()
 end
