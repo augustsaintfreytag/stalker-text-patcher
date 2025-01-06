@@ -95,7 +95,15 @@ function process_substitution_elements(file_name, xml_obj, patterns)
 		local processed_text = text
 
 		for pattern, substitution in pairs(patterns) do
-			processed_text = re.gsub(processed_text, pattern, substitution)
+			local _, err = pcall(function()
+				processed_text = string.gsub(processed_text, pattern, substitution)
+			end)
+
+			if err then
+				log(
+					"DXML text patcher could not process substitution for element id '%s' text with pattern '%s' in file '%s': %s",
+					id, pattern, file_name, err)
+			end
 		end
 
 		log(
