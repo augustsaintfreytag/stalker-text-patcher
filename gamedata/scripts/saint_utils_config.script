@@ -23,7 +23,8 @@ CAPITALIZATION_SPLIT_FOR_PARENTHETICALS = true
 CAPITALIZATION_SKIP_WORDS = { "as", "of", "on", "and", "for", "with", "without", "through", "its", "the",
 	"to", "in", "by", "via", "mm", "cm", "ml", "mg", "g", "kg", "kcal eq.", "kcal / sec eq.", "mcg", "msv",
 	"msv / sec", "µg of adren.", "µg of adren. / sec", "kw/m2", "kv", "mt", "c1 ppm eq.", "h/mm2", "ma/h", "ah/sec",
-	"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg", "i", "ii", "iii", "iv", "v", "vi", "smg" }
+	"pah/sec", "uah/sec", "khz", "hz", "ghz", "sec", "seconds", "meters", "dmg", "i", "ii", "iii", "iv", "v", "vi", "smg",
+	"w/" }
 
 -- Toggle the use of a terminating colon for section headings in description text.
 -- By default, the game formats section headers as "PROPERTIES:" with a colon.
